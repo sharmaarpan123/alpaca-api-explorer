@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 220 79% 59%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -35,19 +36,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
+    --sidebar-primary: 220 79% 59%;
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -97,5 +91,55 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .api-explorer-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+  }
+
+  .api-explorer-header {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .api-explorer-sidebar {
+    grid-column: 1;
+    grid-row: 2;
+    border-right: 1px solid hsl(var(--border));
+    overflow-y: auto;
+  }
+
+  .api-explorer-content {
+    grid-column: 2;
+    grid-row: 2;
+    overflow-y: auto;
+    padding: 1.5rem;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .api-explorer-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .api-explorer-sidebar {
+      display: none;
+    }
+
+    .api-explorer-sidebar.open {
+      display: block;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
+      background: white;
+      overflow-y: auto;
+    }
   }
 }
