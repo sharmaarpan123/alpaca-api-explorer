@@ -7,6 +7,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import { Copy } from 'lucide-react';
+import CodeSnippet, { ProgrammingLanguage } from './CodeSnippet';
+import LanguageSelector from './LanguageSelector';
 
 interface ParamField {
   type: string;
@@ -50,6 +52,9 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     requestBody ? JSON.stringify(requestBody, null, 2) : '{}'
   );
   const [paramValues, setParamValues] = useState<Record<string, string>>({});
+  const [selectedLanguage, setSelectedLanguage] = useState<ProgrammingLanguage>('shell');
+  const [apiKeyId, setApiKeyId] = useState<string>('');
+  const [apiSecretKey, setApiSecretKey] = useState<string>('');
 
   const handleParamChange = (key: string, value: string) => {
     setParamValues(prev => ({ ...prev, [key]: value }));
@@ -152,22 +157,144 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     });
   };
 
+  // Generate code snippets for different languages
+  const generateCodeSnippet = (language: ProgrammingLanguage): string => {
+    const url = constructEndpointUrl();
+    const headers: Record<string, string> = {
+      'accept': 'application/json',
+      ...(requiresAuth ? {'Authorization': `Bearer ${token || apiKeyId || '[YOUR_TOKEN]'}`} : {})
+    };
+    
+    if (['POST', 'PUT', 'PATCH'].includes(method) && requestBody) {
+      headers['Content-Type'] = 'application/json';
+    }
+    
+    switch (language) {
+      case 'shell':
+        let curl = `curl --request ${method} \\\n`;
+        curl += `  --url '${url}' \\\n`;
+        
+        Object.entries(headers).forEach(([key, value]) => {
+          curl += `  --header '${key}: ${value}' \\\n`;
+        });
+        
+        if (['POST', 'PUT', 'PATCH'].includes(method) && requestBody) {
+          curl += `  --data '${requestPayload}'`;
+        }
+        
+        return curl;
+        
+      case 'node':
+        let nodeCode = "const axios = require('axios');\n\n";
+        nodeCode += "const options = {\n";
+        nodeCode += `  method: '${method}',\n`;
+        nodeCode += `  url: '${url}',\n`;
+        nodeCode += "  headers: {\n";
+        
+        Object.entries(headers).forEach(([key, value], index, array) => {
+          nodeCode += `    '${key}': '${value}'${index < array.length - 1 ? ',' : ''}\n`;
+        });
+        
+        nodeCode += "  }";
+        
+        if (['POST', 'PUT', 'PATCH'].includes(method) && requestBody) {
+          nodeCode += ",\n  data: " + requestPayload;
+        }
+        
+        nodeCode += "\n};\n\n";
+        nodeCode += "axios.request(options).then(function (response) {\n";
+        nodeCode += "  console.log(response.data);\n";
+        nodeCode += "}).catch(function (error) {\n";
+        nodeCode += "  console.error(error);\n";
+        nodeCode += "});";
+        
+        return nodeCode;
+        
+      case 'python':
+        let pythonCode = "import requests\n\n";
+        pythonCode += `url = "${url}"\n\n`;
+        pythonCode += "headers = {\n";
+        
+        Object.entries(headers).forEach(([key, value], index, array) => {
+          pythonCode += `    "${key}": "${value}"${index < array.length - 1 ? ',' : ''}\n`;
+        });
+        
+        pythonCode += "}\n\n";
+        
+        if (['POST', 'PUT', 'PATCH'].includes(method) && requestBody) {
+          pythonCode += `payload = ${requestPayload}\n\n`;
+          pythonCode += `response = requests.${method.toLowerCase()}(url, headers=headers, json=payload)\n`;
+        } else {
+          pythonCode += `response = requests.${method.toLowerCase()}(url, headers=headers)\n`;
+        }
+        
+        pythonCode += "\nprint(response.text)";
+        
+        return pythonCode;
+        
+      case 'ruby':
+        let rubyCode = "require 'uri'\nrequire 'net/http'\nrequire 'json'\n\n";
+        rubyCode += `url = URI("${url}")\n\n`;
+        rubyCode += "http = Net::HTTP.new(url.host, url.port)\n";
+        rubyCode += "http.use_ssl = true\n\n";
+        rubyCode += `request = Net::HTTP::${method.charAt(0).toUpperCase() + method.slice(1).toLowerCase()}.new(url)\n`;
+        
+        Object.entries(headers).forEach(([key, value]) => {
+          rubyCode += `request["${key}"] = "${value}"\n`;
+        });
+        
+        if (['POST', 'PUT', 'PATCH'].includes(method) && requestBody) {
+          rubyCode += `request.body = ${requestPayload}\n`;
+        }
+        
+        rubyCode += "\nresponse = http.request(request)\n";
+        rubyCode += "puts response.read_body";
+        
+        return rubyCode;
+        
+      case 'php':
+        let phpCode = "<?php\n\n";
+        phpCode += "$curl = curl_init();\n\n";
+        phpCode += "curl_setopt_array($curl, [\n";
+        phpCode += `  CURLOPT_URL => "${url}",\n`;
+        phpCode += "  CURLOPT_RETURNTRANSFER => true,\n";
+        phpCode += "  CURLOPT_ENCODING => \"\",\n";
+        phpCode += "  CURLOPT_MAXREDIRS => 10,\n";
+        phpCode += "  CURLOPT_TIMEOUT => 30,\n";
+        phpCode += "  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n";
+        phpCode += `  CURLOPT_CUSTOMREQUEST => "${method}",\n`;
+        
+        if (['POST', 'PUT', 'PATCH'].includes(method) && requestBody) {
+          phpCode += `  CURLOPT_POSTFIELDS => ${requestPayload},\n`;
+        }
+        
+        phpCode += "  CURLOPT_HTTPHEADER => [\n";
+        
+        Object.entries(headers).forEach(([key, value], index, array) => {
+          phpCode += `    "${key}: ${value}"${index < array.length - 1 ? ',' : ''}\n`;
+        });
+        
+        phpCode += "  ],\n";
+        phpCode += "]);\n\n";
+        phpCode += "$response = curl_exec($curl);\n";
+        phpCode += "$err = curl_error($curl);\n\n";
+        phpCode += "curl_close($curl);\n\n";
+        phpCode += "if ($err) {\n";
+        phpCode += "  echo \"cURL Error #:\" . $err;\n";
+        phpCode += "} else {\n";
+        phpCode += "  echo $response;\n";
+        phpCode += "}\n";
+        
+        return phpCode;
+        
+      // Add more languages as needed
+      default:
+        return `// Code snippet for ${language} not implemented yet`;
+    }
+  };
+
   const renderCurlCommand = () => {
-    const baseUrl = constructEndpointUrl();
-    let command = `curl --request ${method} \\\n`;
-    command += `  --url '${baseUrl}' \\\n`;
-    command += `  --header 'accept: application/json'`;
-    
-    if (requiresAuth) {
-      command += ` \\\n  --header 'Authorization: Bearer ${token || '[YOUR_TOKEN]'}'`;
-    }
-    
-    if ((method === 'POST' || method === 'PUT' || method === 'PATCH') && requestBody) {
-      command += ` \\\n  --header 'Content-Type: application/json' \\\n`;
-      command += `  --data '${requestPayload}'`;
-    }
-    
-    return command;
+    return generateCodeSnippet('shell');
   };
 
   return (
@@ -345,7 +472,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                       {JSON.stringify({
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        ...(requiresAuth ? {'Authorization': `Bearer ${token || '[YOUR_TOKEN]'}`} : {})
+                        ...(requiresAuth ? {'Authorization': `Bearer ${token || apiKeyId || '[YOUR_TOKEN]'}`} : {})
                       }, null, 2)}
                     </pre>
                   </div>
@@ -362,20 +489,17 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                   )}
                   
                   <div className="mb-6">
-                    <h4 className="font-semibold mb-3">cURL</h4>
-                    <div className="relative">
-                      <pre className="bg-gray-900 text-white p-4 rounded-md text-sm overflow-auto">
-                        {renderCurlCommand()}
-                      </pre>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="absolute top-2 right-2 text-white bg-gray-800 hover:bg-gray-700"
-                        onClick={() => copyToClipboard(renderCurlCommand())}
-                      >
-                        <Copy className="h-4 w-4" />
-                      </Button>
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold">Code Snippet</h4>
+                      <LanguageSelector 
+                        selectedLanguage={selectedLanguage} 
+                        onLanguageChange={setSelectedLanguage}
+                      />
                     </div>
+                    <CodeSnippet 
+                      language={selectedLanguage}
+                      code={generateCodeSnippet(selectedLanguage)}
+                    />
                   </div>
                   
                   <Button onClick={handleApiCall} disabled={isLoading} className="w-full">
@@ -437,35 +561,96 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         </div>
         
         <div className="col-span-1">
-          <Card>
+          <Card className="bg-gray-900 text-gray-200 border-gray-800">
             <CardHeader>
-              <CardTitle>Credentials</CardTitle>
+              <CardTitle className="text-gray-200">Language</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-5 gap-2">
+                <Button 
+                  variant={selectedLanguage === "shell" ? "default" : "outline"}
+                  size="sm" 
+                  className={`justify-center ${selectedLanguage !== "shell" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
+                  onClick={() => setSelectedLanguage("shell")}
+                >
+                  Shell
+                </Button>
+                <Button 
+                  variant={selectedLanguage === "node" ? "default" : "outline"}  
+                  size="sm"
+                  className={`justify-center ${selectedLanguage !== "node" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
+                  onClick={() => setSelectedLanguage("node")}
+                >
+                  Node
+                </Button>
+                <Button 
+                  variant={selectedLanguage === "ruby" ? "default" : "outline"}  
+                  size="sm"
+                  className={`justify-center ${selectedLanguage !== "ruby" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
+                  onClick={() => setSelectedLanguage("ruby")}
+                >
+                  Ruby
+                </Button>
+                <Button 
+                  variant={selectedLanguage === "php" ? "default" : "outline"}  
+                  size="sm"
+                  className={`justify-center ${selectedLanguage !== "php" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
+                  onClick={() => setSelectedLanguage("php")}
+                >
+                  PHP
+                </Button>
+                <Button 
+                  variant={selectedLanguage === "python" ? "default" : "outline"}  
+                  size="sm"
+                  className={`justify-center ${selectedLanguage !== "python" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
+                  onClick={() => setSelectedLanguage("python")}
+                >
+                  Python
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="mt-6 bg-gray-900 text-gray-200 border-gray-800">
+            <CardHeader>
+              <CardTitle className="text-gray-200">Credentials</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium block mb-1">API Key ID</label>
-                  <Input type="text" placeholder="APCA-API-KEY-ID" />
+                  <label className="text-sm font-medium block mb-1 text-gray-300">API Key ID</label>
+                  <Input 
+                    type="text" 
+                    placeholder="APCA-API-KEY-ID" 
+                    className="bg-gray-800 border-gray-700 text-gray-200 focus:ring-blue-500"
+                    value={apiKeyId}
+                    onChange={(e) => setApiKeyId(e.target.value)}
+                  />
                 </div>
                 <div>
-                  <label className="text-sm font-medium block mb-1">API Secret Key</label>
-                  <Input type="password" placeholder="APCA-API-SECRET-KEY" />
+                  <label className="text-sm font-medium block mb-1 text-gray-300">API Secret Key</label>
+                  <Input 
+                    type="password" 
+                    placeholder="APCA-API-SECRET-KEY" 
+                    className="bg-gray-800 border-gray-700 text-gray-200 focus:ring-blue-500"
+                    value={apiSecretKey}
+                    onChange={(e) => setApiSecretKey(e.target.value)}
+                  />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="mt-6">
+          <Card className="mt-6 bg-gray-900 text-gray-200 border-gray-800">
             <CardHeader>
-              <CardTitle>Language</CardTitle>
+              <CardTitle className="text-gray-200">URL</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-3 gap-2">
-                <Button variant="outline" size="sm" className="justify-start">Shell</Button>
-                <Button variant="outline" size="sm" className="justify-start">Node</Button>
-                <Button variant="outline" size="sm" className="justify-start">Ruby</Button>
-                <Button variant="outline" size="sm" className="justify-start">Python</Button>
-                <Button variant="outline" size="sm" className="justify-start">PHP</Button>
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-medium text-gray-400">Base URL</span>
+                  <span className="text-sm font-mono text-gray-300">https://paper-api.alpaca.markets</span>
+                </div>
               </div>
             </CardContent>
           </Card>

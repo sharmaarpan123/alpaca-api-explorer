@@ -5,8 +5,31 @@ import Layout from '@/components/layout/Layout';
 import ApiEndpoint from '@/components/api/ApiEndpoint';
 import { Card } from '@/components/ui/card';
 
+// Define the structure for path and query parameter fields
+interface ParamField {
+  type: string;
+  description: string;
+}
+
+// Define the structure for parameters objects
+interface ParamsObject {
+  [key: string]: ParamField;
+}
+
+// Define the structure of an API endpoint
+interface ApiEndpointData {
+  title: string;
+  method: string;
+  path: string;
+  description: string;
+  requiresAuth: boolean;
+  requestBody?: Record<string, any>;
+  queryParams?: ParamsObject;
+  pathParams?: ParamsObject;
+}
+
 // Mock API data - in a real app, this would come from your API documentation
-const API_ENDPOINTS = {
+const API_ENDPOINTS: Record<string, ApiEndpointData> = {
   // Auth endpoints
   'auth/login': {
     title: 'Login',
