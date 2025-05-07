@@ -54,17 +54,17 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="w-28 justify-between bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700">
+        <Button variant="outline" size="sm" className="h-8 w-24 justify-between bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700">
           {selectedLangOption?.name || 'Shell'}
-          <ChevronDown className="h-4 w-4 ml-1" />
+          <ChevronDown className="h-3 w-3 ml-1" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="max-h-80 overflow-y-auto bg-gray-800 text-gray-200 border-gray-700">
+      <DropdownMenuContent align="start" className="max-h-60 overflow-y-auto bg-gray-800 text-gray-200 border-gray-700">
         {languages.map(lang => (
           <DropdownMenuItem 
             key={lang.id}
             onClick={() => onLanguageChange(lang.id)}
-            className={`cursor-pointer hover:bg-gray-700 ${selectedLanguage === lang.id ? 'bg-gray-700' : ''}`}
+            className={`cursor-pointer hover:bg-gray-700 py-1 ${selectedLanguage === lang.id ? 'bg-gray-700' : ''}`}
           >
             {lang.name}
           </DropdownMenuItem>

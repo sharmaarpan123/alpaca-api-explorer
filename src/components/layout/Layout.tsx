@@ -20,8 +20,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-pulse flex flex-col items-center">
-          <div className="rounded-md bg-gray-300 h-12 w-48 mb-4"></div>
-          <div className="text-gray-500">Loading application...</div>
+          <div className="rounded-md bg-gray-300 h-10 w-40 mb-3"></div>
+          <div className="text-gray-500 text-sm">Loading application...</div>
         </div>
       </div>
     );

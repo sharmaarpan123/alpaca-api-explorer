@@ -169,9 +169,9 @@ const ApiEndpointPage: React.FC = () => {
   if (!apiData) {
     return (
       <Layout>
-        <div className="container mx-auto py-8">
-          <Card className="p-6 text-center">
-            <h2 className="text-xl font-semibold mb-4">Endpoint Not Found</h2>
+        <div className="container mx-auto py-4">
+          <Card className="p-4 text-center">
+            <h2 className="text-xl font-semibold mb-2">Endpoint Not Found</h2>
             <p className="text-gray-600">The API endpoint you're looking for doesn't exist.</p>
           </Card>
         </div>
@@ -181,7 +181,7 @@ const ApiEndpointPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-4">
         <ApiEndpoint
           title={apiData.title}
           method={apiData.method as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'}

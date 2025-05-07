@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -157,7 +156,6 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     });
   };
 
-  // Generate code snippets for different languages
   const generateCodeSnippet = (language: ProgrammingLanguage): string => {
     const url = constructEndpointUrl();
     const headers: Record<string, string> = {
@@ -287,73 +285,68 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         
         return phpCode;
         
-      // Add more languages as needed
       default:
         return `// Code snippet for ${language} not implemented yet`;
     }
   };
 
-  const renderCurlCommand = () => {
-    return generateCodeSnippet('shell');
-  };
-
   return (
-    <div className="mb-10">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">{title}</h1>
+    <div className="mb-6">
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold mb-1">{title}</h1>
         <div className="flex items-center">
-          <span className={`${getMethodColor(method)} text-xs font-medium px-2.5 py-1 rounded`}>
+          <span className={`${getMethodColor(method)} text-xs font-medium px-2 py-0.5 rounded`}>
             {method}
           </span>
-          <h2 className="text-lg font-medium ml-3">{endpoint}</h2>
+          <h2 className="text-base font-medium ml-2">{endpoint}</h2>
         </div>
-        <p className="text-gray-600 mt-2">{description}</p>
+        <p className="text-gray-600 mt-1 text-sm">{description}</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="col-span-1 lg:col-span-2">
-          <Tabs defaultValue="documentation" value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="mb-4">
-              <TabsTrigger value="documentation">Documentation</TabsTrigger>
-              <TabsTrigger value="request">Request</TabsTrigger>
-              <TabsTrigger value="response">Response</TabsTrigger>
+          <Tabs defaultValue="documentation" value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="mb-3 w-full justify-start h-9 p-1">
+              <TabsTrigger value="documentation" className="text-xs h-7">Documentation</TabsTrigger>
+              <TabsTrigger value="request" className="text-xs h-7">Request</TabsTrigger>
+              <TabsTrigger value="response" className="text-xs h-7">Response</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="documentation">
-              <Card>
-                <CardHeader>
-                  <CardTitle>API Details</CardTitle>
+            <TabsContent value="documentation" className="pt-1">
+              <Card className="shadow-sm">
+                <CardHeader className="py-3 px-4">
+                  <CardTitle className="text-base">API Details</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="py-3 px-4 text-sm">
                   {children || (
                     <div className="text-gray-600">
-                      <p className="mb-4">This endpoint allows you to interact with {title.toLowerCase()}.</p>
+                      <p className="mb-3">This endpoint allows you to interact with {title.toLowerCase()}.</p>
                       
                       {requiresAuth && (
-                        <div className="mb-4">
+                        <div className="mb-3">
                           <h4 className="font-semibold mb-1">Authentication</h4>
                           <p>This endpoint requires authentication. Include your bearer token in the request header.</p>
                         </div>
                       )}
                       
                       {pathParams && Object.keys(pathParams).length > 0 && (
-                        <div className="mb-4">
-                          <h4 className="font-semibold mb-2">Path Parameters</h4>
+                        <div className="mb-3">
+                          <h4 className="font-semibold mb-1">Path Parameters</h4>
                           <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
+                            <table className="min-w-full divide-y divide-gray-200 text-xs">
                               <thead className="bg-gray-50">
                                 <tr>
-                                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parameter</th>
-                                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                  <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parameter</th>
+                                  <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                  <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                                 </tr>
                               </thead>
                               <tbody className="bg-white divide-y divide-gray-200">
                                 {Object.entries(pathParams).map(([key, param]) => (
                                   <tr key={key}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{key}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{param.type}</td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">{param.description}</td>
+                                    <td className="px-3 py-2 whitespace-nowrap text-xs font-medium text-gray-900">{key}</td>
+                                    <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">{param.type}</td>
+                                    <td className="px-3 py-2 text-xs text-gray-500">{param.description}</td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -363,23 +356,23 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                       )}
                       
                       {queryParams && Object.keys(queryParams).length > 0 && (
-                        <div className="mb-4">
-                          <h4 className="font-semibold mb-2">Query Parameters</h4>
+                        <div className="mb-3">
+                          <h4 className="font-semibold mb-1">Query Parameters</h4>
                           <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
+                            <table className="min-w-full divide-y divide-gray-200 text-xs">
                               <thead className="bg-gray-50">
                                 <tr>
-                                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parameter</th>
-                                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                  <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parameter</th>
+                                  <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                  <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                                 </tr>
                               </thead>
                               <tbody className="bg-white divide-y divide-gray-200">
                                 {Object.entries(queryParams).map(([key, param]) => (
                                   <tr key={key}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{key}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{param.type}</td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">{param.description}</td>
+                                    <td className="px-3 py-2 whitespace-nowrap text-xs font-medium text-gray-900">{key}</td>
+                                    <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">{param.type}</td>
+                                    <td className="px-3 py-2 text-xs text-gray-500">{param.description}</td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -389,19 +382,19 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                       )}
                       
                       {requestBody && (
-                        <div className="mb-4">
-                          <h4 className="font-semibold mb-2">Request Body</h4>
-                          <pre className="bg-gray-50 p-4 rounded-md text-sm overflow-auto">
+                        <div className="mb-3">
+                          <h4 className="font-semibold mb-1">Request Body</h4>
+                          <pre className="bg-gray-50 p-3 rounded-md text-xs overflow-auto">
                             {JSON.stringify(requestBody, null, 2)}
                           </pre>
                         </div>
                       )}
                       
-                      <div className="mt-6">
-                        <h4 className="font-semibold mb-2">Response</h4>
-                        <div className="flex items-center space-x-2 mb-2">
-                          <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded">200</span>
-                          <span>An array of asset objects</span>
+                      <div className="mt-4">
+                        <h4 className="font-semibold mb-1">Response</h4>
+                        <div className="flex items-center space-x-2 mb-1">
+                          <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded">200</span>
+                          <span className="text-xs">An array of asset objects</span>
                         </div>
                       </div>
                     </div>
@@ -410,37 +403,39 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
               </Card>
             </TabsContent>
             
-            <TabsContent value="request">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Request Details</CardTitle>
+            <TabsContent value="request" className="pt-1">
+              <Card className="shadow-sm">
+                <CardHeader className="py-3 px-4">
+                  <CardTitle className="text-base">Request Details</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="mb-6">
-                    <h4 className="font-semibold mb-3">URL</h4>
-                    <div className="flex items-center bg-gray-50 p-3 rounded-md">
-                      <span className="text-sm font-mono flex-1 break-all">{constructEndpointUrl()}</span>
+                <CardContent className="py-3 px-4 text-sm space-y-4">
+                  <div>
+                    <h4 className="font-semibold mb-2">URL</h4>
+                    <div className="flex items-center bg-gray-50 p-2 rounded-md">
+                      <span className="text-xs font-mono flex-1 break-all">{constructEndpointUrl()}</span>
                       <Button 
                         variant="ghost" 
                         size="sm" 
                         onClick={() => copyToClipboard(constructEndpointUrl())}
+                        className="h-6 w-6 p-0"
                       >
-                        <Copy className="h-4 w-4" />
+                        <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                   </div>
                   
                   {pathParams && Object.keys(pathParams).length > 0 && (
-                    <div className="mb-6">
-                      <h4 className="font-semibold mb-3">Path Parameters</h4>
-                      <div className="space-y-3">
+                    <div>
+                      <h4 className="font-semibold mb-2">Path Parameters</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {Object.entries(pathParams).map(([key, param]) => (
-                          <div key={key} className="grid grid-cols-1 gap-2">
-                            <label className="text-sm font-medium">{key} <span className="text-xs text-gray-500">({param.type})</span></label>
+                          <div key={key} className="space-y-1">
+                            <label className="text-xs font-medium">{key} <span className="text-xs text-gray-500">({param.type})</span></label>
                             <Input 
                               placeholder={param.description} 
                               value={paramValues[key] || ''}
                               onChange={(e) => handleParamChange(key, e.target.value)}
+                              className="h-8 text-xs"
                             />
                           </div>
                         ))}
@@ -449,16 +444,17 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                   )}
                   
                   {queryParams && Object.keys(queryParams).length > 0 && (
-                    <div className="mb-6">
-                      <h4 className="font-semibold mb-3">Query Parameters</h4>
-                      <div className="space-y-3">
+                    <div>
+                      <h4 className="font-semibold mb-2">Query Parameters</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {Object.entries(queryParams).map(([key, param]) => (
-                          <div key={key} className="grid grid-cols-1 gap-2">
-                            <label className="text-sm font-medium">{key} <span className="text-xs text-gray-500">({param.type})</span></label>
+                          <div key={key} className="space-y-1">
+                            <label className="text-xs font-medium">{key} <span className="text-xs text-gray-500">({param.type})</span></label>
                             <Input 
                               placeholder={param.description} 
                               value={paramValues[key] || ''}
                               onChange={(e) => handleParamChange(key, e.target.value)}
+                              className="h-8 text-xs"
                             />
                           </div>
                         ))}
@@ -466,9 +462,9 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                     </div>
                   )}
                   
-                  <div className="mb-6">
-                    <h4 className="font-semibold mb-3">Headers</h4>
-                    <pre className="bg-gray-50 p-4 rounded-md text-sm overflow-auto">
+                  <div>
+                    <h4 className="font-semibold mb-2">Headers</h4>
+                    <pre className="bg-gray-50 p-2 rounded-md text-xs overflow-auto">
                       {JSON.stringify({
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -478,18 +474,18 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                   </div>
                   
                   {(method === 'POST' || method === 'PUT' || method === 'PATCH') && (
-                    <div className="mb-6">
-                      <h4 className="font-semibold mb-3">Request Body</h4>
+                    <div>
+                      <h4 className="font-semibold mb-2">Request Body</h4>
                       <textarea
-                        className="w-full h-40 font-mono text-sm p-4 border rounded-md bg-gray-50"
+                        className="w-full h-32 font-mono text-xs p-2 border rounded-md bg-gray-50"
                         value={requestPayload}
                         onChange={(e) => setRequestPayload(e.target.value)}
                       />
                     </div>
                   )}
                   
-                  <div className="mb-6">
-                    <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
                       <h4 className="font-semibold">Code Snippet</h4>
                       <LanguageSelector 
                         selectedLanguage={selectedLanguage} 
@@ -502,56 +498,56 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                     />
                   </div>
                   
-                  <Button onClick={handleApiCall} disabled={isLoading} className="w-full">
+                  <Button onClick={handleApiCall} disabled={isLoading} className="w-full h-9 text-sm">
                     {isLoading ? 'Sending...' : 'Try It!'}
                   </Button>
                 </CardContent>
               </Card>
             </TabsContent>
             
-            <TabsContent value="response">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex justify-between items-center">
+            <TabsContent value="response" className="pt-1">
+              <Card className="shadow-sm">
+                <CardHeader className="py-3 px-4">
+                  <CardTitle className="flex justify-between items-center text-base">
                     <span>Response</span>
                     {response && (
                       <div className="flex items-center">
-                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded mr-2">
+                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded mr-2">
                           200
                         </span>
-                        <span className="text-sm text-gray-500">application/json</span>
+                        <span className="text-xs text-gray-500">application/json</span>
                       </div>
                     )}
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="py-3 px-4">
                   {isLoading ? (
-                    <div className="flex justify-center items-center p-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    <div className="flex justify-center items-center p-6">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
                     </div>
                   ) : error ? (
-                    <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md">
+                    <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-md text-xs">
                       <p className="font-medium">Error</p>
                       <p>{error}</p>
                     </div>
                   ) : response ? (
                     <div className="relative">
-                      <pre className="bg-gray-50 p-4 rounded-md text-sm overflow-auto">
+                      <pre className="bg-gray-50 p-3 rounded-md text-xs overflow-auto max-h-96">
                         {JSON.stringify(response, null, 2)}
                       </pre>
                       <Button 
                         variant="ghost" 
                         size="sm" 
-                        className="absolute top-2 right-2"
+                        className="absolute top-2 right-2 h-6 w-6 p-0"
                         onClick={() => copyToClipboard(JSON.stringify(response, null, 2))}
                       >
-                        <Copy className="h-4 w-4" />
+                        <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                   ) : (
-                    <div className="text-gray-500 p-8 text-center border rounded-md bg-gray-50">
-                      <p className="mb-2">Click "Try It!" to send a request</p>
-                      <p className="text-sm">Or choose an example from the dropdown</p>
+                    <div className="text-gray-500 p-6 text-center border rounded-md bg-gray-50 text-xs">
+                      <p className="mb-1">Click "Try It!" to send a request</p>
+                      <p className="text-xs">Or choose an example from the dropdown</p>
                     </div>
                   )}
                 </CardContent>
@@ -561,16 +557,16 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         </div>
         
         <div className="col-span-1">
-          <Card className="bg-gray-900 text-gray-200 border-gray-800">
-            <CardHeader>
-              <CardTitle className="text-gray-200">Language</CardTitle>
+          <Card className="bg-gray-900 text-gray-200 border-gray-800 shadow-sm mb-4">
+            <CardHeader className="py-3 px-4">
+              <CardTitle className="text-gray-200 text-base">Language</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-5 gap-2">
+            <CardContent className="py-3 px-4">
+              <div className="grid grid-cols-5 gap-1">
                 <Button 
                   variant={selectedLanguage === "shell" ? "default" : "outline"}
                   size="sm" 
-                  className={`justify-center ${selectedLanguage !== "shell" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
+                  className={`justify-center h-7 text-xs ${selectedLanguage !== "shell" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
                   onClick={() => setSelectedLanguage("shell")}
                 >
                   Shell
@@ -578,7 +574,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                 <Button 
                   variant={selectedLanguage === "node" ? "default" : "outline"}  
                   size="sm"
-                  className={`justify-center ${selectedLanguage !== "node" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
+                  className={`justify-center h-7 text-xs ${selectedLanguage !== "node" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
                   onClick={() => setSelectedLanguage("node")}
                 >
                   Node
@@ -586,7 +582,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                 <Button 
                   variant={selectedLanguage === "ruby" ? "default" : "outline"}  
                   size="sm"
-                  className={`justify-center ${selectedLanguage !== "ruby" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
+                  className={`justify-center h-7 text-xs ${selectedLanguage !== "ruby" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
                   onClick={() => setSelectedLanguage("ruby")}
                 >
                   Ruby
@@ -594,7 +590,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                 <Button 
                   variant={selectedLanguage === "php" ? "default" : "outline"}  
                   size="sm"
-                  className={`justify-center ${selectedLanguage !== "php" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
+                  className={`justify-center h-7 text-xs ${selectedLanguage !== "php" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
                   onClick={() => setSelectedLanguage("php")}
                 >
                   PHP
@@ -602,7 +598,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                 <Button 
                   variant={selectedLanguage === "python" ? "default" : "outline"}  
                   size="sm"
-                  className={`justify-center ${selectedLanguage !== "python" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
+                  className={`justify-center h-7 text-xs ${selectedLanguage !== "python" ? "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700" : ""}`}
                   onClick={() => setSelectedLanguage("python")}
                 >
                   Python
@@ -611,28 +607,28 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
             </CardContent>
           </Card>
           
-          <Card className="mt-6 bg-gray-900 text-gray-200 border-gray-800">
-            <CardHeader>
-              <CardTitle className="text-gray-200">Credentials</CardTitle>
+          <Card className="bg-gray-900 text-gray-200 border-gray-800 shadow-sm mb-4">
+            <CardHeader className="py-3 px-4">
+              <CardTitle className="text-gray-200 text-base">Credentials</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
+            <CardContent className="py-3 px-4">
+              <div className="space-y-3">
                 <div>
-                  <label className="text-sm font-medium block mb-1 text-gray-300">API Key ID</label>
+                  <label className="text-xs font-medium block mb-1 text-gray-300">API Key ID</label>
                   <Input 
                     type="text" 
                     placeholder="APCA-API-KEY-ID" 
-                    className="bg-gray-800 border-gray-700 text-gray-200 focus:ring-blue-500"
+                    className="bg-gray-800 h-8 text-xs border-gray-700 text-gray-200 focus:ring-blue-500"
                     value={apiKeyId}
                     onChange={(e) => setApiKeyId(e.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium block mb-1 text-gray-300">API Secret Key</label>
+                  <label className="text-xs font-medium block mb-1 text-gray-300">API Secret Key</label>
                   <Input 
                     type="password" 
                     placeholder="APCA-API-SECRET-KEY" 
-                    className="bg-gray-800 border-gray-700 text-gray-200 focus:ring-blue-500"
+                    className="bg-gray-800 h-8 text-xs border-gray-700 text-gray-200 focus:ring-blue-500"
                     value={apiSecretKey}
                     onChange={(e) => setApiSecretKey(e.target.value)}
                   />
@@ -641,16 +637,14 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
             </CardContent>
           </Card>
           
-          <Card className="mt-6 bg-gray-900 text-gray-200 border-gray-800">
-            <CardHeader>
-              <CardTitle className="text-gray-200">URL</CardTitle>
+          <Card className="bg-gray-900 text-gray-200 border-gray-800 shadow-sm">
+            <CardHeader className="py-3 px-4">
+              <CardTitle className="text-gray-200 text-base">URL</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium text-gray-400">Base URL</span>
-                  <span className="text-sm font-mono text-gray-300">https://paper-api.alpaca.markets</span>
-                </div>
+            <CardContent className="py-2 px-4">
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-medium text-gray-400">Base URL</span>
+                <span className="text-xs font-mono text-gray-300 break-all">https://paper-api.alpaca.markets</span>
               </div>
             </CardContent>
           </Card>
