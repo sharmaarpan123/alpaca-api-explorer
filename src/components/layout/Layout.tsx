@@ -28,14 +28,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }
 
   return (
-    <div className="api-explorer-layout">
-      <div className="api-explorer-header">
-        <Header toggleSidebar={toggleSidebar} />
+    <div className="flex flex-col h-screen">
+      <Header toggleSidebar={toggleSidebar} />
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar isOpen={sidebarOpen} />
+        <main className="flex-1 overflow-y-auto bg-gray-50 p-0">
+          {children}
+        </main>
       </div>
-      <Sidebar isOpen={sidebarOpen} />
-      <main className="api-explorer-content">
-        {children}
-      </main>
     </div>
   );
 };

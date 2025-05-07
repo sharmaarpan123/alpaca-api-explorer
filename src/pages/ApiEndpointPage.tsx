@@ -44,14 +44,38 @@ const API_ENDPOINTS = {
     method: 'GET',
     path: '/v2/assets',
     description: 'Get a list of all assets',
-    requiresAuth: true
+    requiresAuth: true,
+    queryParams: {
+      status: {
+        type: 'string',
+        description: 'e.g. "active". By default, all statuses are included.'
+      },
+      asset_class: {
+        type: 'string',
+        description: 'Defaults to us_equity.'
+      },
+      exchange: {
+        type: 'string',
+        description: 'Optional AMEX, ARCA, BATS, NYSE, NASDAQ, NYSEARCA or OTC'
+      },
+      attributes: {
+        type: 'array of strings',
+        description: 'Comma separated values to query for more than one attribute.'
+      }
+    }
   },
   'assets/get-asset': {
     title: 'Get Asset',
     method: 'GET',
     path: '/v2/assets/{symbol}',
     description: 'Get an asset by symbol',
-    requiresAuth: true
+    requiresAuth: true,
+    pathParams: {
+      symbol: {
+        type: 'string',
+        description: 'Asset symbol, e.g., AAPL'
+      }
+    }
   },
   
   // Orders endpoints
@@ -74,21 +98,43 @@ const API_ENDPOINTS = {
     method: 'GET',
     path: '/v2/orders',
     description: 'Get a list of orders',
-    requiresAuth: true
+    requiresAuth: true,
+    queryParams: {
+      status: {
+        type: 'string',
+        description: 'open, closed, or all. Default is open.'
+      },
+      limit: {
+        type: 'integer',
+        description: 'Number of orders to return. Default is 50, max is 500.'
+      }
+    }
   },
   'orders/get-order': {
     title: 'Get Order',
     method: 'GET',
     path: '/v2/orders/{order_id}',
     description: 'Get an order by ID',
-    requiresAuth: true
+    requiresAuth: true,
+    pathParams: {
+      order_id: {
+        type: 'string',
+        description: 'Order ID'
+      }
+    }
   },
   'orders/delete-order': {
     title: 'Cancel Order',
     method: 'DELETE',
     path: '/v2/orders/{order_id}',
     description: 'Cancel an open order',
-    requiresAuth: true
+    requiresAuth: true,
+    pathParams: {
+      order_id: {
+        type: 'string',
+        description: 'Order ID'
+      }
+    }
   }
 };
 
@@ -120,6 +166,8 @@ const ApiEndpointPage: React.FC = () => {
           description={apiData.description}
           requiresAuth={apiData.requiresAuth}
           requestBody={apiData.requestBody}
+          queryParams={apiData.queryParams}
+          pathParams={apiData.pathParams}
         />
       </div>
     </Layout>

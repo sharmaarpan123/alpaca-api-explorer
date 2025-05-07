@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
-import { Menu, User } from 'lucide-react';
+import { Menu, User, Search } from 'lucide-react';
 
 interface HeaderProps {
   toggleSidebar: () => void;
@@ -14,13 +14,13 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white border-b border-gray-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="bg-gray-900 text-white border-b border-gray-800">
+      <div className="max-w-full mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <button
               type="button"
-              className="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-deviden-blue"
+              className="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-300 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
               onClick={toggleSidebar}
             >
               <span className="sr-only">Open sidebar</span>
@@ -33,20 +33,20 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                 src="/logo-placeholder.png"
                 alt="DevideN"
               />
-              <span className="ml-3 text-xl font-semibold text-deviden-darkblue">API Explorer</span>
+              <span className="ml-3 text-xl font-semibold text-white">API Explorer</span>
             </Link>
             
             <div className="hidden md:block ml-10">
               <div className="flex space-x-4">
                 <Link 
                   to="/" 
-                  className="px-3 py-2 rounded-md text-sm font-medium text-deviden-text hover:bg-deviden-lightgray"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800"
                 >
                   Home
                 </Link>
                 <Link 
                   to="/api-reference" 
-                  className="px-3 py-2 rounded-md text-sm font-medium text-deviden-text hover:bg-deviden-lightgray"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800"
                 >
                   API Reference
                 </Link>
@@ -54,23 +54,36 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
             </div>
           </div>
           
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
+            <div className="relative max-w-xs">
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <Search className="h-4 w-4 text-gray-400" />
+                </span>
+                <input
+                  type="text"
+                  className="block w-full rounded-md bg-gray-800 border-gray-700 text-gray-300 pl-10 py-1.5 text-sm placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
+                  placeholder="Search..."
+                />
+              </div>
+            </div>
+            
             <div className="hidden md:block">
               {isAuthenticated ? (
                 <div className="relative">
                   <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-deviden-blue"
+                    className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500"
                   >
                     <span className="sr-only">Open user menu</span>
-                    <div className="h-8 w-8 rounded-full bg-deviden-blue text-white flex items-center justify-center">
+                    <div className="h-8 w-8 rounded-full bg-gray-700 text-white flex items-center justify-center">
                       <User className="h-5 w-5" />
                     </div>
-                    <span className="ml-2 text-gray-700">{user?.name || user?.email}</span>
+                    <span className="ml-2 text-gray-300">{user?.name || user?.email}</span>
                   </button>
                   
                   {isMenuOpen && (
-                    <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
                       <button
                         onClick={() => {
                           logout();
@@ -86,10 +99,10 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
               ) : (
                 <div>
                   <Link to="/login">
-                    <Button variant="outline" className="mr-2">Sign in</Button>
+                    <Button variant="outline" className="mr-2 text-gray-300 border-gray-700 bg-gray-800 hover:bg-gray-700">Sign in</Button>
                   </Link>
                   <Link to="/register">
-                    <Button>Sign up</Button>
+                    <Button className="bg-blue-600 hover:bg-blue-700">Sign up</Button>
                   </Link>
                 </div>
               )}
@@ -101,13 +114,13 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   className="flex items-center p-2"
                 >
-                  <div className="h-8 w-8 rounded-full bg-deviden-blue text-white flex items-center justify-center">
+                  <div className="h-8 w-8 rounded-full bg-gray-700 text-white flex items-center justify-center">
                     <User className="h-5 w-5" />
                   </div>
                 </button>
               ) : (
                 <Link to="/login">
-                  <Button size="sm">Sign in</Button>
+                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Sign in</Button>
                 </Link>
               )}
               

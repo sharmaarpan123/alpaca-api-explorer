@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -19,7 +19,7 @@ interface ApiGroup {
   endpoints: ApiEndpoint[];
 }
 
-// Mock API structure based on typical API explorer
+// Mock API structure based on example API explorer
 const API_STRUCTURE: ApiGroup[] = [
   {
     id: 'auth',
@@ -109,8 +109,9 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
+  const location = useLocation();
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    auth: true, // Auto expand auth section for example
+    assets: true, // Auto expand assets section for example
   });
 
   const toggleGroup = (groupId: string) => {
@@ -120,20 +121,26 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     }));
   };
 
+  const isActive = (category: string, endpoint: string) => {
+    return location.pathname === `/api/${category}/${endpoint}`;
+  };
+
   return (
-    <aside className={cn(
-      "api-explorer-sidebar bg-white border-r border-gray-200 h-full",
-      isOpen ? "open" : ""
-    )}>
-      <nav className="px-4 py-5">
+    <aside 
+      className={cn(
+        "w-72 bg-gray-900 text-gray-200 overflow-y-auto transition-all",
+        isOpen ? "block" : "hidden md:block"
+      )}
+    >
+      <nav className="p-4">
         <div className="mb-8">
-          <div className="text-sm text-gray-500 uppercase font-medium mb-2">API Reference</div>
+          <div className="text-sm text-gray-400 uppercase font-medium px-4 py-2">API Reference</div>
           <div className="space-y-1">
             {API_STRUCTURE.map(group => (
-              <div key={group.id} className="mb-2">
+              <div key={group.id} className="mb-1">
                 <button
                   onClick={() => toggleGroup(group.id)}
-                  className="w-full flex justify-between items-center px-2 py-2 text-left text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 hover:text-gray-900"
+                  className="w-full flex justify-between items-center px-4 py-2 text-left text-sm font-medium text-gray-300 rounded-md hover:bg-gray-800"
                 >
                   <span>{group.name}</span>
                   {expandedGroups[group.id] ? (
@@ -144,21 +151,24 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                 </button>
                 
                 {expandedGroups[group.id] && (
-                  <div className="ml-4 mt-1 space-y-1">
+                  <div className="mt-1 space-y-1">
                     {group.endpoints.map(endpoint => (
                       <Link
                         key={endpoint.id}
                         to={`/api/${group.id}/${endpoint.id}`}
-                        className="block pl-4 pr-2 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md"
+                        className={cn(
+                          "block pl-6 pr-4 py-2 text-sm text-gray-400 hover:bg-gray-800 hover:text-white rounded-md",
+                          isActive(group.id, endpoint.id) && "bg-gray-800 text-white"
+                        )}
                       >
                         <div className="flex items-center">
                           <span className={cn(
-                            "inline-block w-16 text-xs font-medium rounded px-2 py-1 mr-2",
-                            endpoint.method === 'GET' && 'bg-blue-100 text-blue-800',
-                            endpoint.method === 'POST' && 'bg-green-100 text-green-800',
-                            endpoint.method === 'PUT' && 'bg-yellow-100 text-yellow-800',
-                            endpoint.method === 'PATCH' && 'bg-purple-100 text-purple-800',
-                            endpoint.method === 'DELETE' && 'bg-red-100 text-red-800',
+                            "inline-block w-16 text-xs font-medium rounded px-2 py-1 mr-2 text-center",
+                            endpoint.method === 'GET' && 'bg-blue-900 text-blue-300',
+                            endpoint.method === 'POST' && 'bg-green-900 text-green-300',
+                            endpoint.method === 'PUT' && 'bg-yellow-900 text-yellow-300',
+                            endpoint.method === 'PATCH' && 'bg-purple-900 text-purple-300',
+                            endpoint.method === 'DELETE' && 'bg-red-900 text-red-300',
                           )}
                           >
                             {endpoint.method}
