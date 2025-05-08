@@ -6,7 +6,7 @@ import Layout from '@/components/layout/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Index: React.FC = () => {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <Layout>
@@ -23,16 +23,14 @@ const Index: React.FC = () => {
               <Link to="/login">
                 <Button className="mr-4">Sign In</Button>
               </Link>
-              <Link to="/register">
-                <Button variant="outline">Create Account</Button>
-              </Link>
+              
             </div>
           )}
         </section>
         
         {isAuthenticated && (
           <section className="bg-white shadow-md rounded-lg p-6 mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Welcome back, {user?.name || user?.email}!</h2>
+            <h2 className="text-2xl font-semibold mb-4">Welcome back, </h2>
             <p className="text-gray-600 mb-4">
               You're now logged in and can access all API endpoints. Your session will expire in 4 days, but we'll automatically refresh it for you.
             </p>
@@ -42,15 +40,7 @@ const Index: React.FC = () => {
           </section>
         )}
         
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-white shadow-md rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-2">Authentication</h3>
-            <p className="text-gray-600 mb-4">Secure your requests with JWT authentication and token refresh.</p>
-            <Link to="/api/auth/login" className="text-deviden-blue hover:underline text-sm">
-              View Auth Endpoints →
-            </Link>
-          </div>
-          
+        <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-white shadow-md rounded-lg p-6">
             <h3 className="text-lg font-semibold mb-2">Assets</h3>
             <p className="text-gray-600 mb-4">Explore and retrieve asset information with full details.</p>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
@@ -43,7 +42,8 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
   pathParams,
   children
 }) => {
-  const { isAuthenticated, token } = useAuth();
+  const { isAuthenticated } = useAuth();
+  const token = localStorage.getItem('token');
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState<any>(null);

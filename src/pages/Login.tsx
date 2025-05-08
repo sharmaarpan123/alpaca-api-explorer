@@ -1,38 +1,69 @@
-
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { useAuth } from '@/contexts/AuthContext';
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { authContextActionsTypeEnum, useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { useApiMutation } from "@/lib/mutations";
+import { checkResponse } from "@/utilities/commonFuncs";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [privateKey, setPrivateKey] = useState("");
+  const { toast } = useToast();
+  const {  authDispatch } = useAuth()
   const navigate = useNavigate();
+  const {
+    mutate: login,
+    isPending,
+   
+  } = useApiMutation("/api/v1/user/login", {
+    onSuccess: (data: any) => {
+      const success = checkResponse({
+        res: data,
+      
+      });
+      if (success) {
+        localStorage.setItem("accountId", data?.data?.data?.accountId);
+        localStorage.setItem("token", data?.data?.data?.accessToken);
+        localStorage.setItem("refreshToken", data?.data?.data?.refreshToken);
+        authDispatch({
+          type: authContextActionsTypeEnum.LOGIN,
+          payload: {
+            token: data?.data?.data?.accessToken,
+            accountId: data?.data?.data?.accountId,
+          },
+        });
+        navigate("/");
+      } else {
+        toast({
+          title: "Error",
+          description: data?.data?.data,
+          variant: "destructive",
+        });
+      }
+    }, 
+  } , {
+    headers: {
+      "privateApiKey": privateKey,
+    }
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const success = await login({ email, password });
-      if (success) {
-        navigate('/');
-      } else {
-        setError('Invalid login credentials');
-      }
-    } catch (err) {
-      setError('An error occurred during login');
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
+    login(
+     { email, password  }  
+    );
   };
 
   return (
@@ -40,21 +71,23 @@ const Login: React.FC = () => {
       <Card className="w-full max-w-md">
         <CardHeader>
           <div className="flex justify-center mb-4">
-            <img src="/logo-placeholder.png" alt="Logo" className="h-12 w-auto" />
+            <img
+              src="/deviden-logo.png"
+              alt="Logo"
+              className="h-12 w-auto"
+            />
           </div>
-          <CardTitle className="text-center text-2xl font-bold">Sign in to your account</CardTitle>
+          <CardTitle className="text-center text-2xl font-bold">
+            Sign in to your account
+          </CardTitle>
           <CardDescription className="text-center">
             Enter your credentials to access the API Explorer
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-                {error}
-              </div>
-            )}
             
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -66,14 +99,9 @@ const Login: React.FC = () => {
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link to="/forgot-password" className="text-xs text-deviden-blue hover:underline">
-                  Forgot password?
-                </Link>
-              </div>
+             
               <Input
                 id="password"
                 type="password"
@@ -83,15 +111,25 @@ const Login: React.FC = () => {
                 required
               />
             </div>
-            
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Signing in...' : 'Sign in'}
+
+            <div className="space-y-2">
+             <Input
+               type="text"
+               placeholder="Enter your private key"
+               value={privateKey}
+               onChange={(e) => setPrivateKey(e.target.value)}
+               required
+             />
+           </div>
+
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? "Signing in..." : "Sign in"}
             </Button>
           </form>
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
+            Don't have an account?{" "}
             <Link to="/register" className="text-deviden-blue hover:underline">
               Sign up
             </Link>

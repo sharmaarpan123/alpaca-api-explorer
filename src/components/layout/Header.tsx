@@ -10,7 +10,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
-  const { isAuthenticated, logout, user } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
             <Link to="/" className="flex-shrink-0 flex items-center">
               <img
                 className="h-8 w-auto"
-                src="/logo-placeholder.png"
+                src="/deviden-logo.png"
                 alt="DevideN"
               />
               <span className="ml-3 text-xl font-semibold text-white">API Explorer</span>
@@ -55,18 +55,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
           </div>
           
           <div className="flex items-center space-x-4">
-            <div className="relative max-w-xs">
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                  <Search className="h-4 w-4 text-gray-400" />
-                </span>
-                <input
-                  type="text"
-                  className="block w-full rounded-md bg-gray-800 border-gray-700 text-gray-300 pl-10 py-1.5 text-sm placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
-                  placeholder="Search..."
-                />
-              </div>
-            </div>
+            
             
             <div className="hidden md:block">
               {isAuthenticated ? (
@@ -79,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                     <div className="h-8 w-8 rounded-full bg-gray-700 text-white flex items-center justify-center">
                       <User className="h-5 w-5" />
                     </div>
-                    <span className="ml-2 text-gray-300">{user?.name || user?.email}</span>
+                    {/* <span className="ml-2 text-gray-300">{user?.name || user?.email}</span> */}
                   </button>
                   
                   {isMenuOpen && (
@@ -100,9 +89,6 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                 <div>
                   <Link to="/login">
                     <Button variant="outline" className="mr-2 text-gray-300 border-gray-700 bg-gray-800 hover:bg-gray-700">Sign in</Button>
-                  </Link>
-                  <Link to="/register">
-                    <Button className="bg-blue-600 hover:bg-blue-700">Sign up</Button>
                   </Link>
                 </div>
               )}
