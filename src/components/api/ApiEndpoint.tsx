@@ -8,6 +8,7 @@ import CredentialsCard from './CredentialsCard';
 import BaseUrlCard from './BaseUrlCard';
 import ApiEndpointTabs from './ApiEndpointTabs';
 import { constructEndpointUrl } from './utils/urlUtils';
+import CodeSnippetGenerator from './CodeSnippetGenerator';
 
 interface ParamField {
   type: string;
@@ -112,6 +113,12 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     }
   };
 
+  const headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    ...(requiresAuth ? {'Authorization': `Bearer ${token || apiKeyId || '[YOUR_TOKEN]'}`} : {})
+  };
+
   return (
     <div className="mb-4">
       <EndpointHeader 
@@ -159,6 +166,17 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
             />
             
             <BaseUrlCard />
+
+            <div className="bg-gray-900 text-gray-200 border-gray-800 shadow-sm rounded-md p-2">
+              <CodeSnippetGenerator
+                method={method}
+                url={endpointUrl}
+                headers={headers}
+                requestPayload={['POST', 'PUT', 'PATCH'].includes(method) ? requestPayload : undefined}
+                selectedLanguage={selectedLanguage}
+                onLanguageChange={setSelectedLanguage}
+              />
+            </div>
           </div>
         </div>
       </div>
