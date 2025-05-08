@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 
 interface ResponseKey {
   status: string;
@@ -14,11 +13,11 @@ interface ResponseKeysDisplayProps {
 
 const ResponseKeysDisplay: React.FC<ResponseKeysDisplayProps> = ({ responseKeys }) => {
   return (
-    <Card className="shadow-sm border-gray-200">
+    <div className="bg-white border border-gray-200 shadow-sm rounded-md">
       <div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
         <h3 className="font-medium text-sm">RESPONSES</h3>
       </div>
-      <CardContent className="p-0">
+      <div className="p-0">
         <div className="divide-y divide-gray-200">
           {responseKeys.map((key, index) => (
             <div key={index} className="p-3 hover:bg-gray-50">
@@ -39,8 +38,8 @@ const ResponseKeysDisplay: React.FC<ResponseKeysDisplayProps> = ({ responseKeys 
             </div>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

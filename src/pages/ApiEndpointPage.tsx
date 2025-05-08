@@ -14,7 +14,7 @@ const ApiEndpointPage: React.FC = () => {
   if (!apiData) {
     return (
       <Layout>
-        <div className="container mx-auto py-2">
+        <div className="container mx-auto py-1">
           <EndpointNotFound />
         </div>
       </Layout>
@@ -23,7 +23,7 @@ const ApiEndpointPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto py-2">
+      <div className="container mx-auto py-1">
         <ApiEndpoint
           title={apiData.title}
           method={apiData.method as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'}

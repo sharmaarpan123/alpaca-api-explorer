@@ -155,38 +155,45 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         {/* Left Side - Request Details and Response Keys */}
         <div className="col-span-1">
           <div className="space-y-3">
-            <ApiUrlDisplay url={endpointUrl} />
-            
-            {pathParams && Object.keys(pathParams).length > 0 && (
-              <ParamEditor 
-                title="Path Parameters"
-                params={pathParams}
-                paramValues={paramValues}
-                onParamChange={handleParamChange}
-              />
-            )}
-            
-            {queryParams && Object.keys(queryParams).length > 0 && (
-              <ParamEditor 
-                title="Query Parameters"
-                params={queryParams}
-                paramValues={paramValues}
-                onParamChange={handleParamChange}
-              />
-            )}
-            
-            <HeadersDisplay 
-              requiresAuth={requiresAuth} 
-              token={token} 
-              apiKeyId={apiKeyId} 
-            />
-            
-            {(method === 'POST' || method === 'PUT' || method === 'PATCH') && requestBody && (
-              <RequestBodyEditor
-                requestPayload={requestPayload}
-                setRequestPayload={setRequestPayload}
-              />
-            )}
+            <div className="bg-white border border-gray-200 shadow-sm rounded-md">
+              <div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
+                <h3 className="font-medium text-sm">REQUEST DETAILS</h3>
+              </div>
+              <div className="p-3 space-y-3">
+                <ApiUrlDisplay url={endpointUrl} />
+                
+                {pathParams && Object.keys(pathParams).length > 0 && (
+                  <ParamEditor 
+                    title="Path Parameters"
+                    params={pathParams}
+                    paramValues={paramValues}
+                    onParamChange={handleParamChange}
+                  />
+                )}
+                
+                {queryParams && Object.keys(queryParams).length > 0 && (
+                  <ParamEditor 
+                    title="Query Parameters"
+                    params={queryParams}
+                    paramValues={paramValues}
+                    onParamChange={handleParamChange}
+                  />
+                )}
+                
+                <HeadersDisplay 
+                  requiresAuth={requiresAuth} 
+                  token={token} 
+                  apiKeyId={apiKeyId} 
+                />
+                
+                {(method === 'POST' || method === 'PUT' || method === 'PATCH') && requestBody && (
+                  <RequestBodyEditor
+                    requestPayload={requestPayload}
+                    setRequestPayload={setRequestPayload}
+                  />
+                )}
+              </div>
+            </div>
             
             <ResponseKeysDisplay responseKeys={getResponseKeys()} />
           </div>
@@ -213,6 +220,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                 selectedLanguage={selectedLanguage}
                 onLanguageChange={setSelectedLanguage}
                 limitedLanguages={true}
+                allowedLanguages={['shell', 'python', 'node', 'php', 'ruby']}
               />
               
               <div className="p-2 flex justify-center border-t border-gray-800">
