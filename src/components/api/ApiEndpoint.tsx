@@ -6,7 +6,6 @@ import { ProgrammingLanguage } from './CodeSnippet';
 import EndpointHeader from './EndpointHeader';
 import CredentialsCard from './CredentialsCard';
 import BaseUrlCard from './BaseUrlCard';
-import LanguagePickerCard from './LanguagePickerCard';
 import ApiEndpointTabs from './ApiEndpointTabs';
 import { constructEndpointUrl } from './utils/urlUtils';
 
@@ -105,7 +104,6 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
       };
 
       setResponse(mockResponse);
-      setActiveTab('response');
     } catch (err) {
       console.error('API call error:', err);
       setError('An error occurred while making the API request');
@@ -115,7 +113,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
   };
 
   return (
-    <div className="mb-6">
+    <div className="mb-4">
       <EndpointHeader 
         title={title}
         method={method}
@@ -123,8 +121,8 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         description={description}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="col-span-1 lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+        <div className="col-span-1">
           <ApiEndpointTabs 
             activeTab={activeTab}
             setActiveTab={setActiveTab}
@@ -152,19 +150,16 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         </div>
         
         <div className="col-span-1">
-          <LanguagePickerCard 
-            selectedLanguage={selectedLanguage} 
-            onLanguageSelect={setSelectedLanguage} 
-          />
-          
-          <CredentialsCard
-            apiKeyId={apiKeyId}
-            apiSecretKey={apiSecretKey}
-            setApiKeyId={setApiKeyId}
-            setApiSecretKey={setApiSecretKey}
-          />
-          
-          <BaseUrlCard />
+          <div className="space-y-3">
+            <CredentialsCard
+              apiKeyId={apiKeyId}
+              apiSecretKey={apiSecretKey}
+              setApiKeyId={setApiKeyId}
+              setApiSecretKey={setApiSecretKey}
+            />
+            
+            <BaseUrlCard />
+          </div>
         </div>
       </div>
     </div>

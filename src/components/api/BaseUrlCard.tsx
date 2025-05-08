@@ -11,7 +11,7 @@ const BaseUrlCard: React.FC = () => {
       <CardContent className="py-2 px-4">
         <div className="flex items-center space-x-2">
           <span className="text-xs font-medium text-gray-400">Base URL</span>
-          <span className="text-xs font-mono text-gray-300 break-all">https://paper-api.alpaca.markets</span>
+          <span className="text-xs font-mono text-gray-300 break-all">https://api.deviden.com</span>
         </div>
       </CardContent>
     </Card>

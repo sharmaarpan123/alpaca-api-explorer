@@ -3,12 +3,10 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import DocumentationContent from './DocumentationContent';
-import ResponseDisplay from './ResponseDisplay';
 import ApiUrlDisplay from './ApiUrlDisplay';
 import HeadersDisplay from './HeadersDisplay';
 import ParamEditor from './ParamEditor';
 import RequestBodyEditor from './RequestBodyEditor';
-import CodeSnippetGenerator from './CodeSnippetGenerator';
 import { Button } from '@/components/ui/button';
 import { ProgrammingLanguage } from './CodeSnippet';
 
@@ -76,18 +74,17 @@ const ApiEndpointTabs: React.FC<ApiEndpointTabsProps> = ({
 
   return (
     <Tabs defaultValue="documentation" value={activeTab} onValueChange={setActiveTab} className="w-full">
-      <TabsList className="mb-3 w-full justify-start h-9 p-1">
-        <TabsTrigger value="documentation" className="text-xs h-7">Documentation</TabsTrigger>
-        <TabsTrigger value="request" className="text-xs h-7">Request</TabsTrigger>
-        <TabsTrigger value="response" className="text-xs h-7">Response</TabsTrigger>
+      <TabsList className="mb-3 w-full justify-start h-8 p-1">
+        <TabsTrigger value="documentation" className="text-xs h-6">Documentation</TabsTrigger>
+        <TabsTrigger value="request" className="text-xs h-6">Request</TabsTrigger>
       </TabsList>
       
       <TabsContent value="documentation" className="pt-1">
         <Card className="shadow-sm">
-          <CardHeader className="py-3 px-4">
+          <CardHeader className="py-2 px-3">
             <CardTitle className="text-base">API Details</CardTitle>
           </CardHeader>
-          <CardContent className="py-3 px-4 text-sm">
+          <CardContent className="py-2 px-3 text-sm">
             <DocumentationContent
               requiresAuth={requiresAuth}
               pathParams={pathParams}
@@ -102,10 +99,10 @@ const ApiEndpointTabs: React.FC<ApiEndpointTabsProps> = ({
       
       <TabsContent value="request" className="pt-1">
         <Card className="shadow-sm">
-          <CardHeader className="py-3 px-4">
+          <CardHeader className="py-2 px-3">
             <CardTitle className="text-base">Request Details</CardTitle>
           </CardHeader>
-          <CardContent className="py-3 px-4 text-sm space-y-4">
+          <CardContent className="py-2 px-3 text-sm space-y-3">
             <ApiUrlDisplay url={endpointUrl} />
             
             {pathParams && Object.keys(pathParams).length > 0 && (
@@ -139,43 +136,9 @@ const ApiEndpointTabs: React.FC<ApiEndpointTabsProps> = ({
               />
             )}
             
-            <CodeSnippetGenerator
-              method={method}
-              url={endpointUrl}
-              headers={headers}
-              requestPayload={requestPayload}
-              selectedLanguage={selectedLanguage}
-              onLanguageChange={onLanguageChange}
-            />
-            
-            <Button onClick={handleApiCall} disabled={isLoading} className="w-full h-9 text-sm">
+            <Button onClick={handleApiCall} disabled={isLoading} className="w-full h-8 text-sm">
               {isLoading ? 'Sending...' : 'Try It!'}
             </Button>
-          </CardContent>
-        </Card>
-      </TabsContent>
-      
-      <TabsContent value="response" className="pt-1">
-        <Card className="shadow-sm">
-          <CardHeader className="py-3 px-4">
-            <CardTitle className="flex justify-between items-center text-base">
-              <span>Response</span>
-              {response && (
-                <div className="flex items-center">
-                  <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded mr-2">
-                    200
-                  </span>
-                  <span className="text-xs text-gray-500">application/json</span>
-                </div>
-              )}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="py-3 px-4">
-            <ResponseDisplay
-              isLoading={isLoading}
-              error={error}
-              response={response}
-            />
           </CardContent>
         </Card>
       </TabsContent>
