@@ -13,6 +13,7 @@ import { ProgrammingLanguage } from './CodeSnippet';
 interface LanguageSelectorProps {
   selectedLanguage: ProgrammingLanguage;
   onLanguageChange: (language: ProgrammingLanguage) => void;
+  limitedLanguages?: boolean;
 }
 
 interface LanguageOption {
@@ -23,38 +24,30 @@ interface LanguageOption {
 
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   selectedLanguage,
-  onLanguageChange
+  onLanguageChange,
+  limitedLanguages = false
 }) => {
   // Define language options with their display names and icons
-  const languages: LanguageOption[] = [
+  const allLanguages: LanguageOption[] = [
     { id: 'shell', name: 'Shell' },
     { id: 'node', name: 'Node' },
     { id: 'ruby', name: 'Ruby' },
     { id: 'php', name: 'PHP' },
-    { id: 'r', name: 'R' },
-    { id: 'c', name: 'C' },
-    { id: 'csharp', name: 'C#' },
-    { id: 'cpp', name: 'C++' },
-    { id: 'clojure', name: 'Clojure' },
-    { id: 'go', name: 'Go' },
-    { id: 'http', name: 'HTTP' },
-    { id: 'java', name: 'Java' },
-    { id: 'javascript', name: 'JavaScript' },
-    { id: 'kotlin', name: 'Kotlin' },
-    { id: 'objectivec', name: 'Objective-C' },
-    { id: 'ocaml', name: 'OCaml' },
-    { id: 'powershell', name: 'PowerShell' },
     { id: 'python', name: 'Python' },
-    { id: 'swift', name: 'Swift' },
   ];
   
+  // If limitedLanguages is true, only include the specified languages
+  const languages = limitedLanguages 
+    ? allLanguages.filter(lang => ['shell', 'node', 'ruby', 'php', 'python'].includes(lang.id))
+    : allLanguages;
+  
   // Get currently selected language
-  const selectedLangOption = languages.find(lang => lang.id === selectedLanguage);
+  const selectedLangOption = languages.find(lang => lang.id === selectedLanguage) || languages[0];
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 w-24 justify-between bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700">
+        <Button variant="outline" size="sm" className="h-7 w-24 justify-between bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700">
           {selectedLangOption?.name || 'Shell'}
           <ChevronDown className="h-3 w-3 ml-1" />
         </Button>

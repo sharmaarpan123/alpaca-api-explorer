@@ -6,9 +6,15 @@ import { ProgrammingLanguage } from './CodeSnippet';
 import EndpointHeader from './EndpointHeader';
 import CredentialsCard from './CredentialsCard';
 import BaseUrlCard from './BaseUrlCard';
-import ApiEndpointTabs from './ApiEndpointTabs';
 import { constructEndpointUrl } from './utils/urlUtils';
 import CodeSnippetGenerator from './CodeSnippetGenerator';
+import ResponseDisplay from './ResponseDisplay';
+import ParamEditor from './ParamEditor';
+import RequestBodyEditor from './RequestBodyEditor';
+import ApiUrlDisplay from './ApiUrlDisplay';
+import HeadersDisplay from './HeadersDisplay';
+import { Button } from '@/components/ui/button';
+import ResponseKeysDisplay from './ResponseKeysDisplay';
 
 interface ParamField {
   type: string;
@@ -47,7 +53,6 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<string>('documentation');
   const [requestPayload, setRequestPayload] = useState<string>(
     requestBody ? JSON.stringify(requestBody, null, 2) : '{}'
   );
@@ -55,7 +60,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
   const [selectedLanguage, setSelectedLanguage] = useState<ProgrammingLanguage>('shell');
   const [apiKeyId, setApiKeyId] = useState<string>('');
   const [apiSecretKey, setApiSecretKey] = useState<string>('');
-
+  
   const handleParamChange = (key: string, value: string) => {
     setParamValues(prev => ({ ...prev, [key]: value }));
   };
@@ -119,6 +124,24 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     ...(requiresAuth ? {'Authorization': `Bearer ${token || apiKeyId || '[YOUR_TOKEN]'}`} : {})
   };
 
+  const getResponseKeys = () => {
+    if (endpoint.includes('assets')) {
+      return [
+        { status: '200', description: 'An Asset object', example: { id: 'AAPL', name: 'Apple Inc', exchange: 'NASDAQ' } },
+        { status: '404', description: 'Not Found', example: null }
+      ];
+    } else if (endpoint.includes('orders')) {
+      return [
+        { status: '200', description: 'Order details', example: { id: 'ord_123', symbol: 'AAPL', side: 'buy' } },
+        { status: '404', description: 'Not Found', example: null }
+      ];
+    }
+    return [
+      { status: '200', description: 'Success', example: { success: true } },
+      { status: '404', description: 'Not Found', example: null }
+    ];
+  };
+
   return (
     <div className="mb-4">
       <EndpointHeader 
@@ -129,33 +152,47 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+        {/* Left Side - Request Details and Response Keys */}
         <div className="col-span-1">
-          <ApiEndpointTabs 
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            endpointUrl={endpointUrl}
-            method={method}
-            requiresAuth={requiresAuth}
-            token={token}
-            apiKeyId={apiKeyId}
-            requestPayload={requestPayload}
-            setRequestPayload={setRequestPayload}
-            pathParams={pathParams}
-            queryParams={queryParams}
-            requestBody={requestBody}
-            paramValues={paramValues}
-            handleParamChange={handleParamChange}
-            selectedLanguage={selectedLanguage}
-            onLanguageChange={setSelectedLanguage}
-            isLoading={isLoading}
-            error={error}
-            response={response}
-            handleApiCall={handleApiCall}
-          >
-            {children}
-          </ApiEndpointTabs>
+          <div className="space-y-3">
+            <ApiUrlDisplay url={endpointUrl} />
+            
+            {pathParams && Object.keys(pathParams).length > 0 && (
+              <ParamEditor 
+                title="Path Parameters"
+                params={pathParams}
+                paramValues={paramValues}
+                onParamChange={handleParamChange}
+              />
+            )}
+            
+            {queryParams && Object.keys(queryParams).length > 0 && (
+              <ParamEditor 
+                title="Query Parameters"
+                params={queryParams}
+                paramValues={paramValues}
+                onParamChange={handleParamChange}
+              />
+            )}
+            
+            <HeadersDisplay 
+              requiresAuth={requiresAuth} 
+              token={token} 
+              apiKeyId={apiKeyId} 
+            />
+            
+            {(method === 'POST' || method === 'PUT' || method === 'PATCH') && requestBody && (
+              <RequestBodyEditor
+                requestPayload={requestPayload}
+                setRequestPayload={setRequestPayload}
+              />
+            )}
+            
+            <ResponseKeysDisplay responseKeys={getResponseKeys()} />
+          </div>
         </div>
         
+        {/* Right Side - Code Snippet and Response */}
         <div className="col-span-1">
           <div className="space-y-3">
             <CredentialsCard
@@ -165,9 +202,9 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
               setApiSecretKey={setApiSecretKey}
             />
             
-            <BaseUrlCard />
+            <BaseUrlCard baseUrl="https://api.deviden.com" />
 
-            <div className="bg-gray-900 text-gray-200 border-gray-800 shadow-sm rounded-md p-2">
+            <div className="bg-gray-900 text-gray-200 border-gray-800 shadow-sm rounded-md">
               <CodeSnippetGenerator
                 method={method}
                 url={endpointUrl}
@@ -175,6 +212,31 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                 requestPayload={['POST', 'PUT', 'PATCH'].includes(method) ? requestPayload : undefined}
                 selectedLanguage={selectedLanguage}
                 onLanguageChange={setSelectedLanguage}
+                limitedLanguages={true}
+              />
+              
+              <div className="p-2 flex justify-center border-t border-gray-800">
+                <Button 
+                  onClick={handleApiCall} 
+                  disabled={isLoading} 
+                  className="w-full h-8 text-sm"
+                >
+                  {isLoading ? 'Sending...' : 'Try It!'}
+                </Button>
+              </div>
+            </div>
+            
+            <div className="bg-gray-900 border-gray-800 rounded-md p-2">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-gray-200 font-semibold text-sm">RESPONSE</h3>
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs text-gray-400">EXAMPLES</span>
+                </div>
+              </div>
+              <ResponseDisplay 
+                isLoading={isLoading}
+                error={error}
+                response={response}
               />
             </div>
           </div>

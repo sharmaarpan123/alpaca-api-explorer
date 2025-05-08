@@ -27,15 +27,15 @@ const ResponseDisplay: React.FC<ResponseDisplayProps> = ({
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center p-6">
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+      <div className="flex justify-center items-center p-6 text-gray-200">
+        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-md text-xs">
+      <div className="bg-red-900/20 border border-red-700/30 text-red-400 p-3 rounded-md text-xs">
         <p className="font-medium">Error</p>
         <p>{error}</p>
       </div>
@@ -45,13 +45,13 @@ const ResponseDisplay: React.FC<ResponseDisplayProps> = ({
   if (response) {
     return (
       <div className="relative">
-        <pre className="bg-gray-50 p-3 rounded-md text-xs overflow-auto max-h-96">
+        <pre className="bg-gray-800 p-3 rounded-md text-xs overflow-auto max-h-96 text-gray-300">
           {JSON.stringify(response, null, 2)}
         </pre>
         <Button 
           variant="ghost" 
           size="sm" 
-          className="absolute top-2 right-2 h-6 w-6 p-0"
+          className="absolute top-2 right-2 h-6 w-6 p-0 bg-gray-700 hover:bg-gray-600 text-gray-300"
           onClick={() => copyToClipboard(JSON.stringify(response, null, 2))}
         >
           <Copy className="h-3 w-3" />
@@ -61,9 +61,18 @@ const ResponseDisplay: React.FC<ResponseDisplayProps> = ({
   }
 
   return (
-    <div className="text-gray-500 p-6 text-center border rounded-md bg-gray-50 text-xs">
-      <p className="mb-1">Click "Try It!" to send a request</p>
-      <p className="text-xs">Or choose an example from the dropdown</p>
+    <div className="text-gray-400 p-6 text-center bg-gray-800/50 rounded-md text-xs">
+      <p>Click "Try It!" to start a request and see the response here!</p>
+      <p className="text-xs mt-1">Or choose an example.</p>
+      <div className="mt-3 text-center">
+        <div className="inline-block bg-gray-800 text-gray-400 px-2 py-1 rounded text-xs">application/json</div>
+        <div className="mt-1">
+          <span className="inline-flex items-center bg-green-800/20 text-green-400 px-2 py-0.5 rounded text-xs font-medium">
+            <span className="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
+            200
+          </span>
+        </div>
+      </div>
     </div>
   );
 };

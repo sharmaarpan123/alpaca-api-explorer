@@ -2,16 +2,22 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const BaseUrlCard: React.FC = () => {
+interface BaseUrlCardProps {
+  baseUrl?: string;
+}
+
+const BaseUrlCard: React.FC<BaseUrlCardProps> = ({ baseUrl = "https://api.deviden.com" }) => {
   return (
     <Card className="bg-gray-900 text-gray-200 border-gray-800 shadow-sm">
-      <CardHeader className="py-3 px-4">
-        <CardTitle className="text-gray-200 text-base">URL</CardTitle>
+      <CardHeader className="py-2 px-3">
+        <CardTitle className="text-gray-200 text-sm">URL</CardTitle>
       </CardHeader>
-      <CardContent className="py-2 px-4">
-        <div className="flex items-center space-x-2">
-          <span className="text-xs font-medium text-gray-400">Base URL</span>
-          <span className="text-xs font-mono text-gray-300 break-all">https://api.deviden.com</span>
+      <CardContent className="py-2 px-3">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-gray-400">Base URL</span>
+            <span className="text-xs text-gray-300 font-mono overflow-hidden overflow-ellipsis">{baseUrl}</span>
+          </div>
         </div>
       </CardContent>
     </Card>

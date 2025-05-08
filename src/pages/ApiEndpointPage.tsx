@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import ApiEndpoint from '@/components/api/ApiEndpoint';
 import EndpointNotFound from '@/components/api/EndpointNotFound';
-import { API_ENDPOINTS, ApiEndpointData } from '@/data/apiEndpoints';
+import { API_ENDPOINTS } from '@/data/apiEndpoints';
 
 const ApiEndpointPage: React.FC = () => {
   const { category, endpoint } = useParams<{ category: string; endpoint: string }>();

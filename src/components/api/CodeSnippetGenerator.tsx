@@ -10,6 +10,7 @@ interface CodeSnippetGeneratorProps {
   requestPayload?: string;
   selectedLanguage: ProgrammingLanguage;
   onLanguageChange: (language: ProgrammingLanguage) => void;
+  limitedLanguages?: boolean;
 }
 
 const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
@@ -18,7 +19,8 @@ const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
   headers,
   requestPayload,
   selectedLanguage,
-  onLanguageChange
+  onLanguageChange,
+  limitedLanguages = false
 }) => {
   const generateCodeSnippet = (language: ProgrammingLanguage): string => {
     switch (language) {
@@ -145,12 +147,13 @@ const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
   };
 
   return (
-    <div>
+    <div className="p-2">
       <div className="flex items-center justify-between mb-2">
-        <h4 className="font-semibold">Code Snippet</h4>
+        <h4 className="font-semibold text-gray-200 text-sm">CURL REQUEST</h4>
         <LanguageSelector 
           selectedLanguage={selectedLanguage} 
           onLanguageChange={onLanguageChange}
+          limitedLanguages={limitedLanguages}
         />
       </div>
       <CodeSnippet 
