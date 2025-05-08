@@ -7,13 +7,8 @@ import EndpointHeader from './EndpointHeader';
 import CredentialsCard from './CredentialsCard';
 import BaseUrlCard from './BaseUrlCard';
 import { constructEndpointUrl } from './utils/urlUtils';
-import CodeSnippetGenerator from './CodeSnippetGenerator';
-import ResponseDisplay from './ResponseDisplay';
-import ParamEditor from './ParamEditor';
-import RequestBodyEditor from './RequestBodyEditor';
-import ApiUrlDisplay from './ApiUrlDisplay';
-import HeadersDisplay from './HeadersDisplay';
-import { Button } from '@/components/ui/button';
+import ApiEndpointRequest from './ApiEndpointRequest';
+import ApiEndpointCodeSnippet from './ApiEndpointCodeSnippet';
 import ResponseKeysDisplay from './ResponseKeysDisplay';
 
 interface ParamField {
@@ -155,45 +150,19 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         {/* Left Side - Request Details and Response Keys */}
         <div className="col-span-1">
           <div className="space-y-3">
-            <div className="bg-white border border-gray-200 shadow-sm rounded-md">
-              <div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
-                <h3 className="font-medium text-sm">REQUEST DETAILS</h3>
-              </div>
-              <div className="p-3 space-y-3">
-                <ApiUrlDisplay url={endpointUrl} />
-                
-                {pathParams && Object.keys(pathParams).length > 0 && (
-                  <ParamEditor 
-                    title="Path Parameters"
-                    params={pathParams}
-                    paramValues={paramValues}
-                    onParamChange={handleParamChange}
-                  />
-                )}
-                
-                {queryParams && Object.keys(queryParams).length > 0 && (
-                  <ParamEditor 
-                    title="Query Parameters"
-                    params={queryParams}
-                    paramValues={paramValues}
-                    onParamChange={handleParamChange}
-                  />
-                )}
-                
-                <HeadersDisplay 
-                  requiresAuth={requiresAuth} 
-                  token={token} 
-                  apiKeyId={apiKeyId} 
-                />
-                
-                {(method === 'POST' || method === 'PUT' || method === 'PATCH') && requestBody && (
-                  <RequestBodyEditor
-                    requestPayload={requestPayload}
-                    setRequestPayload={setRequestPayload}
-                  />
-                )}
-              </div>
-            </div>
+            <ApiEndpointRequest
+              endpointUrl={endpointUrl}
+              pathParams={pathParams}
+              queryParams={queryParams}
+              paramValues={paramValues}
+              onParamChange={handleParamChange}
+              requiresAuth={requiresAuth}
+              token={token}
+              apiKeyId={apiKeyId}
+              method={method}
+              requestPayload={requestPayload}
+              setRequestPayload={setRequestPayload}
+            />
             
             <ResponseKeysDisplay responseKeys={getResponseKeys()} />
           </div>
@@ -211,42 +180,18 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
             
             <BaseUrlCard baseUrl="https://api.deviden.com" />
 
-            <div className="bg-gray-900 text-gray-200 border-gray-800 shadow-sm rounded-md">
-              <CodeSnippetGenerator
-                method={method}
-                url={endpointUrl}
-                headers={headers}
-                requestPayload={['POST', 'PUT', 'PATCH'].includes(method) ? requestPayload : undefined}
-                selectedLanguage={selectedLanguage}
-                onLanguageChange={setSelectedLanguage}
-                limitedLanguages={true}
-                allowedLanguages={['shell', 'python', 'node', 'php', 'ruby']}
-              />
-              
-              <div className="p-2 flex justify-center border-t border-gray-800">
-                <Button 
-                  onClick={handleApiCall} 
-                  disabled={isLoading} 
-                  className="w-full h-8 text-sm"
-                >
-                  {isLoading ? 'Sending...' : 'Try It!'}
-                </Button>
-              </div>
-            </div>
-            
-            <div className="bg-gray-900 border-gray-800 rounded-md p-2">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-gray-200 font-semibold text-sm">RESPONSE</h3>
-                <div className="flex items-center space-x-2">
-                  <span className="text-xs text-gray-400">EXAMPLES</span>
-                </div>
-              </div>
-              <ResponseDisplay 
-                isLoading={isLoading}
-                error={error}
-                response={response}
-              />
-            </div>
+            <ApiEndpointCodeSnippet 
+              method={method}
+              endpointUrl={endpointUrl}
+              headers={headers}
+              requestPayload={['POST', 'PUT', 'PATCH'].includes(method) ? requestPayload : undefined}
+              selectedLanguage={selectedLanguage}
+              onLanguageChange={setSelectedLanguage}
+              isLoading={isLoading}
+              onTryItClick={handleApiCall}
+              error={error}
+              response={response}
+            />
           </div>
         </div>
       </div>

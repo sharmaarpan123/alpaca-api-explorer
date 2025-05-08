@@ -11,6 +11,7 @@ interface CodeSnippetGeneratorProps {
   selectedLanguage: ProgrammingLanguage;
   onLanguageChange: (language: ProgrammingLanguage) => void;
   limitedLanguages?: boolean;
+  allowedLanguages?: ProgrammingLanguage[];
 }
 
 const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
@@ -20,7 +21,8 @@ const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
   requestPayload,
   selectedLanguage,
   onLanguageChange,
-  limitedLanguages = false
+  limitedLanguages = false,
+  allowedLanguages
 }) => {
   const generateCodeSnippet = (language: ProgrammingLanguage): string => {
     switch (language) {
@@ -154,6 +156,7 @@ const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
           selectedLanguage={selectedLanguage} 
           onLanguageChange={onLanguageChange}
           limitedLanguages={limitedLanguages}
+          allowedLanguages={allowedLanguages}
         />
       </div>
       <CodeSnippet 

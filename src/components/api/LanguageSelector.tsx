@@ -14,6 +14,7 @@ interface LanguageSelectorProps {
   selectedLanguage: ProgrammingLanguage;
   onLanguageChange: (language: ProgrammingLanguage) => void;
   limitedLanguages?: boolean;
+  allowedLanguages?: ProgrammingLanguage[];
 }
 
 interface LanguageOption {
@@ -25,7 +26,8 @@ interface LanguageOption {
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   selectedLanguage,
   onLanguageChange,
-  limitedLanguages = false
+  limitedLanguages = false,
+  allowedLanguages
 }) => {
   // Define language options with their display names and icons
   const allLanguages: LanguageOption[] = [
@@ -38,7 +40,9 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   
   // If limitedLanguages is true, only include the specified languages
   const languages = limitedLanguages 
-    ? allLanguages.filter(lang => ['shell', 'node', 'ruby', 'php', 'python'].includes(lang.id))
+    ? (allowedLanguages 
+      ? allLanguages.filter(lang => allowedLanguages.includes(lang.id))
+      : allLanguages.filter(lang => ['shell', 'node', 'ruby', 'php', 'python'].includes(lang.id)))
     : allLanguages;
   
   // Get currently selected language
