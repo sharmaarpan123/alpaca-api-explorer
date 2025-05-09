@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 
 interface ResponseKey {
   status: string;
@@ -12,34 +13,33 @@ interface ResponseKeysDisplayProps {
 }
 
 const ResponseKeysDisplay: React.FC<ResponseKeysDisplayProps> = ({ responseKeys }) => {
+  const formatJson = (json: any) => {
+    if (!json) return 'null';
+    return JSON.stringify(json, null, 2);
+  };
+
   return (
-    <div className="bg-white border border-gray-200 shadow-sm rounded-md">
-      <div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
-        <h3 className="font-medium text-sm">RESPONSES</h3>
-      </div>
-      <div className="p-0">
-        <div className="divide-y divide-gray-200">
+    <>
+      <CardHeader className="py-3 px-4 border-b border-gray-200">
+        <CardTitle className="text-sm font-medium">Response Format</CardTitle>
+      </CardHeader>
+      <CardContent className="p-4">
+        <div className="space-y-3">
           {responseKeys.map((key, index) => (
-            <div key={index} className="p-3 hover:bg-gray-50">
-              <div className="flex items-center mb-1">
-                <div className={`w-14 text-center rounded-full px-2 text-xs font-medium ${
-                  key.status.startsWith('2') ? 'bg-green-100 text-green-800' : 
-                  key.status.startsWith('4') ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
-                }`}>
-                  {key.status}
-                </div>
-                <div className="ml-2 text-sm">{key.description}</div>
+            <div key={index} className="border border-gray-200 rounded-md overflow-hidden">
+              <div className={`px-3 py-2 ${key.status.startsWith('2') ? 'bg-green-50' : 'bg-red-50'} border-b border-gray-200`}>
+                <span className={`text-xs font-medium ${key.status.startsWith('2') ? 'text-green-700' : 'text-red-700'}`}>
+                  {key.status} - {key.description}
+                </span>
               </div>
-              {key.example && (
-                <div className="mt-2 text-xs font-mono bg-gray-100 p-2 rounded">
-                  {JSON.stringify(key.example, null, 2)}
-                </div>
-              )}
+              <pre className="text-xs p-3 overflow-x-auto bg-gray-50 m-0">
+                {formatJson(key.example)}
+              </pre>
             </div>
           ))}
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </>
   );
 };
 

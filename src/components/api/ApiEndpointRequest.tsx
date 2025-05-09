@@ -4,6 +4,24 @@ import ApiUrlDisplay from './ApiUrlDisplay';
 import ParamEditor from './ParamEditor';
 import HeadersDisplay from './HeadersDisplay';
 import RequestBodyEditor from './RequestBodyEditor';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+interface ParamField {
+  type: string;
+  description: string;
+}
+
+interface ParamsObject {
+  [key: string]: ParamField;
+}
+
+interface RequestField {
+  name: string;
+  type: string;
+  description?: string;
+  required?: boolean;
+  options?: string[];
+}
 
 interface ApiEndpointRequestProps {
   endpointUrl: string;
@@ -17,6 +35,8 @@ interface ApiEndpointRequestProps {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   requestPayload: string;
   setRequestPayload: (payload: string) => void;
+  requestFields?: RequestField[];
+  onTryItClick?: () => void;
 }
 
 const ApiEndpointRequest: React.FC<ApiEndpointRequestProps> = ({
@@ -30,14 +50,16 @@ const ApiEndpointRequest: React.FC<ApiEndpointRequestProps> = ({
   apiKeyId,
   method,
   requestPayload,
-  setRequestPayload
+  setRequestPayload,
+  requestFields = [],
+  onTryItClick
 }) => {
   return (
-    <div className="bg-white border border-gray-200 shadow-sm rounded-md">
-      <div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
-        <h3 className="font-medium text-sm">REQUEST DETAILS</h3>
-      </div>
-      <div className="p-3 space-y-3">
+    <Card className="bg-white border border-gray-200 shadow-sm rounded-md mb-4">
+      <CardHeader className="py-3 px-4 border-b border-gray-200">
+        <CardTitle className="text-sm font-medium">REQUEST DETAILS</CardTitle>
+      </CardHeader>
+      <CardContent className="p-4 space-y-4">
         <ApiUrlDisplay url={endpointUrl} />
         
         {pathParams && Object.keys(pathParams).length > 0 && (
@@ -68,10 +90,12 @@ const ApiEndpointRequest: React.FC<ApiEndpointRequestProps> = ({
           <RequestBodyEditor
             requestPayload={requestPayload}
             setRequestPayload={setRequestPayload}
+            requestFields={requestFields}
+            method={method}
           />
         )}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
