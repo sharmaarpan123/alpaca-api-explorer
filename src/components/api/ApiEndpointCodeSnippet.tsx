@@ -5,6 +5,7 @@ import { ProgrammingLanguage } from './CodeSnippet';
 import CodeSnippetGenerator from './CodeSnippetGenerator';
 import LanguageSelector from './LanguageSelector';
 import ResponseDisplay from './ResponseDisplay';
+import { Button } from '@/components/ui/button';
 
 interface ApiEndpointCodeSnippetProps {
   method: string;
@@ -31,8 +32,6 @@ const ApiEndpointCodeSnippet: React.FC<ApiEndpointCodeSnippetProps> = ({
   error,
   response
 }) => {
-  const supportedLanguages: ProgrammingLanguage[] = ['shell', 'python', 'node', 'php', 'ruby'];
-  
   return (
     <Card className="bg-white border border-gray-200 shadow-sm rounded-md">
       <CardHeader className="py-3 px-4 border-b border-gray-200">
@@ -41,22 +40,33 @@ const ApiEndpointCodeSnippet: React.FC<ApiEndpointCodeSnippetProps> = ({
           <LanguageSelector
             selectedLanguage={selectedLanguage}
             onLanguageChange={onLanguageChange}
-            supportedLanguages={supportedLanguages}
           />
         </div>
       </CardHeader>
       <CardContent className="p-4">
         <CodeSnippetGenerator
-          language={selectedLanguage}
           method={method}
           url={endpointUrl}
           headers={headers}
           body={requestPayload}
+          selectedLanguage={selectedLanguage}
+          onLanguageChange={onLanguageChange}
         />
         
-        {response && (
+        {onTryItClick && (
+          <Button 
+            className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-700" 
+            type="button"
+            onClick={onTryItClick}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Loading...' : 'Try It!'}
+          </Button>
+        )}
+        
+        {(response || isLoading || error) && (
           <div className="mt-4">
-            <ResponseDisplay response={response} error={error} />
+            <ResponseDisplay isLoading={isLoading} response={response} error={error} />
           </div>
         )}
       </CardContent>

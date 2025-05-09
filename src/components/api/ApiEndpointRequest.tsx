@@ -92,6 +92,7 @@ const ApiEndpointRequest: React.FC<ApiEndpointRequestProps> = ({
             setRequestPayload={setRequestPayload}
             requestFields={requestFields}
             method={method}
+            onTryItClick={onTryItClick}
           />
         )}
       </CardContent>

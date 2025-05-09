@@ -73,7 +73,8 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     
     return Object.entries(requestBody).map(([key, value]) => {
       let type = typeof value;
-      if (Array.isArray(value)) type = 'array';
+      // Fix the type for arrays
+      if (Array.isArray(value)) type = "object";
       
       // Handle special fields with known options
       const specialFields: Record<string, { type: string, options?: string[] }> = {

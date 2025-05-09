@@ -19,13 +19,15 @@ interface RequestBodyEditorProps {
   setRequestPayload: (value: string) => void;
   requestFields?: RequestField[];
   method: string;
+  onTryItClick?: () => void;
 }
 
 const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
   requestPayload,
   setRequestPayload,
   requestFields = [],
-  method
+  method,
+  onTryItClick
 }) => {
   const [activeTab, setActiveTab] = useState<string>("form");
   const [formValues, setFormValues] = useState<Record<string, any>>({});
@@ -39,7 +41,7 @@ const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
       // If payload is not valid JSON, just continue with empty form values
       console.log("Could not parse request payload as JSON");
     }
-  }, []);
+  }, [requestPayload]);
 
   // Handle form field changes
   const handleFieldChange = (name: string, value: any) => {
@@ -112,12 +114,15 @@ const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
           </TabsContent>
         </Tabs>
         
-        <Button 
-          className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-700" 
-          type="button"
-        >
-          Try It!
-        </Button>
+        {onTryItClick && (
+          <Button 
+            className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-700" 
+            type="button"
+            onClick={onTryItClick}
+          >
+            Try It!
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

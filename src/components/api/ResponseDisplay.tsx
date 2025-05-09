@@ -44,14 +44,15 @@ const ResponseDisplay: React.FC<ResponseDisplayProps> = ({
 
   if (response) {
     return (
-      <div className="relative">
+      <div className="relative mt-4">
+        <h4 className="font-semibold text-gray-700 text-sm mb-2">RESPONSE</h4>
         <pre className="bg-gray-800 p-3 rounded-md text-xs overflow-auto max-h-96 text-gray-300">
           {JSON.stringify(response, null, 2)}
         </pre>
         <Button 
           variant="ghost" 
           size="sm" 
-          className="absolute top-2 right-2 h-6 w-6 p-0 bg-gray-700 hover:bg-gray-600 text-gray-300"
+          className="absolute top-8 right-2 h-6 w-6 p-0 bg-gray-700 hover:bg-gray-600 text-gray-300"
           onClick={() => copyToClipboard(JSON.stringify(response, null, 2))}
         >
           <Copy className="h-3 w-3" />
@@ -61,7 +62,7 @@ const ResponseDisplay: React.FC<ResponseDisplayProps> = ({
   }
 
   return (
-    <div className="text-gray-400 p-6 text-center bg-gray-800/50 rounded-md text-xs">
+    <div className="text-gray-400 p-6 text-center bg-gray-800/50 rounded-md text-xs mt-4">
       <p>Click "Try It!" to start a request and see the response here!</p>
       <p className="text-xs mt-1">Or choose an example.</p>
       <div className="mt-3 text-center">

@@ -1,28 +1,22 @@
 
 import React from 'react';
 import CodeSnippet, { ProgrammingLanguage } from './CodeSnippet';
-import LanguageSelector from './LanguageSelector';
 
 interface CodeSnippetGeneratorProps {
   method: string;
   url: string;
   headers: Record<string, string>;
-  requestPayload?: string;
+  body?: string;
   selectedLanguage: ProgrammingLanguage;
   onLanguageChange: (language: ProgrammingLanguage) => void;
-  limitedLanguages?: boolean;
-  allowedLanguages?: ProgrammingLanguage[];
 }
 
 const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
   method,
   url,
   headers,
-  requestPayload,
-  selectedLanguage,
-  onLanguageChange,
-  limitedLanguages = false,
-  allowedLanguages
+  body,
+  selectedLanguage
 }) => {
   const generateCodeSnippet = (language: ProgrammingLanguage): string => {
     switch (language) {
@@ -34,8 +28,8 @@ const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
           curl += `  --header '${key}: ${value}' \\\n`;
         });
         
-        if (['POST', 'PUT', 'PATCH'].includes(method) && requestPayload) {
-          curl += `  --data '${requestPayload}'`;
+        if (['POST', 'PUT', 'PATCH'].includes(method) && body) {
+          curl += `  --data '${body}'`;
         }
         
         return curl;
@@ -53,8 +47,8 @@ const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
         
         nodeCode += "  }";
         
-        if (['POST', 'PUT', 'PATCH'].includes(method) && requestPayload) {
-          nodeCode += ",\n  data: " + requestPayload;
+        if (['POST', 'PUT', 'PATCH'].includes(method) && body) {
+          nodeCode += ",\n  data: " + body;
         }
         
         nodeCode += "\n};\n\n";
@@ -77,8 +71,8 @@ const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
         
         pythonCode += "}\n\n";
         
-        if (['POST', 'PUT', 'PATCH'].includes(method) && requestPayload) {
-          pythonCode += `payload = ${requestPayload}\n\n`;
+        if (['POST', 'PUT', 'PATCH'].includes(method) && body) {
+          pythonCode += `payload = ${body}\n\n`;
           pythonCode += `response = requests.${method.toLowerCase()}(url, headers=headers, json=payload)\n`;
         } else {
           pythonCode += `response = requests.${method.toLowerCase()}(url, headers=headers)\n`;
@@ -99,8 +93,8 @@ const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
           rubyCode += `request["${key}"] = "${value}"\n`;
         });
         
-        if (['POST', 'PUT', 'PATCH'].includes(method) && requestPayload) {
-          rubyCode += `request.body = ${requestPayload}\n`;
+        if (['POST', 'PUT', 'PATCH'].includes(method) && body) {
+          rubyCode += `request.body = ${body}\n`;
         }
         
         rubyCode += "\nresponse = http.request(request)\n";
@@ -120,8 +114,8 @@ const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
         phpCode += "  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n";
         phpCode += `  CURLOPT_CUSTOMREQUEST => "${method}",\n`;
         
-        if (['POST', 'PUT', 'PATCH'].includes(method) && requestPayload) {
-          phpCode += `  CURLOPT_POSTFIELDS => ${requestPayload},\n`;
+        if (['POST', 'PUT', 'PATCH'].includes(method) && body) {
+          phpCode += `  CURLOPT_POSTFIELDS => ${body},\n`;
         }
         
         phpCode += "  CURLOPT_HTTPHEADER => [\n";
@@ -150,14 +144,8 @@ const CodeSnippetGenerator: React.FC<CodeSnippetGeneratorProps> = ({
 
   return (
     <div className="p-2">
-      <div className="flex items-center justify-between mb-2">
-        <h4 className="font-semibold text-gray-200 text-sm">CURL REQUEST</h4>
-        <LanguageSelector 
-          selectedLanguage={selectedLanguage} 
-          onLanguageChange={onLanguageChange}
-          limitedLanguages={limitedLanguages}
-          allowedLanguages={allowedLanguages}
-        />
+      <div className="mb-2">
+        <h4 className="font-semibold text-gray-700 text-sm">REQUEST EXAMPLE</h4>
       </div>
       <CodeSnippet 
         language={selectedLanguage}
