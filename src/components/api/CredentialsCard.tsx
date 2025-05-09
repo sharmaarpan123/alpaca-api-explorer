@@ -17,8 +17,6 @@ const CredentialsCard: React.FC<CredentialsCardProps> = ({
   setApiKeyId,
   setApiSecretKey
 }) => {
-
-  const { accountId } = useAuth();
   return (
     <Card className="bg-gray-900 text-gray-200 border-gray-800 shadow-sm mb-4">
       <CardHeader className="py-3 px-4">
@@ -42,8 +40,8 @@ const CredentialsCard: React.FC<CredentialsCardProps> = ({
               // type="password" 
               placeholder="APCA-ACCOUNT-NUMBER" 
               className="bg-gray-800 h-8 text-xs border-gray-700 text-gray-200 focus:ring-blue-500"
-              value={accountId}
-              // onChange={(e) => setApiSecretKey(e.target.value)}
+              value={apiSecretKey}
+              onChange={(e) => setApiSecretKey(e.target.value)}
             />
           </div>
         </div>
