@@ -133,6 +133,7 @@ const ApiEndpointTabs: React.FC<ApiEndpointTabsProps> = ({
               <RequestBodyEditor
                 requestPayload={requestPayload}
                 setRequestPayload={setRequestPayload}
+                method={method}
               />
             )}
             
