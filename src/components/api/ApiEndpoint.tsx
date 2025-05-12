@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
@@ -188,7 +187,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
       await new Promise(resolve => setTimeout(resolve, 800));
       
       let mockResponse;
-      let parsedPayload = {};
+      let parsedPayload: Record<string, any> = {};
       
       // Parse the request payload if it's present
       if (requestPayload) {
@@ -234,7 +233,15 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
             timestamp: new Date().toISOString(),
             data: {
               orders: [
-                { id: 'ord_123', symbol: parsedPayload.symbol || 'AAPL', side: parsedPayload.side || 'buy', qty: 10, type: parsedPayload.type || 'market', time_in_force: 'day', status: 'filled' },
+                { 
+                  id: 'ord_123', 
+                  symbol: parsedPayload.symbol || 'AAPL', 
+                  side: parsedPayload.side || 'buy', 
+                  qty: 10, 
+                  type: parsedPayload.type || 'market', 
+                  time_in_force: 'day', 
+                  status: 'filled' 
+                },
                 { id: 'ord_456', symbol: 'MSFT', side: 'sell', qty: 5, type: 'limit', time_in_force: 'gtc', status: 'open' }
               ]
             }
