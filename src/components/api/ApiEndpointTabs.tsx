@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import DocumentationContent from './DocumentationContent';
@@ -9,6 +9,9 @@ import ParamEditor from './ParamEditor';
 import RequestBodyEditor from './RequestBodyEditor';
 import { Button } from '@/components/ui/button';
 import { ProgrammingLanguage } from './CodeSnippet';
+import ResponseDisplay from './ResponseDisplay';
+import api from '@/lib/api';
+import axios from 'axios';
 
 interface ParamField {
   type: string;
@@ -77,6 +80,7 @@ const ApiEndpointTabs: React.FC<ApiEndpointTabsProps> = ({
       <TabsList className="mb-3 w-full justify-start h-8 p-1">
         <TabsTrigger value="documentation" className="text-xs h-6">Documentation</TabsTrigger>
         <TabsTrigger value="request" className="text-xs h-6">Request</TabsTrigger>
+        <TabsTrigger value="response" className="text-xs h-6">Response</TabsTrigger>
       </TabsList>
       
       <TabsContent value="documentation" className="pt-1">
@@ -134,12 +138,30 @@ const ApiEndpointTabs: React.FC<ApiEndpointTabsProps> = ({
                 requestPayload={requestPayload}
                 setRequestPayload={setRequestPayload}
                 method={method}
+                onTryItClick={handleApiCall}
               />
             )}
             
-            <Button onClick={handleApiCall} disabled={isLoading} className="w-full h-8 text-sm">
-              {isLoading ? 'Sending...' : 'Try It!'}
-            </Button>
+            {(!['POST', 'PUT', 'PATCH'].includes(method) || !requestBody) && (
+              <Button onClick={handleApiCall} disabled={isLoading} className="w-full h-8 text-sm">
+                {isLoading ? 'Sending...' : 'Try It!'}
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      </TabsContent>
+      
+      <TabsContent value="response" className="pt-1">
+        <Card className="shadow-sm">
+          <CardHeader className="py-2 px-3">
+            <CardTitle className="text-base">Response</CardTitle>
+          </CardHeader>
+          <CardContent className="py-2 px-3 text-sm">
+            <ResponseDisplay
+              isLoading={isLoading}
+              error={error}
+              response={response}
+            />
           </CardContent>
         </Card>
       </TabsContent>

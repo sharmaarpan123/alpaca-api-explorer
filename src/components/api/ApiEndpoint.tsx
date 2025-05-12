@@ -12,6 +12,8 @@ import ApiEndpointRequest from './ApiEndpointRequest';
 import ApiEndpointCodeSnippet from './ApiEndpointCodeSnippet';
 import ResponseKeysDisplay from './ResponseKeysDisplay';
 import { Card } from '@/components/ui/card';
+import ApiEndpointTabs from './ApiEndpointTabs';
+import axios from 'axios';
 
 interface ParamField {
   type: string;
@@ -66,6 +68,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
   const [selectedLanguage, setSelectedLanguage] = useState<ProgrammingLanguage>('shell');
   const [apiKeyId, setApiKeyId] = useState<string>('');
   const [apiSecretKey, setApiSecretKey] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<string>("documentation");
   
   // Convert requestBody to requestFields format
   const generateRequestFields = (): RequestField[] => {
@@ -175,35 +178,126 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
 
     setIsLoading(true);
     setError(null);
-    setResponse(null);
-
+    
     try {
+      // Set the active tab to "response" to show the user the results
+      setActiveTab("response");
+      
       // In a real app, this would call your actual API
       // For now, we'll simulate an API call with a timeout
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      let mockResponse;
+      let parsedPayload = {};
+      
+      // Parse the request payload if it's present
+      if (requestPayload) {
+        try {
+          parsedPayload = JSON.parse(requestPayload);
+        } catch (e) {
+          console.error("Error parsing request payload:", e);
+          parsedPayload = {};
+        }
+      }
 
-      // Simulate successful response
-      const mockResponse = {
-        success: true,
-        timestamp: new Date().toISOString(),
-        data: {
-          message: `${method} request to ${endpoint} was successful`,
-          endpoint: endpoint,
-          // Additional mock data based on endpoint
-          ...(endpoint.includes('assets') ? {
+      // Generate a dynamic mock response based on the endpoint and method
+      if (endpoint.includes('assets')) {
+        mockResponse = {
+          success: true,
+          timestamp: new Date().toISOString(),
+          data: {
             assets: [
               { id: 'AAPL', name: 'Apple Inc', exchange: 'NASDAQ', status: 'active', tradable: true, marginable: true, shortable: true, easy_to_borrow: true },
-              { id: 'MSFT', name: 'Microsoft Corporation', exchange: 'NASDAQ', status: 'active', tradable: true, marginable: true, shortable: true, easy_to_borrow: true }
+              { id: 'MSFT', name: 'Microsoft Corporation', exchange: 'NASDAQ', status: 'active', tradable: true, marginable: true, shortable: true, easy_to_borrow: true },
+              { id: 'TSLA', name: 'Tesla Inc', exchange: 'NASDAQ', status: 'active', tradable: true, marginable: true, shortable: true, easy_to_borrow: true },
+              { id: 'AMZN', name: 'Amazon.com Inc', exchange: 'NASDAQ', status: 'active', tradable: true, marginable: true, shortable: true, easy_to_borrow: true }
             ]
-          } : {}),
-          ...(endpoint.includes('orders') ? {
-            orders: [
-              { id: 'ord_123', symbol: 'AAPL', side: 'buy', qty: 10, type: 'market', time_in_force: 'day', status: 'filled' },
-              { id: 'ord_456', symbol: 'MSFT', side: 'sell', qty: 5, type: 'limit', time_in_force: 'gtc', status: 'open' }
-            ]
-          } : {})
+          }
+        };
+      } else if (endpoint.includes('orders')) {
+        if (method === 'POST') {
+          // Creating a new order
+          mockResponse = {
+            success: true,
+            timestamp: new Date().toISOString(),
+            data: {
+              orderId: `order_${Math.random().toString(36).substring(2, 10)}`,
+              status: 'pending',
+              createdAt: new Date().toISOString(),
+              ...parsedPayload
+            }
+          };
+        } else {
+          // Getting order list
+          mockResponse = {
+            success: true,
+            timestamp: new Date().toISOString(),
+            data: {
+              orders: [
+                { id: 'ord_123', symbol: parsedPayload.symbol || 'AAPL', side: parsedPayload.side || 'buy', qty: 10, type: parsedPayload.type || 'market', time_in_force: 'day', status: 'filled' },
+                { id: 'ord_456', symbol: 'MSFT', side: 'sell', qty: 5, type: 'limit', time_in_force: 'gtc', status: 'open' }
+              ]
+            }
+          };
         }
-      };
+      } else if (endpoint.includes('quotes')) {
+        mockResponse = {
+          success: true,
+          timestamp: new Date().toISOString(),
+          data: {
+            quotes: [
+              { 
+                symbol: parsedPayload.symbol || 'AAPL',
+                price: 178.32,
+                bidPrice: 178.30,
+                bidSize: 500,
+                askPrice: 178.34,
+                askSize: 700,
+                timestamp: new Date().toISOString()
+              }
+            ]
+          }
+        };
+      } else if (endpoint.includes('bars')) {
+        mockResponse = {
+          success: true,
+          timestamp: new Date().toISOString(),
+          data: {
+            bars: [
+              { 
+                symbol: parsedPayload.symbol || 'AAPL',
+                open: 177.50,
+                high: 179.25,
+                low: 176.80,
+                close: 178.32,
+                volume: 25000000,
+                timestamp: new Date().toISOString()
+              },
+              { 
+                symbol: parsedPayload.symbol || 'AAPL',
+                open: 178.32,
+                high: 180.15,
+                low: 177.95,
+                close: 179.10,
+                volume: 22000000,
+                timestamp: new Date(Date.now() + 3600000).toISOString()
+              }
+            ]
+          }
+        };
+      } else {
+        // Default generic response
+        mockResponse = {
+          success: true,
+          timestamp: new Date().toISOString(),
+          data: {
+            message: `${method} request to ${endpoint} was successful`,
+            endpoint: endpoint,
+            params: paramValues,
+            body: parsedPayload
+          }
+        };
+      }
 
       setResponse(mockResponse);
     } catch (err) {
@@ -250,21 +344,30 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Left Side - Request Details and Response Keys */}
         <div className="space-y-4">
-          <ApiEndpointRequest
+          <ApiEndpointTabs
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
             endpointUrl={endpointUrl}
-            pathParams={pathParams}
-            queryParams={queryParams}
-            paramValues={paramValues}
-            onParamChange={handleParamChange}
+            method={method}
             requiresAuth={requiresAuth}
             token={token}
             apiKeyId={apiKeyId}
-            method={method}
             requestPayload={requestPayload}
             setRequestPayload={setRequestPayload}
-            requestFields={requestFields}
-            onTryItClick={handleApiCall}
-          />
+            pathParams={pathParams}
+            queryParams={queryParams}
+            requestBody={requestBody}
+            paramValues={paramValues}
+            handleParamChange={handleParamChange}
+            selectedLanguage={selectedLanguage}
+            onLanguageChange={setSelectedLanguage}
+            isLoading={isLoading}
+            error={error}
+            response={response}
+            handleApiCall={handleApiCall}
+          >
+            {children}
+          </ApiEndpointTabs>
           
           <Card className="bg-white border border-gray-200 shadow-sm rounded-md mb-4">
             <ResponseKeysDisplay responseKeys={getResponseKeys()} />
