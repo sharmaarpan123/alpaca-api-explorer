@@ -1,8 +1,10 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Copy } from 'lucide-react';
+import { Copy, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { checkResponse } from '@/utilities/commonFuncs';
 
 interface ResponseDisplayProps {
   isLoading: boolean;
@@ -33,6 +35,40 @@ const ResponseDisplay: React.FC<ResponseDisplayProps> = ({
     );
   }
 
+  // Extract API response status information
+  const apiResponseStatus = response ? checkResponse({ res: response }) : null;
+
+  // Handle API-specific error (when there's a response but status code is not 200)
+  if (response && !apiResponseStatus?.success) {
+    return (
+      <div className="mt-4 space-y-4">
+        <Alert variant="destructive" className="bg-red-900/20 border-red-700/30">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle className="text-red-400">Error</AlertTitle>
+          <AlertDescription className="text-red-400 text-sm">
+            {apiResponseStatus?.message || "An error occurred"}
+          </AlertDescription>
+        </Alert>
+        
+        <div className="relative">
+          <h4 className="font-semibold text-gray-700 text-sm mb-2">RESPONSE</h4>
+          <pre className="bg-gray-800 p-3 rounded-md text-xs overflow-auto max-h-96 text-gray-300">
+            {JSON.stringify(response, null, 2)}
+          </pre>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="absolute top-8 right-2 h-6 w-6 p-0 bg-gray-700 hover:bg-gray-600 text-gray-300"
+            onClick={() => copyToClipboard(JSON.stringify(response, null, 2))}
+          >
+            <Copy className="h-3 w-3" />
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Handle network/request error (no response object)
   if (error) {
     return (
       <div className="bg-red-900/20 border border-red-700/30 text-red-400 p-3 rounded-md text-xs">
@@ -42,25 +78,37 @@ const ResponseDisplay: React.FC<ResponseDisplayProps> = ({
     );
   }
 
-  if (response) {
+  // Handle success response
+  if (response && apiResponseStatus?.success) {
     return (
-      <div className="relative mt-4">
-        <h4 className="font-semibold text-gray-700 text-sm mb-2">RESPONSE</h4>
-        <pre className="bg-gray-800 p-3 rounded-md text-xs overflow-auto max-h-96 text-gray-300">
-          {JSON.stringify(response, null, 2)}
-        </pre>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="absolute top-8 right-2 h-6 w-6 p-0 bg-gray-700 hover:bg-gray-600 text-gray-300"
-          onClick={() => copyToClipboard(JSON.stringify(response, null, 2))}
-        >
-          <Copy className="h-3 w-3" />
-        </Button>
+      <div className="mt-4 space-y-4">
+        <Alert className="bg-green-900/20 border-green-700/30">
+          <CheckCircle className="h-4 w-4 text-green-500" />
+          <AlertTitle className="text-green-500">Success</AlertTitle>
+          <AlertDescription className="text-green-400 text-sm">
+            {apiResponseStatus.message}
+          </AlertDescription>
+        </Alert>
+        
+        <div className="relative">
+          <h4 className="font-semibold text-gray-700 text-sm mb-2">RESPONSE</h4>
+          <pre className="bg-gray-800 p-3 rounded-md text-xs overflow-auto max-h-96 text-gray-300">
+            {JSON.stringify(response, null, 2)}
+          </pre>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="absolute top-8 right-2 h-6 w-6 p-0 bg-gray-700 hover:bg-gray-600 text-gray-300"
+            onClick={() => copyToClipboard(JSON.stringify(response, null, 2))}
+          >
+            <Copy className="h-3 w-3" />
+          </Button>
+        </div>
       </div>
     );
   }
 
+  // Default state (no request made yet)
   return (
     <div className="text-gray-400 p-6 text-center bg-gray-800/50 rounded-md text-xs mt-4">
       <p>Click "Try It!" to start a request and see the response here!</p>

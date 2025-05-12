@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 const api = axios.create({
@@ -24,11 +25,10 @@ api.interceptors.request.use(
 // Response interceptor
 api.interceptors.response.use(
   (response) => {
-    return response
+    return response;
   },
   async (error) => {
     const originalRequest = error.config;
-
 
     // If error is 401 and we haven't tried to refresh token yet
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -67,8 +67,9 @@ api.interceptors.response.use(
       }
     }
 
-    return error.response
+    // For other errors, return the error response for handling in components
+    return Promise.resolve(error.response);
   }
 );
 
-export default api; 
+export default api;

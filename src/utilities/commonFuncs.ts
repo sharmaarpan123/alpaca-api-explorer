@@ -1,8 +1,15 @@
+
 export const checkResponse = ({ res }: any) => {
-  console.log(res, "Res");
   if (res?.data?.status_code === 200) {
-    return true;
+    return {
+      success: true,
+      message: res?.data?.message || "Operation successful"
+    };
   } else {
-    return false;
+    return {
+      success: false,
+      message: res?.data?.data || "An error occurred"
+    };
   }
 };
+

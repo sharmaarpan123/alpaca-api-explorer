@@ -191,7 +191,9 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
           parsedPayload = JSON.parse(requestPayload);
         } catch (e) {
           console.error("Error parsing request payload:", e);
-          parsedPayload = {};
+          setError("Invalid JSON in request payload");
+          setIsLoading(false);
+          return;
         }
       }
 
