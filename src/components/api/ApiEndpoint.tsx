@@ -1,12 +1,10 @@
-
-import React, { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { ProgrammingLanguage } from './CodeSnippet';
-import EndpointHeader from './EndpointHeader';
-import { constructEndpointUrl } from './utils/urlUtils';
-import ApiEndpointContent from './ApiEndpointContent';
-import { generateRequestFields } from './utils/apiUtils';
-import useApiCall from './hooks/useApiCall';
+import React, { useState } from "react";
+import ApiEndpointContent from "./ApiEndpointContent";
+import { ProgrammingLanguage } from "./CodeSnippet";
+import EndpointHeader from "./EndpointHeader";
+import useApiCall from "./hooks/useApiCall";
+import { constructEndpointUrl } from "./utils/urlUtils";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ParamField {
   type: string;
@@ -17,17 +15,9 @@ interface ParamsObject {
   [key: string]: ParamField;
 }
 
-interface RequestField {
-  name: string;
-  type: string;
-  description?: string;
-  required?: boolean;
-  options?: string[];
-}
-
 interface ApiEndpointProps {
   title: string;
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   endpoint: string;
   description: string;
   requiresAuth?: boolean;
@@ -46,52 +36,53 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
   requestBody,
   queryParams,
   pathParams,
-  children
 }) => {
-  const { isAuthenticated } = useAuth();
-  const token = localStorage.getItem('token');
-  const [apiKeyId, setApiKeyId] = useState<string>('');
-  const [apiSecretKey, setApiSecretKey] = useState<string>('');
-  const [activeTab, setActiveTab] = useState<string>("documentation");
-  const [selectedLanguage, setSelectedLanguage] = useState<ProgrammingLanguage>('shell');
+  const token = localStorage.getItem("token");
+  const [apiKeyId, setApiKeyId] = useState<string>("");
+  const [apiSecretKey, setApiSecretKey] = useState<string>("");
+  const [selectedLanguage, setSelectedLanguage] =
+    useState<ProgrammingLanguage>("shell");
   const [paramValues, setParamValues] = useState<Record<string, string>>({});
   const [requestPayload, setRequestPayload] = useState<string>(
-    requestBody ? JSON.stringify(requestBody, null, 2) : '{}'
+    requestBody ? JSON.stringify(requestBody, null, 2) : "{}"
   );
-  
-  const { isLoading, response, error, handleApiCall } = useApiCall({ 
-    method, 
+
+  const { privateKey } = useAuth()
+
+  const { isLoading, response, error, handleApiCall } = useApiCall({
+    method,
     endpoint,
-    requiresAuth 
+    requiresAuth,
   });
-  
-  // Generate request fields from request body
-  const requestFields = generateRequestFields(requestBody);
-  
+
   const handleParamChange = (key: string, value: string) => {
-    setParamValues(prev => ({ ...prev, [key]: value }));
+    setParamValues((prev) => ({ ...prev, [key]: value }));
   };
 
-  const endpointUrl = constructEndpointUrl(endpoint, pathParams, queryParams, paramValues);
+  const endpointUrl = constructEndpointUrl(
+    endpoint,
+    pathParams,
+    queryParams,
+    paramValues
+  );
+
+
 
   const handleApiCallClick = async () => {
-    // Set the active tab to "response" to show the user the results
-    setActiveTab("response");
-    
     await handleApiCall(
       paramValues,
       requestPayload,
       pathParams,
       queryParams,
       token,
-      apiKeyId,
+       privateKey ,
       apiSecretKey
     );
   };
 
   return (
     <div className="mb-4">
-      <EndpointHeader 
+      <EndpointHeader
         title={title}
         method={method}
         endpoint={endpoint}
@@ -105,8 +96,6 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         description={description}
         requiresAuth={requiresAuth}
         endpointUrl={endpointUrl}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
         apiKeyId={apiKeyId}
         setApiKeyId={setApiKeyId}
         apiSecretKey={apiSecretKey}
@@ -125,9 +114,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         error={error}
         response={response}
         handleApiCall={handleApiCallClick}
-      >
-        {children}
-      </ApiEndpointContent>
+      />
     </div>
   );
 };

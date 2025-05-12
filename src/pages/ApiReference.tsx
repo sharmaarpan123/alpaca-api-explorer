@@ -1,8 +1,7 @@
-import React from 'react';
-import Layout from '@/components/layout/Layout';
-import { Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 // Map HTTP methods to color classes
 const methodStyles: Record<string, string> = {
@@ -82,7 +81,7 @@ const apiSections = [
 
 const ApiReference: React.FC = () => {
   return (
-    <Layout>
+   
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-bold mb-8">API Reference</h1>
         {apiSections.map((section) => (
@@ -96,7 +95,7 @@ const ApiReference: React.FC = () => {
           </div>
         ))}
       </div>
-    </Layout>
+   
   );
 };
 

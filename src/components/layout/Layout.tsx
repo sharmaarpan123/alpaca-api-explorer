@@ -1,14 +1,11 @@
+import { useAuth } from "@/contexts/AuthContext";
+import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
 
-import React, { useState } from 'react';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import { useAuth } from '@/contexts/AuthContext';
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { isLoading } = useAuth();
 
@@ -33,7 +30,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={sidebarOpen} />
         <main className="flex-1 overflow-y-auto bg-gray-50 p-0">
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>

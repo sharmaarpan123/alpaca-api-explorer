@@ -8,16 +8,11 @@ import React, {
 } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
-interface User {
-  id: string;
-  email: string;
-  name?: string;
-}
-
 interface AuthState {
   token: string | null;
   isLoading: boolean;
   accountId: string | null;
+  privateKey: string;
 }
 
 export const authContextActionsTypeEnum = {
@@ -30,6 +25,7 @@ interface AuthContextType extends AuthState {
   logout: () => void;
   isAuthenticated: boolean;
   authDispatch: (action: any) => void;
+  privateKey: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -45,8 +41,28 @@ export const useAuth = () => {
 interface AuthProviderProps {
   children: ReactNode;
 }
+const getInitialState = () => {
+  if (typeof window !== "undefined") {
+    return {
+      accountId: localStorage.getItem("accountId"),
+      token: localStorage.getItem("token"),
+      isLoading: true,
+      privateKey: localStorage.getItem("privateKey"),
+    };
+  } else {
+    return {
+      accountId: null,
+      token: null,
+      isLoading: true,
+      privateKey: null,
+    };
+  }
+};
 
-const authReducer = (state: AuthState, action: any) => {
+const authReducer = (
+  state: AuthState = { ...getInitialState() },
+  action: any
+) => {
   switch (action.type) {
     case authContextActionsTypeEnum.LOGIN:
       return { ...state, ...action.payload };
@@ -55,7 +71,8 @@ const authReducer = (state: AuthState, action: any) => {
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("accountId");
-      return { ...state, user: null, token: null };
+      localStorage.removeItem("privateKey");
+      return { ...state, token: null, privateKey: null, accountId: null };
 
     case authContextActionsTypeEnum.SET_AUTH_STATE:
       return { ...state, ...action.payload };
@@ -72,6 +89,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     token: null,
     isLoading: true,
     accountId: null,
+    privateKey: null,
   });
 
   useEffect(() => {
@@ -81,13 +99,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const storedToken = localStorage.getItem("token");
         const accountId = localStorage.getItem("accountId");
         const refreshToken = localStorage.getItem("refreshToken");
-        if (storedToken && accountId && refreshToken) {
+        const privateKey = localStorage.getItem("privateKey");
+        if (storedToken && accountId && refreshToken && privateKey) {
           dispatch({
             type: authContextActionsTypeEnum.LOGIN,
             payload: {
               accountId,
               token: storedToken,
               isLoading: false,
+              privateKey,
             },
           });
         } else {
@@ -113,15 +133,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const logout = () => {
-    // Clear auth data from localStorage
-
-    localStorage.removeItem("token");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("accountId");
-
     // Reset state
     dispatch({
-      type: authContextActionsTypeEnum.SET_AUTH_STATE,
+      type: authContextActionsTypeEnum.LOG_OUT,
       payload: {
         token: null,
         accountId: null,

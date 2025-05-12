@@ -1,24 +1,21 @@
-
-import React from 'react';
-import { ProgrammingLanguage } from './CodeSnippet';
-import { ParamsObject } from '@/data/apiEndpoints';
-import CredentialsCard from './CredentialsCard';
-import BaseUrlCard from './BaseUrlCard';
-import ApiEndpointCodeSnippet from './ApiEndpointCodeSnippet';
-import ResponseKeysDisplay from './ResponseKeysDisplay';
-import { Card } from '@/components/ui/card';
-import { getResponseKeys } from './utils/apiUtils';
-import ApiEndpointTabs from './ApiEndpointTabs';
+import { Card } from "@/components/ui/card";
+import { ParamsObject } from "@/data/apiEndpoints";
+import React from "react";
+import ApiEndpointCodeSnippet from "./ApiEndpointCodeSnippet";
+import ApiEndpointTabs from "./ApiEndpointTabs";
+import { ProgrammingLanguage } from "./CodeSnippet";
+import CredentialsCard from "./CredentialsCard";
+import ResponseKeysDisplay from "./ResponseKeysDisplay";
+import { getResponseKeys } from "./utils/apiUtils";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ApiEndpointContentProps {
   title: string;
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   endpoint: string;
   description: string;
   requiresAuth: boolean;
   endpointUrl: string;
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
   apiKeyId: string;
   setApiKeyId: (value: string) => void;
   apiSecretKey: string;
@@ -41,16 +38,12 @@ interface ApiEndpointContentProps {
 }
 
 const ApiEndpointContent: React.FC<ApiEndpointContentProps> = ({
-  title,
   method,
   endpoint,
-  description,
   requiresAuth,
   endpointUrl,
-  activeTab,
-  setActiveTab,
   apiKeyId,
-  setApiKeyId,
+
   apiSecretKey,
   setApiSecretKey,
   token,
@@ -67,12 +60,16 @@ const ApiEndpointContent: React.FC<ApiEndpointContentProps> = ({
   error,
   response,
   handleApiCall,
-  children
+  children,
 }) => {
+  const { privateKey } = useAuth();
   const headers = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    ...(requiresAuth ? {'Authorization': `Bearer ${token || apiKeyId || '[YOUR_TOKEN]'}`} : {})
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: `Bearer ${token}`,
+    accesstoken: token,
+    accountnumber : apiSecretKey,
+    privateApiKey: privateKey,
   };
 
   const responseKeys = getResponseKeys(endpoint);
@@ -82,9 +79,6 @@ const ApiEndpointContent: React.FC<ApiEndpointContentProps> = ({
       {/* Left Side - Request Details and Response Keys */}
       <div className="space-y-4">
         <ApiEndpointTabs
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          endpointUrl={endpointUrl}
           method={method}
           requiresAuth={requiresAuth}
           token={token}
@@ -98,36 +92,34 @@ const ApiEndpointContent: React.FC<ApiEndpointContentProps> = ({
           handleParamChange={handleParamChange}
           selectedLanguage={selectedLanguage}
           onLanguageChange={onLanguageChange}
-          isLoading={isLoading}
           error={error}
           response={response}
-          handleApiCall={handleApiCall}
         >
           {children}
         </ApiEndpointTabs>
-        
+
         <Card className="bg-white border border-gray-200 shadow-sm rounded-md mb-4">
           <ResponseKeysDisplay responseKeys={responseKeys} />
         </Card>
       </div>
-      
+
       {/* Right Side - Code Snippet and Response */}
       <div className="space-y-4">
         <div className="grid grid-cols-1 gap-4">
           <CredentialsCard
-            apiKeyId={apiKeyId}
             apiSecretKey={apiSecretKey}
-            setApiKeyId={setApiKeyId}
             setApiSecretKey={setApiSecretKey}
           />
-          
-          <BaseUrlCard baseUrl={import.meta.env.VITE_BASE_URL || "https://api.deviden.com"} />
 
-          <ApiEndpointCodeSnippet 
+          <ApiEndpointCodeSnippet
             method={method}
             endpointUrl={endpointUrl}
             headers={headers}
-            requestPayload={['POST', 'PUT', 'PATCH'].includes(method) ? requestPayload : undefined}
+            requestPayload={
+              ["POST", "PUT", "PATCH"].includes(method)
+                ? requestPayload
+                : undefined
+            }
             selectedLanguage={selectedLanguage}
             onLanguageChange={onLanguageChange}
             isLoading={isLoading}

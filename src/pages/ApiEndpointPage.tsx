@@ -1,10 +1,9 @@
 
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import Layout from '@/components/layout/Layout';
 import ApiEndpoint from '@/components/api/ApiEndpoint';
 import EndpointNotFound from '@/components/api/EndpointNotFound';
 import { API_ENDPOINTS } from '@/data/apiEndpoints';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 
 const ApiEndpointPage: React.FC = () => {
   const { category, endpoint } = useParams<{ category: string; endpoint: string }>();
@@ -13,16 +12,16 @@ const ApiEndpointPage: React.FC = () => {
   
   if (!apiData) {
     return (
-      <Layout>
+     
         <div className="container mx-auto py-1">
           <EndpointNotFound />
         </div>
-      </Layout>
+     
     );
   }
 
   return (
-    <Layout>
+   
       <div className="container mx-auto py-1">
         <ApiEndpoint
           title={apiData.title}
@@ -35,7 +34,7 @@ const ApiEndpointPage: React.FC = () => {
           pathParams={apiData.pathParams}
         />
       </div>
-    </Layout>
+   
   );
 };
 

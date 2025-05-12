@@ -42,14 +42,6 @@ const ResponseDisplay: React.FC<ResponseDisplayProps> = ({
   if (response && !apiResponseStatus?.success) {
     return (
       <div className="mt-4 space-y-4">
-        <Alert variant="destructive" className="bg-red-900/20 border-red-700/30">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle className="text-red-400">Error</AlertTitle>
-          <AlertDescription className="text-red-400 text-sm">
-            {apiResponseStatus?.message || "An error occurred"}
-          </AlertDescription>
-        </Alert>
-        
         <div className="relative">
           <h4 className="font-semibold text-gray-700 text-sm mb-2">RESPONSE</h4>
           <pre className="bg-gray-800 p-3 rounded-md text-xs overflow-auto max-h-96 text-gray-300">

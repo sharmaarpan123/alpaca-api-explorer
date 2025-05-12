@@ -17,7 +17,6 @@ interface RequestBodyEditorProps {
   setRequestPayload: (value: string) => void;
   requestFields?: RequestField[];
   method: string;
-  onTryItClick?: () => void;
 }
 
 const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
@@ -25,7 +24,6 @@ const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
   setRequestPayload,
   requestFields = [],
   method,
-  onTryItClick
 }) => {
   const [formValues, setFormValues] = useState<Record<string, any>>({});
   
@@ -83,15 +81,7 @@ const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
           )}
         </div>
         
-        {onTryItClick && (
-          <Button 
-            className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-700" 
-            type="button"
-            onClick={onTryItClick}
-          >
-            Try It!
-          </Button>
-        )}
+       
       </CardContent>
     </Card>
   );
