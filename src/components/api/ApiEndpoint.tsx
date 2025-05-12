@@ -12,6 +12,7 @@ import ApiEndpointCodeSnippet from './ApiEndpointCodeSnippet';
 import ResponseKeysDisplay from './ResponseKeysDisplay';
 import { Card } from '@/components/ui/card';
 import ApiEndpointTabs from './ApiEndpointTabs';
+import api from '@/lib/api';
 import axios from 'axios';
 
 interface ParamField {
@@ -182,11 +183,6 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
       // Set the active tab to "response" to show the user the results
       setActiveTab("response");
       
-      // In a real app, this would call your actual API
-      // For now, we'll simulate an API call with a timeout
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      let mockResponse;
       let parsedPayload: Record<string, any> = {};
       
       // Parse the request payload if it's present
@@ -199,117 +195,74 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         }
       }
 
-      // Generate a dynamic mock response based on the endpoint and method
-      if (endpoint.includes('assets')) {
-        mockResponse = {
-          success: true,
-          timestamp: new Date().toISOString(),
-          data: {
-            assets: [
-              { id: 'AAPL', name: 'Apple Inc', exchange: 'NASDAQ', status: 'active', tradable: true, marginable: true, shortable: true, easy_to_borrow: true },
-              { id: 'MSFT', name: 'Microsoft Corporation', exchange: 'NASDAQ', status: 'active', tradable: true, marginable: true, shortable: true, easy_to_borrow: true },
-              { id: 'TSLA', name: 'Tesla Inc', exchange: 'NASDAQ', status: 'active', tradable: true, marginable: true, shortable: true, easy_to_borrow: true },
-              { id: 'AMZN', name: 'Amazon.com Inc', exchange: 'NASDAQ', status: 'active', tradable: true, marginable: true, shortable: true, easy_to_borrow: true }
-            ]
+      const apiUrl = import.meta.env.VITE_BASE_URL || 'https://api.deviden.com';
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(requiresAuth && (token || apiKeyId) ? {'Authorization': `Bearer ${token || apiKeyId}`} : {}),
+        ...(apiSecretKey ? {'X-API-Key': apiSecretKey} : {})
+      };
+
+      // Create a custom instance for this specific call to avoid interceptors
+      const apiInstance = axios.create({
+        baseURL: apiUrl,
+        headers
+      });
+
+      let apiResponse;
+      
+      // Prepare query parameters
+      const queryParamsObj: Record<string, string> = {};
+      if (queryParams) {
+        Object.keys(queryParams).forEach(key => {
+          if (paramValues[key]) {
+            queryParamsObj[key] = paramValues[key];
           }
-        };
-      } else if (endpoint.includes('orders')) {
-        if (method === 'POST') {
-          // Creating a new order
-          mockResponse = {
-            success: true,
-            timestamp: new Date().toISOString(),
-            data: {
-              orderId: `order_${Math.random().toString(36).substring(2, 10)}`,
-              status: 'pending',
-              createdAt: new Date().toISOString(),
-              ...parsedPayload
-            }
-          };
-        } else {
-          // Getting order list
-          mockResponse = {
-            success: true,
-            timestamp: new Date().toISOString(),
-            data: {
-              orders: [
-                { 
-                  id: 'ord_123', 
-                  symbol: parsedPayload.symbol || 'AAPL', 
-                  side: parsedPayload.side || 'buy', 
-                  qty: 10, 
-                  type: parsedPayload.type || 'market', 
-                  time_in_force: 'day', 
-                  status: 'filled' 
-                },
-                { id: 'ord_456', symbol: 'MSFT', side: 'sell', qty: 5, type: 'limit', time_in_force: 'gtc', status: 'open' }
-              ]
-            }
-          };
-        }
-      } else if (endpoint.includes('quotes')) {
-        mockResponse = {
-          success: true,
-          timestamp: new Date().toISOString(),
-          data: {
-            quotes: [
-              { 
-                symbol: parsedPayload.symbol || 'AAPL',
-                price: 178.32,
-                bidPrice: 178.30,
-                bidSize: 500,
-                askPrice: 178.34,
-                askSize: 700,
-                timestamp: new Date().toISOString()
-              }
-            ]
-          }
-        };
-      } else if (endpoint.includes('bars')) {
-        mockResponse = {
-          success: true,
-          timestamp: new Date().toISOString(),
-          data: {
-            bars: [
-              { 
-                symbol: parsedPayload.symbol || 'AAPL',
-                open: 177.50,
-                high: 179.25,
-                low: 176.80,
-                close: 178.32,
-                volume: 25000000,
-                timestamp: new Date().toISOString()
-              },
-              { 
-                symbol: parsedPayload.symbol || 'AAPL',
-                open: 178.32,
-                high: 180.15,
-                low: 177.95,
-                close: 179.10,
-                volume: 22000000,
-                timestamp: new Date(Date.now() + 3600000).toISOString()
-              }
-            ]
-          }
-        };
-      } else {
-        // Default generic response
-        mockResponse = {
-          success: true,
-          timestamp: new Date().toISOString(),
-          data: {
-            message: `${method} request to ${endpoint} was successful`,
-            endpoint: endpoint,
-            params: paramValues,
-            body: parsedPayload
-          }
-        };
+        });
       }
 
-      setResponse(mockResponse);
-    } catch (err) {
+      // Replace path parameters in the endpoint
+      let apiEndpoint = endpoint;
+      if (pathParams) {
+        Object.keys(pathParams).forEach(param => {
+          if (paramValues[param]) {
+            apiEndpoint = apiEndpoint.replace(`{${param}}`, paramValues[param]);
+          }
+        });
+      }
+      
+      // Make the API call based on the method
+      switch (method) {
+        case 'GET':
+          apiResponse = await apiInstance.get(apiEndpoint, { params: queryParamsObj });
+          break;
+        case 'POST':
+          apiResponse = await apiInstance.post(apiEndpoint, parsedPayload, { params: queryParamsObj });
+          break;
+        case 'PUT':
+          apiResponse = await apiInstance.put(apiEndpoint, parsedPayload, { params: queryParamsObj });
+          break;
+        case 'PATCH':
+          apiResponse = await apiInstance.patch(apiEndpoint, parsedPayload, { params: queryParamsObj });
+          break;
+        case 'DELETE':
+          apiResponse = await apiInstance.delete(apiEndpoint, { 
+            data: Object.keys(parsedPayload).length > 0 ? parsedPayload : undefined,
+            params: queryParamsObj 
+          });
+          break;
+        default:
+          throw new Error(`Unsupported method: ${method}`);
+      }
+      
+      setResponse(apiResponse.data);
+    } catch (err: any) {
       console.error('API call error:', err);
-      setError('An error occurred while making the API request');
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || err.message || 'An error occurred while making the API request');
+        setResponse(err.response?.data || null);
+      } else {
+        setError('An error occurred while making the API request');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -391,7 +344,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
               setApiSecretKey={setApiSecretKey}
             />
             
-            <BaseUrlCard baseUrl="https://api.deviden.com" />
+            <BaseUrlCard baseUrl={import.meta.env.VITE_BASE_URL || "https://api.deviden.com"} />
 
             <ApiEndpointCodeSnippet 
               method={method}
