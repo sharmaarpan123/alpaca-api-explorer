@@ -284,27 +284,23 @@ export const replacePahParams = (
 
 // Get response keys based on endpoint
 export const getResponseKeys = (endpoint: string) => {
-  if (endpoint.includes("assets")) {
-    return [
-      {
-        status: "200",
-        description: "An Asset object",
-        example: { id: "AAPL", name: "Apple Inc", exchange: "NASDAQ" },
-      },
-      { status: "404", description: "Not Found", example: null },
-    ];
-  } else if (endpoint.includes("orders")) {
-    return [
-      {
-        status: "200",
-        description: "Order details",
-        example: { id: "ord_123", symbol: "AAPL", side: "buy" },
-      },
-      { status: "404", description: "Not Found", example: null },
-    ];
+  const endpointKey = getEndpointKey(endpoint);
+  return getResponseExamples(endpointKey);
+};
+
+// Helper to extract endpoint key from full path
+export const getEndpointKey = (endpoint: string): string => {
+  const parts = endpoint.split('/');
+  const category = parts[3] || ''; // e.g., 'user', 'stock'
+  const action = parts[4] || '';   // e.g., 'clock', 'assets'
+  
+  if (category === 'user') {
+    return `users/${action}`;
+  } else if (category === 'stock') {
+    return `stocks/${action}`;
+  } else if (category === 'order') {
+    return `orders/${action}`;
   }
-  return [
-    { status: "200", description: "Success", example: { success: true } },
-    { status: "404", description: "Not Found", example: null },
-  ];
+  
+  return '';
 };

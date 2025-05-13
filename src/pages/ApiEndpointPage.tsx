@@ -1,7 +1,7 @@
 
 import ApiEndpoint from '@/components/api/ApiEndpoint';
 import EndpointNotFound from '@/components/api/EndpointNotFound';
-import { API_ENDPOINTS } from '@/data/apiEndpoints';
+import { API_ENDPOINTS, getResponseExamples } from '@/data/apiEndpoints';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -18,6 +18,9 @@ const ApiEndpointPage: React.FC = () => {
     );
   }
 
+  // Get response examples for this endpoint
+  const responseExamples = getResponseExamples(endpointKey);
+
   return (
     <div className="container mx-auto py-1">
       <ApiEndpoint
@@ -29,6 +32,7 @@ const ApiEndpointPage: React.FC = () => {
         requestBody={apiData.requestBody}
         queryParams={apiData.queryParams}
         pathParams={apiData.pathParams}
+        responseExamples={responseExamples}
       />
     </div>
   );

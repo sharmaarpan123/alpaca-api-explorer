@@ -9,6 +9,13 @@ export interface ParamsObject {
   [key: string]: ParamField;
 }
 
+// Define the structure for response examples
+interface ResponseExample {
+  status: string;
+  description: string;
+  example: any;
+}
+
 // Define the structure of an API endpoint
 export interface ApiEndpointData {
   title: string;
@@ -19,6 +26,7 @@ export interface ApiEndpointData {
   requestBody?: Record<string, any>;
   queryParams?: ParamsObject;
   pathParams?: ParamsObject;
+  responseExamples?: ResponseExample[];
 }
 
 // API endpoints data based on the Postman collection
@@ -29,7 +37,42 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     method: 'POST',
     path: 'api/v1/user/clock',
     description: 'Get server time information',
-    requiresAuth: true
+    requiresAuth: true,
+    responseExamples: [
+      {
+        status: '200',
+        description: 'Successful operation',
+        example: {
+          data: {
+            afterHours: false,
+            currencies: {
+              crypto: "open",
+              fx: "open"
+            },
+            earlyHours: false,
+            exchanges: {
+              nasdaq: "closed",
+              nyse: "closed",
+              otc: "closed"
+            },
+            indicesGroups: {
+              s_and_p: "closed",
+              societe_generale: "closed",
+              msci: "closed",
+              ftse_russell: "closed",
+              mstar: "open",
+              mstarc: "open",
+              cccy: "open",
+              cgi: "closed",
+              nasdaq: "closed",
+              dow_jones: "closed"
+            },
+            market: "closed",
+            serverTime: "2025-05-13T02:00:44-04:00"
+          }
+        }
+      }
+    ]
   },
  
   'users/get-account-number': {
@@ -62,7 +105,24 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
       order: -1,
       orderBy: 'exchange',
       page: 1
-    }
+    },
+    responseExamples: [
+      {
+        status: '200',
+        description: 'An array of asset objects',
+        example: [
+          {
+            id: "string",
+            class: "us_equity",
+            cusip: "037833100",
+            exchange: "NASDAQ",
+            name: "Apple Inc.",
+            symbol: "AAPL",
+            status: "active"
+          }
+        ]
+      }
+    ]
   },
 
   'stocks/assets-details': {
@@ -261,4 +321,22 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
       type: 'FEE'
     }
   }
+};
+
+// Helper function to get response examples for an endpoint
+export const getResponseExamples = (endpointKey: string): ResponseExample[] => {
+  const endpoint = API_ENDPOINTS[endpointKey as keyof typeof API_ENDPOINTS];
+  
+  if (!endpoint || !endpoint.responseExamples) {
+    // Default response example if none provided
+    return [
+      {
+        status: '200',
+        description: 'Successful operation',
+        example: { message: 'Operation completed successfully' }
+      }
+    ];
+  }
+  
+  return endpoint.responseExamples;
 };
