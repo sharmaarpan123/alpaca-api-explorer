@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import ApiEndpointContent from "./ApiEndpointContent";
 import { ProgrammingLanguage } from "./CodeSnippet";
@@ -24,7 +25,6 @@ interface ApiEndpointProps {
   requestBody?: Record<string, any>;
   queryParams?: ParamsObject;
   pathParams?: ParamsObject;
-  children?: React.ReactNode;
 }
 
 const ApiEndpoint: React.FC<ApiEndpointProps> = ({
@@ -38,7 +38,6 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
   pathParams,
 }) => {
   const token = localStorage.getItem("token");
-  const [apiKeyId, setApiKeyId] = useState<string>("");
   const [apiSecretKey, setApiSecretKey] = useState<string>("");
   const [selectedLanguage, setSelectedLanguage] =
     useState<ProgrammingLanguage>("shell");
@@ -47,7 +46,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     requestBody ? JSON.stringify(requestBody, null, 2) : "{}"
   );
 
-  const { privateKey } = useAuth()
+  const { privateKey } = useAuth();
 
   const { isLoading, response, error, handleApiCall } = useApiCall({
     method,
@@ -66,8 +65,6 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     paramValues
   );
 
-
-
   const handleApiCallClick = async () => {
     await handleApiCall(
       paramValues,
@@ -75,7 +72,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
       pathParams,
       queryParams,
       token,
-       privateKey ,
+      privateKey,
       apiSecretKey
     );
   };
@@ -96,8 +93,6 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         description={description}
         requiresAuth={requiresAuth}
         endpointUrl={endpointUrl}
-        apiKeyId={apiKeyId}
-        setApiKeyId={setApiKeyId}
         apiSecretKey={apiSecretKey}
         setApiSecretKey={setApiSecretKey}
         token={token}

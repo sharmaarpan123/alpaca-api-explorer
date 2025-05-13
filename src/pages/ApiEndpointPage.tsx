@@ -12,29 +12,25 @@ const ApiEndpointPage: React.FC = () => {
   
   if (!apiData) {
     return (
-     
-        <div className="container mx-auto py-1">
-          <EndpointNotFound />
-        </div>
-     
+      <div className="container mx-auto py-1">
+        <EndpointNotFound />
+      </div>
     );
   }
 
   return (
-   
-      <div className="container mx-auto py-1">
-        <ApiEndpoint
-          title={apiData.title}
-          method={apiData.method as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'}
-          endpoint={apiData.path}
-          description={apiData.description}
-          requiresAuth={apiData.requiresAuth}
-          requestBody={apiData.requestBody}
-          queryParams={apiData.queryParams}
-          pathParams={apiData.pathParams}
-        />
-      </div>
-   
+    <div className="container mx-auto py-1">
+      <ApiEndpoint
+        title={apiData.title}
+        method={apiData.method as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'}
+        endpoint={apiData.path}
+        description={apiData.description}
+        requiresAuth={apiData.requiresAuth}
+        requestBody={apiData.requestBody}
+        queryParams={apiData.queryParams}
+        pathParams={apiData.pathParams}
+      />
+    </div>
   );
 };
 

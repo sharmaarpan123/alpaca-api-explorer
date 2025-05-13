@@ -1,3 +1,4 @@
+
 import { Card } from "@/components/ui/card";
 import { ParamsObject } from "@/data/apiEndpoints";
 import React from "react";
@@ -16,8 +17,6 @@ interface ApiEndpointContentProps {
   description: string;
   requiresAuth: boolean;
   endpointUrl: string;
-  apiKeyId: string;
-  setApiKeyId: (value: string) => void;
   apiSecretKey: string;
   setApiSecretKey: (value: string) => void;
   token?: string;
@@ -42,8 +41,6 @@ const ApiEndpointContent: React.FC<ApiEndpointContentProps> = ({
   endpoint,
   requiresAuth,
   endpointUrl,
-  apiKeyId,
-
   apiSecretKey,
   setApiSecretKey,
   token,
@@ -68,7 +65,7 @@ const ApiEndpointContent: React.FC<ApiEndpointContentProps> = ({
     Accept: "application/json",
     Authorization: `Bearer ${token}`,
     accesstoken: token,
-    accountnumber : apiSecretKey,
+    accountnumber: apiSecretKey,
     privateApiKey: privateKey,
   };
 
@@ -82,7 +79,6 @@ const ApiEndpointContent: React.FC<ApiEndpointContentProps> = ({
           method={method}
           requiresAuth={requiresAuth}
           token={token}
-          apiKeyId={apiKeyId}
           requestPayload={requestPayload}
           setRequestPayload={setRequestPayload}
           pathParams={pathParams}

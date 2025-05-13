@@ -1,7 +1,6 @@
 
 import React from 'react';
 import ParamEditor from './ParamEditor';
-import HeadersDisplay from './HeadersDisplay';
 import RequestBodyEditor from './RequestBodyEditor';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -19,19 +18,16 @@ interface RequestField {
 }
 
 interface ApiEndpointRequestProps {
-  endpointUrl: string;
   pathParams?: Record<string, any>;
   queryParams?: Record<string, any>;
   paramValues: Record<string, string>;
   onParamChange: (key: string, value: string) => void;
   requiresAuth: boolean;
   token?: string;
-  apiKeyId?: string;
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   requestPayload: string;
   setRequestPayload: (payload: string) => void;
   requestFields?: RequestField[];
-  onTryItClick?: () => void;
 }
 
 const ApiEndpointRequest: React.FC<ApiEndpointRequestProps> = ({
@@ -39,9 +35,6 @@ const ApiEndpointRequest: React.FC<ApiEndpointRequestProps> = ({
   queryParams,
   paramValues,
   onParamChange,
-  requiresAuth,
-  token,
-  apiKeyId,
   method,
   requestPayload,
   setRequestPayload,
@@ -53,7 +46,6 @@ const ApiEndpointRequest: React.FC<ApiEndpointRequestProps> = ({
         <CardTitle className="text-sm font-medium">REQUEST DETAILS</CardTitle>
       </CardHeader>
       <CardContent className="p-4 space-y-4">
-        
         {pathParams && Object.keys(pathParams).length > 0 && (
           <ParamEditor 
             title="Path Parameters"
@@ -72,14 +64,12 @@ const ApiEndpointRequest: React.FC<ApiEndpointRequestProps> = ({
           />
         )}
         
-     
         {(method === 'POST' || method === 'PUT' || method === 'PATCH') && (
           <RequestBodyEditor
             requestPayload={requestPayload}
             setRequestPayload={setRequestPayload}
             requestFields={requestFields}
             method={method}
-       
           />
         )}
       </CardContent>
