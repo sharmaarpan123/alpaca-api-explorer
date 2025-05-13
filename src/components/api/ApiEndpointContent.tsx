@@ -10,6 +10,12 @@ import ResponseKeysDisplay from "./ResponseKeysDisplay";
 import { getResponseKeys } from "./utils/apiUtils";
 import { useAuth } from "@/contexts/AuthContext";
 
+interface ResponseExample {
+  status: string;
+  description: string;
+  example: any;
+}
+
 interface ApiEndpointContentProps {
   title: string;
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
@@ -34,6 +40,7 @@ interface ApiEndpointContentProps {
   response: any;
   handleApiCall: () => void;
   children?: React.ReactNode;
+  responseExamples?: ResponseExample[];
 }
 
 const ApiEndpointContent: React.FC<ApiEndpointContentProps> = ({
@@ -58,6 +65,7 @@ const ApiEndpointContent: React.FC<ApiEndpointContentProps> = ({
   response,
   handleApiCall,
   children,
+  responseExamples,
 }) => {
   const { privateKey } = useAuth();
   const headers = {
