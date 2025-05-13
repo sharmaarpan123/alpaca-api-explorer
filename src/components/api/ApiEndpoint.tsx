@@ -16,6 +16,12 @@ interface ParamsObject {
   [key: string]: ParamField;
 }
 
+interface ResponseExample {
+  status: string;
+  description: string;
+  example: any;
+}
+
 interface ApiEndpointProps {
   title: string;
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
@@ -25,6 +31,7 @@ interface ApiEndpointProps {
   requestBody?: Record<string, any>;
   queryParams?: ParamsObject;
   pathParams?: ParamsObject;
+  responseExamples?: ResponseExample[];
 }
 
 const ApiEndpoint: React.FC<ApiEndpointProps> = ({
@@ -36,6 +43,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
   requestBody,
   queryParams,
   pathParams,
+  responseExamples,
 }) => {
   const token = localStorage.getItem("token");
   const [apiSecretKey, setApiSecretKey] = useState<string>("");
@@ -109,6 +117,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         error={error}
         response={response}
         handleApiCall={handleApiCallClick}
+        responseExamples={responseExamples}
       />
     </div>
   );

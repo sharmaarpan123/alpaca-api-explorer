@@ -1,7 +1,7 @@
 import axios from "axios";
 import api from "@/lib/api";
 import { toast } from "sonner";
-import { ParamsObject } from "@/data/apiEndpoints";
+import { ParamsObject, getResponseExamples } from "@/data/apiEndpoints";
 
 // Convert requestBody to requestFields format
 export const generateRequestFields = (requestBody?: Record<string, any>) => {
