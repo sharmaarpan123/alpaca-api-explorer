@@ -68,6 +68,7 @@ const ApiEndpointTabs: React.FC<ApiEndpointTabsProps> = ({
 
         {(method === 'POST' || method === 'PUT' || method === 'PATCH') && requestBody && (
           <RequestBodyEditor
+          requestBody={requestBody}
             requestPayload={requestPayload}
             setRequestPayload={setRequestPayload}
             method={method}

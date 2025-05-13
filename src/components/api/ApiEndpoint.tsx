@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import ApiEndpointContent from "./ApiEndpointContent";
 import { ProgrammingLanguage } from "./CodeSnippet";
@@ -6,6 +5,7 @@ import EndpointHeader from "./EndpointHeader";
 import useApiCall from "./hooks/useApiCall";
 import { constructEndpointUrl } from "./utils/urlUtils";
 import { useAuth } from "@/contexts/AuthContext";
+import { ResponseExample } from "@/data/apiEndpoints";
 
 interface ParamField {
   type: string;
@@ -14,12 +14,6 @@ interface ParamField {
 
 interface ParamsObject {
   [key: string]: ParamField;
-}
-
-interface ResponseExample {
-  status: string;
-  description: string;
-  example: any;
 }
 
 interface ApiEndpointProps {
@@ -51,7 +45,16 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     useState<ProgrammingLanguage>("shell");
   const [paramValues, setParamValues] = useState<Record<string, string>>({});
   const [requestPayload, setRequestPayload] = useState<string>(
-    requestBody ? JSON.stringify(requestBody, null, 2) : "{}"
+    requestBody
+      ? JSON.stringify(
+          Object.keys(requestBody).reduce((acc, key) => {
+            acc[key] = requestBody[key].default;
+            return acc;
+          }, {} as Record<string, any>),
+          null,
+          2
+        )
+      : "{}"
   );
 
   const { privateKey } = useAuth();

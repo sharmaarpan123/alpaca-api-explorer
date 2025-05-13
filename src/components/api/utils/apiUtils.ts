@@ -100,6 +100,14 @@ export const getFieldDescription = (fieldName: string): string => {
   return descriptions[fieldName] || "";
 };
 
+const logOutAndRedirect = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("accountId");
+  localStorage.removeItem("privateKey");
+  window.location.href = "/login";
+};
+
 // Make the API call based on method and parameters
 export const makeApiCall = async (
   method: string,
@@ -146,7 +154,11 @@ export const makeApiCall = async (
             )) &&
           !originalRequest._retry
         ) {
-          // alert("re fresh the token");
+          const confirm = window.confirm("refresh the token");
+          if (!confirm) {
+            logOutAndRedirect();
+            return;
+          }
           originalRequest._retry = true;
 
           try {
@@ -156,9 +168,7 @@ export const makeApiCall = async (
 
             const response = await apiInstance.post(
               "/api/v1/user/get-access-token",
-              {
-                refreshToken,
-              },
+              {},
               {
                 headers: {
                   refreshToken,
@@ -166,25 +176,26 @@ export const makeApiCall = async (
               }
             );
 
-            const { token } = response.data;
+            if (response?.data?.status_code === 200) {
+              const { accessToken } = response?.data?.data;
 
-            // Update token in localStorage
-            localStorage.setItem("token", token);
+              // Update token in localStorage
+              localStorage.setItem("token", accessToken);
 
-            // Update Authorization header
-            originalRequest.headers.Authorization = `Bearer ${token}`;
+              // Update Authorization header
+              originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+              originalRequest.headers.accesstoken = `${accessToken}`;
 
-            // Retry the original request
-            return apiInstance(originalRequest);
+              // Retry the original request
+              return apiInstance(originalRequest);
+            } else {
+              alert("refresh token failed");
+              // logOutAndRedirect();
+            }
           } catch (refreshError) {
             // If refresh token fails, clear auth data and redirect to login
+            logOutAndRedirect();
 
-            localStorage.removeItem("token");
-            localStorage.removeItem("refreshToken");
-            localStorage.removeItem("accountId");
-            localStorage.removeItem("privateKey");
-
-            window.location.href = "/login";
             return Promise.reject(refreshError);
           }
         }
@@ -290,17 +301,17 @@ export const getResponseKeys = (endpoint: string) => {
 
 // Helper to extract endpoint key from full path
 export const getEndpointKey = (endpoint: string): string => {
-  const parts = endpoint.split('/');
-  const category = parts[3] || ''; // e.g., 'user', 'stock'
-  const action = parts[4] || '';   // e.g., 'clock', 'assets'
-  
-  if (category === 'user') {
+  const parts = endpoint.split("/");
+  const category = parts[3] || ""; // e.g., 'user', 'stock'
+  const action = parts[4] || ""; // e.g., 'clock', 'assets'
+
+  if (category === "user") {
     return `users/${action}`;
-  } else if (category === 'stock') {
+  } else if (category === "stock") {
     return `stocks/${action}`;
-  } else if (category === 'order') {
+  } else if (category === "order") {
     return `orders/${action}`;
   }
-  
-  return '';
+
+  return "";
 };

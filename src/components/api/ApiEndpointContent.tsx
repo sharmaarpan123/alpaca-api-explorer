@@ -1,6 +1,6 @@
 
 import { Card } from "@/components/ui/card";
-import { ParamsObject } from "@/data/apiEndpoints";
+import { ParamsObject, ResponseExample } from "@/data/apiEndpoints";
 import React from "react";
 import ApiEndpointCodeSnippet from "./ApiEndpointCodeSnippet";
 import ApiEndpointTabs from "./ApiEndpointTabs";
@@ -10,11 +10,7 @@ import ResponseKeysDisplay from "./ResponseKeysDisplay";
 import { getResponseKeys } from "./utils/apiUtils";
 import { useAuth } from "@/contexts/AuthContext";
 
-interface ResponseExample {
-  status: string;
-  description: string;
-  example: any;
-}
+
 
 interface ApiEndpointContentProps {
   title: string;
@@ -77,7 +73,6 @@ const ApiEndpointContent: React.FC<ApiEndpointContentProps> = ({
     privateApiKey: privateKey,
   };
 
-  const responseKeys = getResponseKeys(endpoint);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -103,7 +98,7 @@ const ApiEndpointContent: React.FC<ApiEndpointContentProps> = ({
         </ApiEndpointTabs>
 
         <Card className="bg-white border border-gray-200 shadow-sm rounded-md mb-4">
-          <ResponseKeysDisplay responseKeys={responseKeys} />
+          <ResponseKeysDisplay responseExamples={responseExamples} />
         </Card>
       </div>
 

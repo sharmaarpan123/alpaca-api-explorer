@@ -18,8 +18,11 @@ const ApiEndpointPage: React.FC = () => {
     );
   }
 
-  // Get response examples for this endpoint
+
+  
   const responseExamples = getResponseExamples(endpointKey);
+
+
 
   return (
     <div className="container mx-auto py-1">
