@@ -49,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
         isOpen ? "block" : "hidden md:block"
       )}
     >
-      <nav className="p-4">
+      <nav className="p-2">
         <div className="mb-8">
           <div className="text-sm text-gray-400 uppercase font-medium px-4 py-2">
             API Reference

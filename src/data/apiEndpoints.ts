@@ -25,8 +25,6 @@ export interface ApiEndpointData {
   description: string;
   requiresAuth: boolean;
   requestBody?: Record<string, any>;
-  queryParams?: ParamsObject;
-  pathParams?: ParamsObject;
   responseExamples?: ResponseExample[];
 }
 
@@ -205,24 +203,7 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     description: "Get list of available assets",
     requiresAuth: true,
     requestBody: {
-      isAscii: {
-        type: payloadTypes.checkbox,
-        description: "Whether to return ASCII characters",
-        required: false,
-        default: false,
-      },
-      date: { // yyyy-mm-dd
-        type: payloadTypes.date,
-        description: "Date to return assets for",
-        required: false,
-        default: new Date().toISOString(),
-      },
-      time: { // 24 hour format
-        type: payloadTypes.time,
-        description: "Time to return assets for",
-        required: false,
-        default: new Date().toISOString(),
-      },
+     
       limit: {
         type: payloadTypes.number,
         description: "Limit the number of assets to return",
@@ -232,7 +213,7 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
       order: {
         type: payloadTypes.number,
         description: "Order the assets by a specific field",
-        required: true,
+        // required: true,
         default: -1,
       },
       orderBy: {
@@ -331,7 +312,12 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     description: "Get detailed information about a specific asset",
     requiresAuth: true,
     requestBody: {
-      value: "AAPL",
+      value: {
+        type: payloadTypes.string,
+        description: "The asset to get details for",
+        required: true,
+        default: "",
+      },
     },
   },
 

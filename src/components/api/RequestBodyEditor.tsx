@@ -14,73 +14,42 @@ interface RequestBodyEditorProps {
   requestPayload: string;
   setRequestPayload: (value: string) => void;
   method: string;
+  requestBody: Record<string, RequestField>;
+  formValues: Record<string, any>;
+  setFormValues: (values: Record<string, any>) => void;
+  formErrors: Record<string, string>;
+  setFormErrors: (errors: Record<string, string>) => void;
 }
 
 const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
-  requestPayload,
   setRequestPayload,
   method,
+  requestBody,
+  formValues,
+  setFormValues,
+  formErrors,
+  setFormErrors,
 }) => {
 
-  console.log(requestPayload , "requestPayload")
-  const requestBody: Record<string, RequestField> = {
-   
-    limit: {
-      type: payloadTypes.number,
-      description: "Limit the number of assets to return",
-      required: true,
-      default: 10,
-    },
-    order: {
-      type: payloadTypes.number,
-      description: "Order the assets by a specific field",
-      required: true,
-      default: -1,
-    },
-    orderBy: {
-      type: payloadTypes.select,
-      description: "Field to order the assets by",
-      required: true,
-      default: "exchange",
-      options: ["exchange", "name", "shortName", "symbol", "type"],
-    },
-    page: {
-      type: payloadTypes.number,
-      description: "Page number to return",
-      required: true,
-      default: 1,
-    },
-  };
-
-  const [formValues, setFormValues] = useState<Record<string, any>>({});
-
-  useEffect(() => {
-    const obj = {};
-
-    Object.keys(requestBody).forEach((key) => {
-      obj[key] = requestBody[key].default;
-    });
-
-    console.log(obj, "obj");
-
-   
-    setFormValues((p) => obj);
-  }, []);
 
   const handleFieldChange = (name: string, value: any) => {
     const updated = { ...formValues, [name]: value };
     setFormValues(updated);
     setRequestPayload(JSON.stringify(updated, null, 2));
-  };
+
+    setFormErrors({ ...formErrors, [name]: (!value && value != 0) && requestBody[name].required ? "This field is required" : "" });
+  }; 
+
+  console.log(formErrors, "formErrors");
 
   if (!["POST", "PUT", "PATCH"].includes(method)) return null;
 
   return (
     <Card className="bg-white border border-gray-200 shadow-sm rounded-md mb-4">
-      <CardHeader className="py-3 px-4 border-b border-gray-200">
+      <CardHeader className="py-1 px-1 border-b border-gray-200">
         <CardTitle className="text-sm font-medium">Request Body</CardTitle>
       </CardHeader>
-      <CardContent className="p-4 space-y-4">
+      <CardContent className="p-2 space-y-1">
         {Object.entries(requestBody).map(([key, config]) => {
           const value = formValues[key];
 
@@ -95,6 +64,7 @@ const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
               description={config.description}
               options={config.options}
               onChange={(val) => handleFieldChange(key, val)}
+              errors={formErrors[key]}
             />
           );
         })}
@@ -114,6 +84,7 @@ interface FieldInputProps {
   description?: string;
   options?: string[];
   onChange: (val: any) => void;
+  errors: string;
 }
 
 const FieldInput: React.FC<FieldInputProps> = ({
@@ -124,6 +95,7 @@ const FieldInput: React.FC<FieldInputProps> = ({
   description,
   options,
   onChange,
+  errors,
 }) => {
   const handleChange = (
     e: React.ChangeEvent<
@@ -163,7 +135,7 @@ const FieldInput: React.FC<FieldInputProps> = ({
 
       {type === "select" && options ? (
         <select
-          className="border rounded p-2 text-sm"
+          className="border rounded p-1 text-sm"
           value={value}
           onChange={handleChange}
         >
@@ -175,7 +147,7 @@ const FieldInput: React.FC<FieldInputProps> = ({
         </select>
       ) : type === "textarea" || type === "array" ? (
         <textarea
-          className="border rounded p-2 text-sm"
+          className="border rounded p-1 text-sm"
           value={
             typeof value === "string" ? value : JSON.stringify(value, null, 2)
           }
@@ -187,11 +159,12 @@ const FieldInput: React.FC<FieldInputProps> = ({
       ) : (
         <input
           type={type}
-          className="border rounded p-2 text-sm"
+          className="border rounded p-1 text-sm"
           value={value}
           onChange={handleChange}
         />
       )}
+      {errors && <p className="text-red-500">{errors}</p>}
     </div>
   );
 };

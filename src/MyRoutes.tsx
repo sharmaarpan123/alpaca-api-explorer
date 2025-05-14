@@ -16,24 +16,26 @@ const MyRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {!isAuthenticated ? (
-          <>
-            <Route path="/login" element={<Login />} />
-            <Route path="/*" element={<Navigate to={"/login"} />} />
-          </>
+        {isAuthenticated ? (
+         
+           <>
+           <Route element={<Layout />}>
+             <Route path="/" element={<Index />} />
+             <Route path="/api-reference" element={<ApiReference />} />
+             <Route
+               path="/api/:category/:endpoint"
+               element={<ApiEndpointPage />}
+             />
+           </Route>
+           <Route path="/login" element={<Navigate to={"/"} />} />
+           <Route path="*" element={<NotFound />} />
+         </>
         ) : (
           <>
-            <Route element={<Layout />}>
-              <Route path="/" element={<Index />} />
-              <Route path="/api-reference" element={<ApiReference />} />
-              <Route
-                path="/api/:category/:endpoint"
-                element={<ApiEndpointPage />}
-              />
-            </Route>
-            <Route path="/login" element={<Navigate to={"/"} />} />
-            <Route path="*" element={<NotFound />} />
-          </>
+          <Route path="/login" element={<Login />} />
+          <Route path="/*" element={<Navigate to={"/login"} />} />
+        </>
+         
         )}
       </Routes>
     </BrowserRouter>

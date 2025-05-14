@@ -207,6 +207,9 @@ export const makeApiCall = async (
 
     let apiResponse;
 
+
+   
+
     // Make the API call based on the method
     switch (method) {
       case "GET":

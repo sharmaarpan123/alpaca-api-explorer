@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { ProgrammingLanguage } from "./CodeSnippet";
@@ -29,7 +28,10 @@ interface ApiEndpointTabsProps {
   onLanguageChange: (language: ProgrammingLanguage) => void;
   error: string | null;
   response: any;
-  children?: React.ReactNode;
+  formValues: Record<string, any>;
+  formErrors: Record<string, string>;
+  setFormValues: (values: Record<string, any>) => void;
+  setFormErrors: (errors: Record<string, string>) => void;
 }
 
 const ApiEndpointTabs: React.FC<ApiEndpointTabsProps> = ({
@@ -41,41 +43,58 @@ const ApiEndpointTabs: React.FC<ApiEndpointTabsProps> = ({
   requestBody,
   paramValues,
   handleParamChange,
+  formValues,
+  formErrors,
+  setFormValues,
+  setFormErrors,
 }) => {
   return (
-    <Card className="shadow-sm">
-      <CardHeader className="py-2 px-3">
-        <CardTitle className="text-base">Request Details</CardTitle>
-      </CardHeader>
-      <CardContent className="py-2 px-3 text-sm space-y-3">
-        {pathParams && Object.keys(pathParams).length > 0 && (
-          <ParamEditor
-            title="Path Parameters"
-            params={pathParams}
-            paramValues={paramValues}
-            onParamChange={handleParamChange}
-          />
-        )}
+    <>
+      {(!pathParams || !Object.keys(pathParams).length) &&
+      (!queryParams || !Object.keys(queryParams).length) &&
+      (!requestBody || !Object.keys(requestBody).length) ? (
+        <></>
+      ) : (
+        <Card className="shadow-sm">
+          <CardHeader className="py-1 px-2">
+            <CardTitle className="text-base">Request Details</CardTitle>
+          </CardHeader>
+          <CardContent className="py-2 px-3 text-sm space-y-3">
+            {pathParams && Object.keys(pathParams).length > 0 && (
+              <ParamEditor
+                title="Path Parameters"
+                params={pathParams}
+                paramValues={paramValues}
+                onParamChange={handleParamChange}
+              />
+            )}
 
-        {queryParams && Object.keys(queryParams).length > 0 && (
-          <ParamEditor
-            title="Query Parameters"
-            params={queryParams}
-            paramValues={paramValues}
-            onParamChange={handleParamChange}
-          />
-        )}
+            {queryParams && Object.keys(queryParams).length > 0 && (
+              <ParamEditor
+                title="Query Parameters"
+                params={queryParams}
+                paramValues={paramValues}
+                onParamChange={handleParamChange}
+              />
+            )}
 
-        {(method === 'POST' || method === 'PUT' || method === 'PATCH') && requestBody && (
-          <RequestBodyEditor
-          requestBody={requestBody}
-            requestPayload={requestPayload}
-            setRequestPayload={setRequestPayload}
-            method={method}
-          />
-        )}
-      </CardContent>
-    </Card>
+            {(method === "POST" || method === "PUT" || method === "PATCH") &&
+              requestBody && (
+                <RequestBodyEditor
+                  requestBody={requestBody}
+                  requestPayload={requestPayload}
+                  setRequestPayload={setRequestPayload}
+                  method={method}
+                  formValues={formValues}
+                  setFormValues={setFormValues}
+                  formErrors={formErrors}
+                  setFormErrors={setFormErrors}
+                />
+              )}
+          </CardContent>
+        </Card>
+      )}
+    </>
   );
 };
 
