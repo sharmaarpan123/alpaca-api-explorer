@@ -25,6 +25,7 @@ const ApiEndpointPage: React.FC = () => {
   return (
     <div className="container mx-auto py-1 px-4">
       <ApiEndpoint
+        key={endpointKey}
         title={apiData.title}
         method={apiData.method as "GET" | "POST" | "PUT" | "DELETE" | "PATCH"}
         endpoint={apiData.path}

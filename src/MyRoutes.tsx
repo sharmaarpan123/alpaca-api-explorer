@@ -13,6 +13,8 @@ import Layout from "./components/layout/Layout";
 const MyRoutes = () => {
   const { isAuthenticated } = useAuth();
 
+  console.log(isAuthenticated , "isAuthenticated")
+
   return (
     <BrowserRouter>
       <Routes>

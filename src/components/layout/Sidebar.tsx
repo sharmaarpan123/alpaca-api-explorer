@@ -74,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                     {group.endpoints.map((endpoint) => (
                       <Link
                         key={endpoint.id}
-                        to={`/api/${group.id}/${endpoint.id}`}
+                        to={`/api/${group.id}/${endpoint.id}`} 
                         className={cn(
                           "block pl-6 pr-4 py-2 text-sm text-gray-400 hover:bg-gray-800 hover:text-white rounded-md",
                           isActive(group.id, endpoint.id) &&

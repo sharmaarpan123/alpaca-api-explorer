@@ -18,7 +18,7 @@ interface RequestBodyEditorProps {
   formValues: Record<string, any>;
   setFormValues: (values: Record<string, any>) => void;
   formErrors: Record<string, string>;
-  setFormErrors: (errors: Record<string, string>) => void;
+  setFormErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }
 
 const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
@@ -30,17 +30,20 @@ const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
   formErrors,
   setFormErrors,
 }) => {
-
-
+  console.log(formErrors , "formErrors")
   const handleFieldChange = (name: string, value: any) => {
     const updated = { ...formValues, [name]: value };
     setFormValues(updated);
     setRequestPayload(JSON.stringify(updated, null, 2));
 
-    setFormErrors({ ...formErrors, [name]: (!value && value != 0) && requestBody[name].required ? "This field is required" : "" });
-  }; 
-
-  console.log(formErrors, "formErrors");
+    setFormErrors((p) => ({
+      ...p,
+      [name]:
+        !value && value != "0" && requestBody[name].required
+          ? "This field is required"
+          : "",
+    }));
+  };
 
   if (!["POST", "PUT", "PATCH"].includes(method)) return null;
 
@@ -151,6 +154,7 @@ const FieldInput: React.FC<FieldInputProps> = ({
           value={
             typeof value === "string" ? value : JSON.stringify(value, null, 2)
           }
+          required={required}
           onChange={handleChange}
           rows={4}
         />
@@ -161,6 +165,7 @@ const FieldInput: React.FC<FieldInputProps> = ({
           type={type}
           className="border rounded p-1 text-sm"
           value={value}
+          required={required}
           onChange={handleChange}
         />
       )}

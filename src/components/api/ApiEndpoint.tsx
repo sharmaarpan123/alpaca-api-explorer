@@ -10,6 +10,7 @@ import EndpointHeader from "./EndpointHeader";
 import useApiCall from "./hooks/useApiCall";
 import ResponseKeysDisplay from "./ResponseKeysDisplay";
 import { constructEndpointUrl } from "./utils/urlUtils";
+import { useToast } from "@/hooks/use-toast";
 
 interface ParamField {
   type: string;
@@ -48,6 +49,8 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
   const [selectedLanguage, setSelectedLanguage] =
     useState<ProgrammingLanguage>("shell");
   const [paramValues, setParamValues] = useState<Record<string, string>>({});
+  const [formValues, setFormValues] = useState<Record<string, any>>({});
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [requestPayload, setRequestPayload] = useState<string>(
     requestBody
       ? JSON.stringify(
@@ -61,10 +64,9 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
       : "{}"
   );
 
-  const [formValues, setFormValues] = useState<Record<string, any>>({});
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-
   const { privateKey } = useAuth();
+
+  const { toast } = useToast();
 
   const { isLoading, response, error, handleApiCall } = useApiCall({
     method,
@@ -80,15 +82,23 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     if (!requestBody) {
       return;
     }
-    const obj = {};
+    const initialFormValues = {};
 
     Object.keys(requestBody).forEach((key) => {
-      obj[key] = requestBody[key].default;
+      initialFormValues[key] = requestBody[key].default;
     });
 
-    console.log(obj, "obj");
+    const initialErrors = {};
 
-    setFormValues((p) => obj);
+    Object.keys(requestBody).forEach((key) => {
+      initialErrors[key] = requestBody[key].default || !requestBody[key].required
+        ? ""
+        : "This field is required";
+    });
+
+    setFormErrors((p) => initialErrors);
+
+    setFormValues((p) => initialFormValues);
   }, []);
 
   const endpointUrl = constructEndpointUrl(
@@ -103,15 +113,20 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     Accept: "application/json",
     Authorization: `Bearer ${token}`,
     accesstoken: token,
-    accountnumber: apiSecretKey,
+    accountNumber: apiSecretKey,
     privateApiKey: privateKey,
   };
 
   const handleApiCallClick = async () => {
-    const isFormValid = Object.values(formErrors).every((error) => !error);
+    const isFormNotValid = Object.values(formErrors).some((error) => error);
 
-    if (!isFormValid) {
-      return;
+    if (isFormNotValid) {
+      return toast({
+        title: "Required Fields Error",
+        description: `Please fill all the required fields`,
+        variant:"destructive",
+        
+      });
     }
 
     await handleApiCall(

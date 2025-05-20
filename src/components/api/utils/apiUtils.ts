@@ -127,7 +127,7 @@ export const makeApiCall = async (
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(token ? { accesstoken: `${token}` } : {}),
       ...(apiKeyId ? { privateApiKey: `${apiKeyId}` } : {}),
-      ...(apiSecretKey ? { accountnumber: apiSecretKey } : {}),
+      ...(apiSecretKey ? { accountNumber: apiSecretKey } : {}),
     };
 
     // Create a custom instance for this specific call to avoid interceptors
@@ -190,7 +190,7 @@ export const makeApiCall = async (
               return apiInstance(originalRequest);
             } else {
               alert("refresh token failed");
-              // logOutAndRedirect();
+              logOutAndRedirect();
             }
           } catch (refreshError) {
             // If refresh token fails, clear auth data and redirect to login

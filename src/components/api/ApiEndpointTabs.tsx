@@ -31,7 +31,7 @@ interface ApiEndpointTabsProps {
   formValues: Record<string, any>;
   formErrors: Record<string, string>;
   setFormValues: (values: Record<string, any>) => void;
-  setFormErrors: (errors: Record<string, string>) => void;
+  setFormErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }
 
 const ApiEndpointTabs: React.FC<ApiEndpointTabsProps> = ({

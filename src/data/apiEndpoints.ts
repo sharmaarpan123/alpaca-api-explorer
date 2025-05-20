@@ -84,9 +84,9 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
       {
         status: "200",
         description: "Successful operation",
-        dataKey: "Orders",
+        dataKey: "data",
         example: {
-          type: responseExampleTypes.arrayOfObject,
+          type: responseExampleTypes.object,
           values: {
             afterHours: {
               type: "boolean",
@@ -163,22 +163,17 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
       {
         status: "200",
         description: "Successful operation",
-        dataKey: "Orders",
+        dataKey: "data",
         example: {
           type: "object",
           values: {
-            data: {
-              type: "object",
-              values: {
-                accountNumber: {
-                  type: "string",
-                  description: "User's account number",
-                },
-                accountId: {
-                  type: "string",
-                  description: "Unique identifier for the user's account",
-                },
-              },
+            accountNumber: {
+              type: "string",
+              description: "User's account number",
+            },
+            accountId: {
+              type: "string",
+              description: "Unique identifier for the user's account",
             },
           },
         },
@@ -193,6 +188,87 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     description: "Get user account details",
     requiresAuth: true,
     requestBody: {},
+    responseExamples: [
+      {
+        status: "200",
+        description: "Successful operation",
+        dataKey: "data",
+        example: {
+          type: "object",
+          values: {
+            email: { type: "string", description: "User's email address" },
+            accountId: {
+              type: "string",
+              description: "Unique account identifier",
+            },
+            first_name: { type: "string", description: "User's first name" },
+            last_name: { type: "string", description: "User's last name" },
+            mobileNumber: {
+              type: "string",
+              description: "User's mobile number",
+            },
+            profileImage: {
+              type: "string",
+              description: "URL to the user's profile image",
+            },
+            status: { type: "string", description: "Account approval status" },
+            walletCredit: {
+              type: "number",
+              description: "Credit amount in the wallet",
+            },
+            buyingPower: {
+              type: "number",
+              description: "Amount available to buy stocks",
+            },
+            equity: { type: "number", description: "Total equity value" },
+            isAlpacaApproved: {
+              type: "boolean",
+              description: "Alpaca account approval status",
+            },
+            openPlValue: {
+              type: "number",
+              description: "Open profit/loss value",
+            },
+            affiliatedRequest: {
+              type: ["string", "null"],
+              description: "Affiliation request status (nullable)",
+            },
+            cash_withdrawable: {
+              type: "number",
+              description: "Amount that can be withdrawn",
+            },
+            openPositionValue: {
+              type: "number",
+              description: "Value of open stock positions",
+            },
+            portfolioValue: {
+              type: "number",
+              description: "Total portfolio value",
+            },
+            totalValue: {
+              type: "number",
+              description: "Total value of positions",
+            },
+            equityPc: {
+              type: "number",
+              description: "Equity percentage change",
+            },
+            totalValuePc: {
+              type: "number",
+              description: "Total value percentage change",
+            },
+            openPositionValuePc: {
+              type: "number",
+              description: "Open position value percentage change",
+            },
+            exchangeRate: {
+              type: "number",
+              description: "Exchange rate applied to calculations",
+            },
+          },
+        },
+      },
+    ],
   },
 
   // Stocks endpoints
@@ -203,7 +279,6 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     description: "Get list of available assets",
     requiresAuth: true,
     requestBody: {
-     
       limit: {
         type: payloadTypes.number,
         description: "Limit the number of assets to return",
@@ -230,14 +305,13 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
         default: 1,
       },
     },
-
     responseExamples: [
       {
         status: "200",
         description: "Successful operation",
-        dataKey: "Orders",
+        dataKey: "Data",
         example: {
-          type: "object",
+          type: responseExampleTypes.object,
           values: {
             data: {
               type: responseExampleTypes.arrayOfObject,
@@ -311,6 +385,102 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/stock/assetsDetails",
     description: "Get detailed information about a specific asset",
     requiresAuth: true,
+    responseExamples: [
+      {
+        status: "200",
+        description: "Successful operation",
+        dataKey: "Data",
+        example: {
+          type: "object",
+          values: {
+            MarketCapitalization: {
+              type: "number",
+              description: "Total market value of the company",
+            },
+            createdAt: {
+              type: "string",
+              description: "Creation timestamp (ISO 8601 format)",
+            },
+            updatedAt: {
+              type: "string",
+              description: "Last update timestamp (ISO 8601 format)",
+            },
+            _id: {
+              type: "string",
+              description: "Unique identifier of the entry",
+            },
+            ISIN: {
+              type: "string",
+              description: "International Securities Identification Number",
+            },
+            type: { type: "string", description: "Type of equity or asset" },
+            exchange: {
+              type: "string",
+              description: "Exchange where the stock is listed",
+            },
+            symbol: {
+              type: "string",
+              description: "Ticker symbol of the stock",
+            },
+            name: { type: "string", description: "Full name of the company" },
+            status: {
+              type: "string",
+              description: "Listing status (e.g. active/inactive)",
+            },
+            shortName: {
+              type: "string",
+              description: "Short name or alias for the company",
+            },
+            industryAbrev: {
+              type: "string",
+              description: "Abbreviated industry name",
+            },
+            industryDescription: {
+              type: "string",
+              description: "Detailed industry description",
+            },
+            description: {
+              type: "string",
+              description: "Full business description",
+            },
+            imgUrl: {
+              type: "string",
+              description: "URL to the company logo/image",
+            },
+            imgUrlDark: {
+              type: "string",
+              description: "URL to the dark version of the image",
+            },
+            change: { type: "number", description: "Price change value" },
+            changePercentage: {
+              type: "number",
+              description: "Percentage change in price",
+            },
+            price: { type: "number", description: "Current stock price" },
+            shortable: {
+              type: "string",
+              description: "Shortable status (empty string means unknown)",
+            },
+            easy_to_borrow: {
+              type: "string",
+              description: "Easy to borrow status (empty string means unknown)",
+            },
+            attributes__: {
+              type: "string",
+              description: "Miscellaneous attributes (if any)",
+            },
+            maintenance_margin_requirement: {
+              type: "string",
+              description: "Maintenance margin requirement (if available)",
+            },
+            fractionable: {
+              type: "boolean",
+              description: "Indicates whether the stock is fractionable",
+            },
+          },
+        },
+      },
+    ],
     requestBody: {
       value: {
         type: payloadTypes.string,
@@ -327,7 +497,13 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/stock/quotes/latest",
     description: "Get latest quotes for assets",
     requiresAuth: true,
-    requestBody: {},
+    requestBody: {
+      symbol: {
+        type: payloadTypes.string,
+        description: "The symbol to get data for",
+        default: "",
+      },
+    },
   },
   "stocks/quotes-history": {
     title: "Quotes History",

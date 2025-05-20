@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const { toast } = useToast();
 
   const [authState, dispatch] = useReducer(authReducer, {
-    token: null,
+    token: localStorage.getItem("token") || null,
     isLoading: true,
     accountId: null,
     privateKey: null,
