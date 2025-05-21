@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { payloadTypes } from "@/data/apiEndpoints";
-
+import { payloadTypes, RequestBodyField } from "@/data/dataTypes";
+import moment from "moment";
 interface RequestField {
   type: string;
   description?: string;
@@ -14,7 +14,7 @@ interface RequestBodyEditorProps {
   requestPayload: string;
   setRequestPayload: (value: string) => void;
   method: string;
-  requestBody: Record<string, RequestField>;
+  requestBody: Record<string, RequestBodyField>;
   formValues: Record<string, any>;
   setFormValues: (values: Record<string, any>) => void;
   formErrors: Record<string, string>;
@@ -30,9 +30,41 @@ const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
   formErrors,
   setFormErrors,
 }) => {
-  console.log(formErrors , "formErrors")
   const handleFieldChange = (name: string, value: any) => {
     const updated = { ...formValues, [name]: value };
+
+    if (
+      [payloadTypes.date, payloadTypes.datetimeLocal]?.includes(
+        requestBody[name].type
+      ) && // if date comes
+      requestBody[name].format
+    ) {
+      if (value) {
+        updated[name] = moment(value).format(requestBody[name].format);
+      } else {
+        updated[name] = "";
+      }
+    }
+
+    const toBeDeletedKey = Object.keys(requestBody)?.filter((key) => {
+      if (
+        requestBody[key]?.requiredCondition?.otherKey &&
+        !requestBody[key]?.requiredCondition?.otherKeyValue?.includes(
+          updated[requestBody[key]?.requiredCondition?.otherKey]
+        )
+      ) {
+        return true;
+      }
+    });
+    
+    toBeDeletedKey?.forEach((item) => {
+      delete updated[item];
+    });
+
+    if (!requestBody[name].required && !value && value != "0") {
+      delete updated[name]; // delete the values which are not required and not filled by the user
+    }
+
     setFormValues(updated);
     setRequestPayload(JSON.stringify(updated, null, 2));
 
@@ -53,24 +85,39 @@ const RequestBodyEditor: React.FC<RequestBodyEditorProps> = ({
         <CardTitle className="text-sm font-medium">Request Body</CardTitle>
       </CardHeader>
       <CardContent className="p-2 space-y-1">
-        {Object.entries(requestBody).map(([key, config]) => {
-          const value = formValues[key];
+        {Object.entries(requestBody)
+          .filter(([key, config]) => !config.hidden)
+          .filter(([key, config]) => {
+            if (!config.requiredCondition) {
+              return true;
+            }
+            if (
+              config?.requiredCondition?.otherKeyValue?.includes(
+                formValues[config?.requiredCondition?.otherKey as any]
+              )
+            ) {
+              return true;
+            }
+          })
+          .map(([key, config]) => {
+            const value = formValues[key];
 
-          return (
-            <FieldInput
-              key={key}
-              name={key}
-              label={key}
-              value={value}
-              type={config.type}
-              required={config.required}
-              description={config.description}
-              options={config.options}
-              onChange={(val) => handleFieldChange(key, val)}
-              errors={formErrors[key]}
-            />
-          );
-        })}
+            return (
+              <FieldInput
+                key={key}
+                name={key}
+                label={key}
+                value={value}
+                dateFormat={config.dateFormat}
+                type={config.type}
+                required={config.required}
+                description={config.description}
+                options={config.options}
+                onChange={(val) => handleFieldChange(key, val)}
+                errors={formErrors[key]}
+              />
+            );
+          })}
       </CardContent>
     </Card>
   );
@@ -88,6 +135,7 @@ interface FieldInputProps {
   options?: string[];
   onChange: (val: any) => void;
   errors: string;
+  dateFormat?: string;
 }
 
 const FieldInput: React.FC<FieldInputProps> = ({
@@ -98,6 +146,7 @@ const FieldInput: React.FC<FieldInputProps> = ({
   description,
   options,
   onChange,
+  dateFormat,
   errors,
 }) => {
   const handleChange = (
@@ -144,7 +193,7 @@ const FieldInput: React.FC<FieldInputProps> = ({
         >
           {options.map((opt) => (
             <option key={opt} value={opt}>
-              {opt}
+              {opt === "" ? "none" : opt}
             </option>
           ))}
         </select>
@@ -160,6 +209,38 @@ const FieldInput: React.FC<FieldInputProps> = ({
         />
       ) : type === "checkbox" ? (
         <input type="checkbox" checked={!!value} onChange={handleChange} />
+      ) : type === payloadTypes.date ? (
+        <input
+          type={type}
+          className="border rounded p-1 text-sm"
+          value={
+            value
+              ? `${
+                  dateFormat
+                    ? moment.parseZone(value).format("YYYY-MM-DDTHH:mm")
+                    : value
+                }`
+              : ""
+          }
+          required={required}
+          onChange={handleChange}
+        />
+      ) : type === payloadTypes.datetimeLocal ? (
+        <input
+          type={"datetime-local"}
+          className="border rounded p-1 text-sm"
+          value={
+            value
+              ? `${
+                  dateFormat
+                    ? moment.parseZone(value).format("YYYY-MM-DDTHH:mm")
+                    : value
+                }`
+              : ""
+          }
+          required={required}
+          onChange={handleChange}
+        />
       ) : (
         <input
           type={type}

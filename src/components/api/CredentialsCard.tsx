@@ -6,11 +6,13 @@ import React from "react";
 interface CredentialsCardProps {
   apiSecretKey: string;
   setApiSecretKey: (value: string) => void;
+  showAccountNumberInput: boolean;
 }
 
 const CredentialsCard: React.FC<CredentialsCardProps> = ({
-   apiSecretKey,
+  apiSecretKey,
   setApiSecretKey,
+  showAccountNumberInput,
 }) => {
   const { privateKey } = useAuth();
   return (
@@ -32,17 +34,19 @@ const CredentialsCard: React.FC<CredentialsCardProps> = ({
               disabled
             />
           </div>
-          <div>
-            <label className="text-xs font-medium block mb-1 text-gray-300">
-              Account Number
-            </label>
-            <Input
-              placeholder="APCA-ACCOUNT-NUMBER"
-              className="bg-gray-800 h-8 text-xs border-gray-700 text-gray-200 focus:ring-blue-500"
-              value={apiSecretKey}
-              onChange={(e) => setApiSecretKey(e.target.value)}
-            />
-          </div>
+          {showAccountNumberInput && (
+            <div>
+              <label className="text-xs font-medium block mb-1 text-gray-300">
+                Account Number
+              </label>
+              <Input
+                placeholder="APCA-ACCOUNT-NUMBER"
+                className="bg-gray-800 h-8 text-xs border-gray-700 text-gray-200 focus:ring-blue-500"
+                value={apiSecretKey}
+                onChange={(e) => setApiSecretKey(e.target.value)}
+              />
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

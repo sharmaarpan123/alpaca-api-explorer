@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { ResponseExample } from "@/data/apiEndpoints";
+import { RequestBodyField, ResponseExample } from "@/data/dataTypes";
 import React, { useEffect, useState } from "react";
 import { Card } from "../ui/card";
 import ApiEndpointCodeSnippet from "./ApiEndpointCodeSnippet";
@@ -27,7 +27,7 @@ interface ApiEndpointProps {
   endpoint: string;
   description: string;
   requiresAuth?: boolean;
-  requestBody?: Record<string, any>;
+  requestBody?: Record<string, RequestBodyField>;
   queryParams?: ParamsObject;
   pathParams?: ParamsObject;
   responseExamples?: ResponseExample[];
@@ -55,6 +55,17 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     requestBody
       ? JSON.stringify(
           Object.keys(requestBody).reduce((acc, key) => {
+            if (!requestBody[key].default && !requestBody[key].required) {
+              return acc;
+            }
+
+            if (
+              !requestBody[key].default &&
+              requestBody[key].requiredCondition
+            ) {
+              return acc;
+            }
+
             acc[key] = requestBody[key].default;
             return acc;
           }, {} as Record<string, any>),
@@ -85,15 +96,40 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     const initialFormValues = {};
 
     Object.keys(requestBody).forEach((key) => {
+      if (requestBody[key].requiredCondition) {
+        // we don't need the key if required condition is there due backend server validation
+        return;
+      }
+
+      if (!requestBody[key].default && !requestBody[key].required) {
+        // we don't need the key if default value is not there and the value is not required
+        // //  due backend server validation
+        return;
+      }
+
       initialFormValues[key] = requestBody[key].default;
     });
+
+    console.log(initialFormValues, "initialFormValues");
 
     const initialErrors = {};
 
     Object.keys(requestBody).forEach((key) => {
-      initialErrors[key] = requestBody[key].default || !requestBody[key].required
-        ? ""
-        : "This field is required";
+      if (requestBody[key]?.requiredCondition) {
+        // we don't need the key if required condition is there due backend server validation
+        return "";
+      }
+
+      if (!requestBody[key].default && !requestBody[key].required) {
+        // we don't need the key if default value is not there and the value is not required
+        // //  due backend server validation
+        return "";
+      }
+
+      initialErrors[key] =
+        requestBody[key].default || !requestBody[key].required
+          ? ""
+          : "This field is required";
     });
 
     setFormErrors((p) => initialErrors);
@@ -124,8 +160,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
       return toast({
         title: "Required Fields Error",
         description: `Please fill all the required fields`,
-        variant:"destructive",
-        
+        variant: "destructive",
       });
     }
 
@@ -139,6 +174,8 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
       apiSecretKey
     );
   };
+
+  console.log(formValues, "formValues", requestPayload, "formValues");
 
   return (
     <div className="mb-4">
@@ -184,6 +221,12 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
             <CredentialsCard
               apiSecretKey={apiSecretKey}
               setApiSecretKey={setApiSecretKey}
+              showAccountNumberInput={
+                ![
+                  "api/v1/user/clock",
+                  "/api/v1/user/get-account-number",
+                ]?.includes(endpoint) // do not show the acc number input on this endpoint's
+              }
             />
 
             <ApiEndpointCodeSnippet

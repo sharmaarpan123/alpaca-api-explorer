@@ -1,5 +1,5 @@
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ResponseExample, responseExampleTypes } from "@/data/apiEndpoints";
+import { ResponseExample, responseExampleTypes } from "@/data/dataTypes";
 import React, { useState } from "react";
 
 const getStatusColor = (status: string) => {
@@ -19,13 +19,14 @@ const renderFields = ({
   isMain?: boolean;
 }) => {
   if (
-    [responseExampleTypes.object, responseExampleTypes.arrayOfObject].includes(obj.type) &&
+    [responseExampleTypes.object, responseExampleTypes.arrayOfObject].includes(
+      obj.type
+    ) &&
     typeof obj.values === "object"
   )
     return (
       <>
-        
-
+        {" "}
         <div className="  border">
           <div
             className={`flex items-center   border bg-gray-200  ${
@@ -40,7 +41,7 @@ const renderFields = ({
               {parentKey}
             </span>
             <span className="text-xs text-red-500 mr-2">
-              {(obj as any).type}
+              {Array.isArray(obj.type)? obj.type?.map((type: any) => type).join(" , ") :   (obj as any).type}
             </span>
           </div>
           <div className="pl-4 ">
@@ -52,9 +53,12 @@ const renderFields = ({
 
   return (
     <>
-      {Object.entries(obj)?.map(([key, value]) => {
+      {Object.entries(obj)?.map(([key, value] : any) => {
         if (
-          [responseExampleTypes.object, responseExampleTypes.arrayOfObject].includes((value as any).type) &&
+          [
+            responseExampleTypes.object,
+            responseExampleTypes.arrayOfObject,
+          ].includes((value as any).type) &&
           (value as any).values
         )
           return (
@@ -63,13 +67,15 @@ const renderFields = ({
             </div>
           );
 
+         
+
         return (
           <div className="flex items-center my-2">
             <span className="font-mono text-xs font-semibold mr-2 mt-1 text-white">
               {key}
             </span>
             <span className="text-xs text-red-500 mr-2">
-              {(value as any).type}
+              {Array.isArray(value.type )? value?.type?.map((type: any) => type).join(" , ") :   (value as any).type}
             </span>
             <span className="text-xs text-green-700">
               {(value as any).description}

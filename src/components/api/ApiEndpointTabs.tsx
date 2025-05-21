@@ -3,6 +3,7 @@ import React from "react";
 import { ProgrammingLanguage } from "./CodeSnippet";
 import ParamEditor from "./ParamEditor";
 import RequestBodyEditor from "./RequestBodyEditor";
+import { RequestBodyField } from "@/data/apiEndpoints";
 
 interface ParamField {
   type: string;
@@ -21,7 +22,7 @@ interface ApiEndpointTabsProps {
   setRequestPayload: (payload: string) => void;
   pathParams?: ParamsObject;
   queryParams?: ParamsObject;
-  requestBody?: Record<string, any>;
+  requestBody?: Record<string, RequestBodyField>;
   paramValues: Record<string, string>;
   handleParamChange: (key: string, value: string) => void;
   selectedLanguage: ProgrammingLanguage;
