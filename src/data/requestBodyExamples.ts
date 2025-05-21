@@ -212,21 +212,26 @@ export const requestBodyExamples: Record<
   "orders/close-position-symbol": {
     value: {
       type: payloadTypes.string,
+      required: true,
       description: "The symbol to close position for",
     },
     type: {
       type: payloadTypes.select,
       description: "Type of closure",
+      default: "PARTIAL_CLOSURE",
+      required: true,
       options: ["PARTIAL_CLOSURE", "FULL_CLOSURE"],
     },
     closeBy: {
       type: payloadTypes.select,
       description: "How to close the position",
+      required: true,
       options: ["SHARE", "PERCENTAGE"],
     },
     closeValue: {
       type: payloadTypes.number,
       description: "Value to close by",
+      required: true,
     },
   },
 
@@ -244,16 +249,97 @@ export const requestBodyExamples: Record<
     type: {
       type: payloadTypes.select,
       description: "Type of history to return",
-      options: ["ORDER", "TRADE"],
+      default: "ORDER",
+      options: ["ORDER", "TRADING_ACTIVITIES"],
     },
   },
 
   "orders/pending-order-list": {
     type: {
       type: payloadTypes.string,
-      default :"pending",
+      default: "pending",
       hidden: true,
       description: "Number of records to return",
     },
   },
+
+  "orders/order-details": {
+    orderId: {
+      type: payloadTypes.string,
+      required: true,
+      description: "Order id to get details for",
+    },
+  },
+
+  "orders/delete-pending-order": {
+    orderId: {
+      type: payloadTypes.string,
+      required: true,
+      description: "Order id to delete",
+    },
+    type: {
+      type: payloadTypes.string,
+      default: "pending",
+      hidden: true,
+      description: "Number of records to return",
+    },
+  },
+
+  "orders/replace-orders": {
+    orderId: {
+      type: payloadTypes.string,
+      required: true,
+      description: "Order id to replace",
+    },
+  },
+
+  "orders/open-position-symbol": {
+    value: {
+      type: payloadTypes.string,
+      required: true,
+      description: "Symbol to get open position for",
+    },
+  },
+
+  "orders/account-activities": {
+    page: {
+      type: payloadTypes.number,
+      description: "Page number",
+      default: 1,
+      required: true,
+    },
+    limit: {
+      type: payloadTypes.number,
+      description: "Limit the number of records to return",
+      default: 20,
+      required: true,
+    },
+  },
+  // "orders/close-all-position": {
+  //   value: {
+  //     type: payloadTypes.string,
+  //     default: "close",
+  //     description: 'close all position',
+  //     hidden: true,
+  //   },
+  // },
+
+  "orders/account-activities-type": {
+    type: {
+      type: payloadTypes.select,
+      options: [
+        "FILL", "TRANS", "MISC", "ACATC", "ACATS", "CFEE", "CSD", "CSW", "DIV",
+        "DIVCGL", "DIVCGS", "DIVFEE", "DIVFT", "DIVNRA", "DIVROC", "DIVTW",
+        "DIVTXEX", "FEE", "INT", "INTNRA", "INTTW", "JNL", "JNLC", "JNLS",
+        "MA", "NC", "OPASN", "OPCA", "OPCSH", "OPEXC", "OPEXP", "OPTRD",
+        "PTC", "PTR", "REORG", "SPIN", "SPLIT"
+      ]
+      ,
+      description: "Page number",
+      default: "FEE",
+      required: true,
+    },
+  }
+
+
 };

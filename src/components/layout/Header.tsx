@@ -44,12 +44,12 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                 >
                   Home
                 </Link>
-                <Link 
+                {/* <Link 
                   to="/api-reference" 
                   className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800"
                 >
                   API Reference
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>

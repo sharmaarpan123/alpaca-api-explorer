@@ -46,6 +46,7 @@ export interface RequestBodyField {
   dateFormat?: string;
   options?: string[];
   format?: string;
+  hidden?: boolean;
 }
 
 // API endpoints data based on the Postman collection
@@ -136,7 +137,7 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     method: "POST",
     path: "/api/v1/stock/bars/latest",
     description: "Get latest bar data for an asset",
-    requiresAuth: true, 
+    requiresAuth: true,
     requestBody: requestBodyExamples['stocks/bars-latest'],
     responseExamples: responseExamples['stocks/bars-latest'],
   },
@@ -176,6 +177,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/orderDetails",
     description: "Get details of a specific order",
     requiresAuth: true,
+    requestBody: requestBodyExamples['orders/order-details'],
+    responseExamples: responseExamples['orders/order-details'],
   },
 
   "orders/delete-pending-order": {
@@ -184,6 +187,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/deleteOrder",
     description: "Delete a specific pending order",
     requiresAuth: true,
+    requestBody: requestBodyExamples['orders/delete-pending-order'],
+    responseExamples: responseExamples['orders/delete-pending-order'],
   },
 
   "orders/replace-orders": {
@@ -192,6 +197,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/replaceOrder",
     description: "Replace an existing order",
     requiresAuth: true,
+    requestBody: requestBodyExamples['orders/replace-orders'],
+    responseExamples: responseExamples['orders/replace-orders'],
   },
 
   "orders/open-position": {
@@ -201,6 +208,7 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     description: "Get list of open positions",
     requiresAuth: true,
     requestBody: {},
+    responseExamples: responseExamples['orders/open-position'],
   },
 
   "orders/open-position-symbol": {
@@ -209,6 +217,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/positionsSymbolOrAsset",
     description: "Get open position for a specific symbol",
     requiresAuth: true,
+    requestBody: requestBodyExamples['orders/open-position-symbol'],
+    responseExamples: responseExamples['orders/open-position-symbol'],
   },
 
   "orders/close-all-position": {
@@ -217,6 +227,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/closeAllPosition",
     description: "Close all open positions",
     requiresAuth: true,
+    responseExamples: responseExamples['orders/close-all-position'],
+
   },
 
   "orders/close-position-symbol": {
@@ -226,6 +238,7 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     description: "Close position for a specific symbol",
     requiresAuth: true,
     requestBody: requestBodyExamples['orders/close-position-symbol'],
+    responseExamples: responseExamples['orders/close-position-symbol'],
   },
 
   "orders/order-history": {
@@ -235,6 +248,7 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     description: "Get order history",
     requiresAuth: true,
     requestBody: requestBodyExamples['orders/order-history'],
+    responseExamples: responseExamples['orders/order-history'],
   },
 
   "orders/account-activities": {
@@ -243,6 +257,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/account/activities",
     description: "Get account activities",
     requiresAuth: true,
+    requestBody: requestBodyExamples['orders/account-activities'],
+    responseExamples: responseExamples['orders/account-activities'],
   },
 
   "orders/account-activities-type": {
@@ -251,6 +267,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/account/activitiesType",
     description: "Get account activities by type",
     requiresAuth: true,
+    requestBody: requestBodyExamples['orders/account-activities-type'],
+    responseExamples: responseExamples['orders/account-activities-type']
   },
 };
 

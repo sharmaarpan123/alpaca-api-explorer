@@ -154,7 +154,7 @@ export const makeApiCall = async (
             )) &&
           !originalRequest._retry
         ) {
-          const confirm = window.confirm("refresh the token");
+          const confirm = window.confirm("Action required: Refresh your token to continue using the web.");
           if (!confirm) {
             logOutAndRedirect();
             return;

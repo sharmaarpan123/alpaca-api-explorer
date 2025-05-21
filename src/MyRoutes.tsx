@@ -23,7 +23,7 @@ const MyRoutes = () => {
            <>
            <Route element={<Layout />}>
              <Route path="/" element={<Index />} />
-             <Route path="/api-reference" element={<ApiReference />} />
+             {/* <Route path="/api-reference" element={<ApiReference />} /> */}
              <Route
                path="/api/:category/:endpoint"
                element={<ApiEndpointPage />}

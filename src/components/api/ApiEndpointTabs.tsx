@@ -53,7 +53,9 @@ const ApiEndpointTabs: React.FC<ApiEndpointTabsProps> = ({
     <>
       {(!pathParams || !Object.keys(pathParams).length) &&
       (!queryParams || !Object.keys(queryParams).length) &&
-      (!requestBody || !Object.keys(requestBody).length) ? (
+      !Object.keys(requestBody || {}).filter(
+        (key) => requestBody[key]?.hidden !== true
+      ).length ? (
         <></>
       ) : (
         <Card className="shadow-sm">

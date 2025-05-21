@@ -44,39 +44,39 @@ const apiSections = [
     apis: [
       {
         method: 'GET',
-        path: '/v2/assets',
+        path: '/api/v1/stock/assets',
         title: 'Get a list of all assets',
         description: 'Retrieve a list of assets available for trading.',
-        link: '/api/assets/list-assets',
+        link: '/api/stocks/assets',
       },
       {
         method: 'GET',
-        path: '/v2/assets/{symbol}',
+        path: '/api/v1/stock/assetsDetails',
         title: 'Get a specific asset by symbol',
         description: 'Retrieve detailed information about a specific asset.',
-        link: '/api/assets/get-asset',
+        link: '/api/stocks/assets-details',
       },
     ],
   },
-  {
-    title: 'Orders',
-    apis: [
-      {
-        method: 'POST',
-        path: '/v2/orders',
-        title: 'Create a new order',
-        description: 'Submit a new order for an asset.',
-        link: '/api/orders/create-order',
-      },
-      {
-        method: 'GET',
-        path: '/v2/orders',
-        title: 'List all orders',
-        description: 'Get a list of your orders with filtering options.',
-        link: '/api/orders/get-orders',
-      },
-    ],
-  },
+  // {
+  //   title: 'Orders',
+  //   apis: [
+  //     {
+  //       method: 'POST',
+  //       path: '/v2/orders',
+  //       title: 'Create a new order',
+  //       description: 'Submit a new order for an asset.',
+  //       link: '/api/orders/create-order',
+  //     },
+  //     {
+  //       method: 'GET',
+  //       path: '/v2/orders',
+  //       title: 'List all orders',
+  //       description: 'Get a list of your orders with filtering options.',
+  //       link: '/api/orders/get-orders',
+  //     },
+  //   ],
+  // },
 ];
 
 const ApiReference: React.FC = () => {
