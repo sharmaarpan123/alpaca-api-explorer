@@ -226,6 +226,7 @@ export const requestBodyExamples: Record<
       type: payloadTypes.select,
       description: "How to close the position",
       required: true,
+      default :"SHARE",
       options: ["SHARE", "PERCENTAGE"],
     },
     closeValue: {
@@ -250,7 +251,7 @@ export const requestBodyExamples: Record<
       type: payloadTypes.select,
       description: "Type of history to return",
       default: "ORDER",
-      options: ["ORDER", "TRADING_ACTIVITIES"],
+      hidden : true
     },
   },
 
@@ -285,13 +286,7 @@ export const requestBodyExamples: Record<
     },
   },
 
-  "orders/replace-orders": {
-    orderId: {
-      type: payloadTypes.string,
-      required: true,
-      description: "Order id to replace",
-    },
-  },
+ 
 
   "orders/open-position-symbol": {
     value: {

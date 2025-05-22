@@ -169,6 +169,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/deleteAllOrders",
     description: "Delete all pending orders",
     requiresAuth: true,
+    responseExamples: responseExamples['orders/delete-all-pending-orders'],
+
   },
 
   "orders/order-details": {
@@ -191,15 +193,6 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     responseExamples: responseExamples['orders/delete-pending-order'],
   },
 
-  "orders/replace-orders": {
-    title: "Replace Orders",
-    method: "POST",
-    path: "/api/v1/order/replaceOrder",
-    description: "Replace an existing order",
-    requiresAuth: true,
-    requestBody: requestBodyExamples['orders/replace-orders'],
-    responseExamples: responseExamples['orders/replace-orders'],
-  },
 
   "orders/open-position": {
     title: "Open Position",
@@ -387,13 +380,6 @@ export const API_STRUCTURE: ApiGroup[] = [
         path: "/api/v1/order/deleteOrder",
         method: "POST",
         description: "Delete a specific pending order",
-      },
-      {
-        id: "replace-orders",
-        name: "Replace Orders",
-        path: "/api/v1/order/replaceOrder",
-        method: "POST",
-        description: "Replace an existing order",
       },
       {
         id: "open-position",

@@ -101,11 +101,11 @@ export const getFieldDescription = (fieldName: string): string => {
 };
 
 const logOutAndRedirect = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("refreshToken");
-  localStorage.removeItem("accountId");
-  localStorage.removeItem("privateKey");
-  window.location.href = "/login";
+  // localStorage.removeItem("token");
+  // localStorage.removeItem("refreshToken");
+  // localStorage.removeItem("accountId");
+  // localStorage.removeItem("privateKey");
+  // window.location.href = "/login";
 };
 
 // Make the API call based on method and parameters
@@ -139,7 +139,6 @@ export const makeApiCall = async (
     // Response interceptor
     apiInstance.interceptors.response.use(
       async (response) => {
-        console.log(response, "response11111");
         return response;
       },
       async (error) => {
@@ -154,6 +153,8 @@ export const makeApiCall = async (
             )) &&
           !originalRequest._retry
         ) {
+
+          console.log(error ,"errors")
           const confirm = window.confirm("Action required: Refresh your token to continue using the web.");
           if (!confirm) {
             logOutAndRedirect();

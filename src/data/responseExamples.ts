@@ -643,8 +643,7 @@ export const responseExamples: Record<string, ResponseExample[]> = {
       dataKey: "data",
       example: {
         type: "object",
-        data: {
-          type: "Array of object",
+      
           values: {
             alpacaOrderId: { type: "string", description: "Alpaca order identifier" },
             status: { type: "string", description: "Order status" },
@@ -733,7 +732,7 @@ export const responseExamples: Record<string, ResponseExample[]> = {
             canceleOrderData: { type: ["object", "null"], description: "Cancellation data" },
             _id: { type: "string", description: "Unique identifier" }
           }
-        }
+      
       }
     }
   ],
@@ -953,20 +952,120 @@ export const responseExamples: Record<string, ResponseExample[]> = {
     }
   ],
 
-  "orders/replace-orders": [
+
+  "orders/delete-all-pending-orders": [
     {
       status: "200",
       description: "Successful operation",
       dataKey: "data",
       example: {
+
         type: "object",
         values: {
-          data: { type: "string", description: "success Message" },
+          success: {
+            type: "Array of object",
+            values: {
+              id: { type: "string", description: "Order ID" },
+              client_order_id: { type: "string", description: "Client order ID" },
+              created_at: { type: "string", description: "Order creation timestamp" },
+              updated_at: { type: "string", description: "Order update timestamp" },
+              submitted_at: { type: "string", description: "Order submission timestamp" },
+              filled_at: { type: ["string", "null"], description: "Order fill timestamp" },
+              expired_at: { type: ["string", "null"], description: "Order expiration timestamp" },
+              canceled_at: { type: ["string", "null"], description: "Order cancellation timestamp" },
+              failed_at: { type: ["string", "null"], description: "Order failure timestamp" },
+              replaced_at: { type: ["string", "null"], description: "Order replacement timestamp" },
+              replaced_by: { type: ["string", "null"], description: "ID of order that replaced this one" },
+              replaces: { type: ["string", "null"], description: "ID of order that was replaced" },
+              asset_id: { type: "string", description: "Asset ID" },
+              symbol: { type: "string", description: "Stock symbol" },
+              asset_class: { type: "string", description: "Asset class" },
+              notional: { type: ["number", "null"], description: "Notional value" },
+              qty: { type: "string", description: "Order quantity" },
+              filled_qty: { type: "string", description: "Filled quantity" },
+              filled_avg_price: { type: ["number", "null"], description: "Average fill price" },
+              order_class: { type: "string", description: "Order class" },
+              order_type: { type: "string", description: "Order type" },
+              type: { type: "string", description: "Order type" },
+              side: { type: "string", description: "Order side" },
+              position_intent: { type: "string", description: "Position intent" },
+              time_in_force: { type: "string", description: "Time in force" },
+              limit_price: { type: ["number", "null"], description: "Limit price" },
+              stop_price: { type: ["number", "null"], description: "Stop price" },
+              status: { type: "string", description: "Order status" },
+              extended_hours: { type: "boolean", description: "Extended hours flag" },
+              legs: { type: ["array", "null"], description: "Order legs" },
+              trail_percent: { type: ["number", "null"], description: "Trail percent" },
+              trail_price: { type: ["number", "null"], description: "Trail price" },
+              hwm: { type: ["number", "null"], description: "High water mark" },
+              commission: { type: "string", description: "Commission amount" },
+              commission_type: { type: "string", description: "Commission type" },
+              subtag: { type: ["string", "null"], description: "Subtag" },
+              source: { type: ["string", "null"], description: "Order source" },
+              expires_at: { type: "string", description: "Expiration timestamp" },
+              shortName: { type: "string", description: "Short company name" },
+              name: { type: "string", description: "Full company name" },
+              imgUrl: { type: "string", description: "Company image URL" },
+              imgUrlDark: { type: "string", description: "Dark mode company image URL" },
+              stockName: { type: "string", description: "Stock name" }
+            }
+          },
+          failed: {
+            type: "Array of object",
+            values: {
+              id: { type: "string", description: "Order ID" },
+              client_order_id: { type: "string", description: "Client order ID" },
+              created_at: { type: "string", description: "Order creation timestamp" },
+              updated_at: { type: "string", description: "Order update timestamp" },
+              submitted_at: { type: "string", description: "Order submission timestamp" },
+              filled_at: { type: ["string", "null"], description: "Order fill timestamp" },
+              expired_at: { type: ["string", "null"], description: "Order expiration timestamp" },
+              canceled_at: { type: ["string", "null"], description: "Order cancellation timestamp" },
+              failed_at: { type: ["string", "null"], description: "Order failure timestamp" },
+              replaced_at: { type: ["string", "null"], description: "Order replacement timestamp" },
+              replaced_by: { type: ["string", "null"], description: "ID of order that replaced this one" },
+              replaces: { type: ["string", "null"], description: "ID of order that was replaced" },
+              asset_id: { type: "string", description: "Asset ID" },
+              symbol: { type: "string", description: "Stock symbol" },
+              asset_class: { type: "string", description: "Asset class" },
+              notional: { type: ["number", "null"], description: "Notional value" },
+              qty: { type: "string", description: "Order quantity" },
+              filled_qty: { type: "string", description: "Filled quantity" },
+              filled_avg_price: { type: ["number", "null"], description: "Average fill price" },
+              order_class: { type: "string", description: "Order class" },
+              order_type: { type: "string", description: "Order type" },
+              type: { type: "string", description: "Order type" },
+              side: { type: "string", description: "Order side" },
+              position_intent: { type: "string", description: "Position intent" },
+              time_in_force: { type: "string", description: "Time in force" },
+              limit_price: { type: ["number", "null"], description: "Limit price" },
+              stop_price: { type: ["number", "null"], description: "Stop price" },
+              status: { type: "string", description: "Order status" },
+              extended_hours: { type: "boolean", description: "Extended hours flag" },
+              legs: { type: ["array", "null"], description: "Order legs" },
+              trail_percent: { type: ["number", "null"], description: "Trail percent" },
+              trail_price: { type: ["number", "null"], description: "Trail price" },
+              hwm: { type: ["number", "null"], description: "High water mark" },
+              commission: { type: "string", description: "Commission amount" },
+              commission_type: { type: "string", description: "Commission type" },
+              subtag: { type: ["string", "null"], description: "Subtag" },
+              source: { type: ["string", "null"], description: "Order source" },
+              expires_at: { type: "string", description: "Expiration timestamp" },
+              shortName: { type: "string", description: "Short company name" },
+              name: { type: "string", description: "Full company name" },
+              imgUrl: { type: "string", description: "Company image URL" },
+              imgUrlDark: { type: "string", description: "Dark mode company image URL" },
+              stockName: { type: "string", description: "Stock name" }
+            }
+          }
         }
-      }
-    }
-  ]
-  ,
+      }}
+  ],
+
+  
+
+
+  
   "orders/open-position": [
     {
       status: "200",
