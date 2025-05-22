@@ -101,11 +101,11 @@ export const getFieldDescription = (fieldName: string): string => {
 };
 
 const logOutAndRedirect = () => {
-  // localStorage.removeItem("token");
-  // localStorage.removeItem("refreshToken");
-  // localStorage.removeItem("accountId");
-  // localStorage.removeItem("privateKey");
-  // window.location.href = "/login";
+  localStorage.removeItem("token");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("accountId");
+  localStorage.removeItem("privateKey");
+  window.location.href = "/login";
 };
 
 // Make the API call based on method and parameters
@@ -190,7 +190,7 @@ export const makeApiCall = async (
               // Retry the original request
               return apiInstance(originalRequest);
             } else {
-              alert("refresh token failed");
+              alert("Refresh token failed , please login again");
               logOutAndRedirect();
             }
           } catch (refreshError) {
