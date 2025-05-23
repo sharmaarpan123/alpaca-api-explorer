@@ -1,7 +1,7 @@
-import { ResponseExample } from './dataTypes';
+import { ResponseExample } from "./dataTypes";
 
 export const responseExamples: Record<string, ResponseExample[]> = {
-  'users/clock': [
+  "users/clock": [
     {
       status: "200",
       description: "Successful operation",
@@ -72,7 +72,19 @@ export const responseExamples: Record<string, ResponseExample[]> = {
     },
   ],
 
-  'users/get-account-number': [
+  "users/ping": [
+    {
+      status: "200",
+      description: "Successful operation",
+      dataKey: "data",
+      example: {
+        type: "object",
+        values: { data: { type: "string" } },
+      },
+    },
+  ],
+
+  "users/get-account-number": [
     {
       status: "200",
       description: "Successful operation",
@@ -93,7 +105,7 @@ export const responseExamples: Record<string, ResponseExample[]> = {
     },
   ],
 
-  'users/get-accounts': [
+  "users/get-accounts": [
     {
       status: "200",
       description: "Successful operation",
@@ -175,7 +187,7 @@ export const responseExamples: Record<string, ResponseExample[]> = {
     },
   ],
 
-  'stocks/assets': [
+  "stocks/assets": [
     {
       status: "200",
       description: "Successful operation",
@@ -248,7 +260,7 @@ export const responseExamples: Record<string, ResponseExample[]> = {
     },
   ],
 
-  'stocks/assets-details': [
+  "stocks/assets-details": [
     {
       status: "200",
       description: "Successful operation",
@@ -345,7 +357,7 @@ export const responseExamples: Record<string, ResponseExample[]> = {
     },
   ],
 
-  'stocks/quotes-latest': [
+  "stocks/quotes-latest": [
     {
       status: "200",
       description: "Successful operation",
@@ -367,8 +379,7 @@ export const responseExamples: Record<string, ResponseExample[]> = {
               },
               updated: {
                 type: "number",
-                description:
-                  "Last updated timestamp (nanoseconds since epoch)",
+                description: "Last updated timestamp (nanoseconds since epoch)",
               },
               day: {
                 type: "object",
@@ -511,7 +522,7 @@ export const responseExamples: Record<string, ResponseExample[]> = {
     },
   ],
 
-  'stocks/quotes-history': [
+  "stocks/quotes-history": [
     {
       status: "200",
       description: "Successful quote snapshot",
@@ -544,8 +555,7 @@ export const responseExamples: Record<string, ResponseExample[]> = {
               },
               participant_timestamp: {
                 type: "number",
-                description:
-                  "Participant timestamp (nanoseconds since epoch)",
+                description: "Participant timestamp (nanoseconds since epoch)",
               },
               sequence_number: {
                 type: "number",
@@ -578,7 +588,7 @@ export const responseExamples: Record<string, ResponseExample[]> = {
     },
   ],
 
-  'stocks/bars-info': [
+  "stocks/bars-info": [
     {
       status: "200",
       description: "Successful operation",
@@ -587,33 +597,50 @@ export const responseExamples: Record<string, ResponseExample[]> = {
         type: "object",
         values: {
           ticker: { type: "string", description: "Stock ticker symbol" },
-          queryCount: { type: "number", description: "Total number of records queried" },
-          resultsCount: { type: "number", description: "Number of results returned" },
-          adjusted: { type: "boolean", description: "Whether the data is adjusted" },
+          queryCount: {
+            type: "number",
+            description: "Total number of records queried",
+          },
+          resultsCount: {
+            type: "number",
+            description: "Number of results returned",
+          },
+          adjusted: {
+            type: "boolean",
+            description: "Whether the data is adjusted",
+          },
           results: {
             type: "Array of object",
             values: {
               v: { type: "number", description: "Volume" },
-              vw: { type: "number", description: "Volume weighted average price" },
+              vw: {
+                type: "number",
+                description: "Volume weighted average price",
+              },
               o: { type: "number", description: "Opening price" },
               c: { type: "number", description: "Closing price" },
               h: { type: "number", description: "Highest price" },
               l: { type: "number", description: "Lowest price" },
               t: { type: "number", description: "Timestamp in milliseconds" },
-              n: { type: "number", description: "Number of trades" }
-            }
+              n: { type: "number", description: "Number of trades" },
+            },
           },
           status: { type: "string", description: "Request status" },
-          request_id: { type: "string", description: "Unique request identifier" },
+          request_id: {
+            type: "string",
+            description: "Unique request identifier",
+          },
           count: { type: "number", description: "Total count of results" },
-          next_url: { type: "string", description: "URL for the next page of results" }
-
-        }
-      }
-    }
+          next_url: {
+            type: "string",
+            description: "URL for the next page of results",
+          },
+        },
+      },
+    },
   ],
 
-  'stocks/bars-latest': [
+  "stocks/bars-latest": [
     {
       status: "200",
       description: "Successful operation",
@@ -630,247 +657,43 @@ export const responseExamples: Record<string, ResponseExample[]> = {
           close: { type: "number", description: "Closing price" },
           volume: { type: "number", description: "Trading volume" },
           afterHours: { type: "number", description: "After hours price" },
-          preMarket: { type: "number", description: "Pre-market price" }
-        }
-      }
-    }
+          preMarket: { type: "number", description: "Pre-market price" },
+        },
+      },
+    },
   ],
 
-  'orders/order-buy': [
+  "orders/order-buy": [
     {
       status: "200",
       description: "Successful operation",
       dataKey: "data",
       example: {
         type: "object",
-      
-          values: {
-            alpacaOrderId: { type: "string", description: "Alpaca order identifier" },
-            status: { type: "string", description: "Order status" },
-            client_order_id: { type: "string", description: "Client's order identifier" },
-            type: { type: "string", description: "Order type (buy/sell)" },
-            order_type: { type: "string", description: "Type of order (limit/stop/etc)" },
-            time: { type: ["string", "null"], description: "Order time" },
-            day: { type: ["string", "null"], description: "Order day" },
-            symbol: { type: "string", description: "Stock symbol" },
-            orderPrice: { type: "number", description: "Order price" },
-            yesterdayClosePrice: { type: "number", description: "Yesterday's closing price" },
-            requestPrice: { type: "number", description: "Requested price" },
-            market_price: { type: "number", description: "Current market price" },
-            average_price: { type: "number", description: "Average price" },
-            executePrice: { type: "number", description: "Execution price" },
-            requestAmount: { type: "number", description: "Requested amount" },
-            executeAmount: { type: "number", description: "Executed amount" },
-            totalStockPrice: { type: "number", description: "Total stock price" },
-            stockPrice: { type: "number", description: "Current stock price" },
-            avg_entry_price: { type: "number", description: "Average entry price" },
-            commission: { type: "number", description: "Commission amount" },
-            notional: { type: "number", description: "Notional value" },
-            stopPrice: { type: "number", description: "Stop price" },
-            fractionable: { type: "boolean", description: "Whether the order is fractionable" },
-            stockName: { type: "string", description: "Name of the stock" },
-            orderData: {
-              type: "object",
-              values: {
-                id: { type: "string", description: "Order ID" },
-                client_order_id: { type: "string", description: "Client order ID" },
-                created_at: { type: "string", description: "Creation timestamp" },
-                updated_at: { type: "string", description: "Last update timestamp" },
-                submitted_at: { type: "string", description: "Submission timestamp" },
-                filled_at: { type: ["string", "null"], description: "Fill timestamp" },
-                expired_at: { type: ["string", "null"], description: "Expiration timestamp" },
-                canceled_at: { type: ["string", "null"], description: "Cancellation timestamp" },
-                failed_at: { type: ["string", "null"], description: "Failure timestamp" },
-                replaced_at: { type: ["string", "null"], description: "Replacement timestamp" },
-                replaced_by: { type: ["string", "null"], description: "Replaced by order ID" },
-                replaces: { type: ["string", "null"], description: "Replaces order ID" },
-                asset_id: { type: "string", description: "Asset identifier" },
-                symbol: { type: "string", description: "Stock symbol" },
-                asset_class: { type: "string", description: "Asset class" },
-                notional: { type: ["number", "null"], description: "Notional value" },
-                qty: { type: "string", description: "Quantity" },
-                filled_qty: { type: "string", description: "Filled quantity" },
-                filled_avg_price: { type: ["number", "null"], description: "Average fill price" },
-                order_class: { type: "string", description: "Order class" },
-                order_type: { type: "string", description: "Order type" },
-                type: { type: "string", description: "Order type" },
-                side: { type: "string", description: "Order side" },
-                position_intent: { type: "string", description: "Position intent" },
-                time_in_force: { type: "string", description: "Time in force" },
-                limit_price: { type: ["number", "null"], description: "Limit price" },
-                stop_price: { type: "string", description: "Stop price" },
-                status: { type: "string", description: "Order status" },
-                extended_hours: { type: "boolean", description: "Extended hours flag" },
-                legs: { type: ["array", "null"], description: "Order legs" },
-                trail_percent: { type: ["number", "null"], description: "Trail percentage" },
-                trail_price: { type: ["number", "null"], description: "Trail price" },
-                hwm: { type: ["number", "null"], description: "High water mark" },
-                commission: { type: "string", description: "Commission amount" },
-                commission_type: { type: "string", description: "Commission type" },
-                subtag: { type: ["string", "null"], description: "Subtag" },
-                source: { type: ["string", "null"], description: "Source" },
-                expires_at: { type: "string", description: "Expiration timestamp" }
-              }
-            },
-            userId: { type: "string", description: "User identifier" },
-            userDetails: { type: "string", description: "User details" },
-            isFraction: { type: "boolean", description: "Fractional order flag" },
-            timezone: { type: ["string", "null"], description: "Timezone" },
-            brokerAmount: { type: "number", description: "Broker amount" },
-            qty: { type: "number", description: "Quantity" },
-            limitPrice: { type: "number", description: "Limit price" },
-            religion: { type: "string", description: "Currency" },
-            orderNumber: { type: "string", description: "Order number" },
-            scheduled: { type: "string", description: "Schedule time" },
-            timeType: { type: ["string", "null"], description: "Time type" },
-            flutterwaveResponseData: { type: ["object", "null"], description: "Flutterwave response data" },
-            scheduledOrders: { type: "array", description: "Scheduled orders" },
-            scheduledOrdersIds: { type: "array", description: "Scheduled order IDs" },
-            open_order_id: { type: ["string", "null"], description: "Open order ID" },
-            open_order_ids: { type: "array", description: "Open order IDs" },
-            createdAt: { type: "string", description: "Creation timestamp" },
-            canceleOrderData: { type: ["object", "null"], description: "Cancellation data" },
-            _id: { type: "string", description: "Unique identifier" }
-          }
-      
-      }
-    }
-  ],
 
-  'orders/pending-order-list': [
-    {
-      status: "200",
-      description: "Successful operation",
-      dataKey: "data",
-      example: {
-        type: "Array of object",
         values: {
-          id: { type: "string", description: "Order identifier" },
-          client_order_id: { type: "string", description: "Client's order identifier" },
-          created_at: { type: "string", description: "Creation timestamp" },
-          updated_at: { type: "string", description: "Last update timestamp" },
-          submitted_at: { type: "string", description: "Submission timestamp" },
-          filled_at: { type: ["string", "null"], description: "Fill timestamp" },
-          expired_at: { type: ["string", "null"], description: "Expiration timestamp" },
-          canceled_at: { type: ["string", "null"], description: "Cancellation timestamp" },
-          failed_at: { type: ["string", "null"], description: "Failure timestamp" },
-          replaced_at: { type: ["string", "null"], description: "Replacement timestamp" },
-          replaced_by: { type: ["string", "null"], description: "Replaced by order ID" },
-          replaces: { type: ["string", "null"], description: "Replaces order ID" },
-          asset_id: { type: "string", description: "Asset identifier" },
-          symbol: { type: "string", description: "Stock symbol" },
-          asset_class: { type: "string", description: "Asset class" },
-          notional: { type: ["number", "null"], description: "Notional value" },
-          qty: { type: "string", description: "Quantity" },
-          filled_qty: { type: "string", description: "Filled quantity" },
-          filled_avg_price: { type: ["number", "null"], description: "Average fill price" },
-          order_class: { type: "string", description: "Order class" },
-          order_type: { type: "string", description: "Order type" },
-          type: { type: "string", description: "Order type" },
-          side: { type: "string", description: "Order side" },
-          position_intent: { type: "string", description: "Position intent" },
-          time_in_force: { type: "string", description: "Time in force" },
-          limit_price: { type: ["number", "null"], description: "Limit price" },
-          stop_price: { type: "string", description: "Stop price" },
+          alpacaOrderId: {
+            type: "string",
+            description: "Alpaca order identifier",
+          },
           status: { type: "string", description: "Order status" },
-          extended_hours: { type: "boolean", description: "Extended hours flag" },
-          legs: { type: ["array", "null"], description: "Order legs" },
-          trail_percent: { type: ["number", "null"], description: "Trail percentage" },
-          trail_price: { type: ["number", "null"], description: "Trail price" },
-          hwm: { type: ["number", "null"], description: "High water mark" },
-          commission: { type: "number", description: "Commission amount" },
-          commission_type: { type: "string", description: "Commission type" },
-          subtag: { type: ["string", "null"], description: "Subtag" },
-          source: { type: ["string", "null"], description: "Source" },
-          expires_at: { type: "string", description: "Expiration timestamp" },
-          shortName: { type: "string", description: "Short name of the company" },
-          name: { type: "string", description: "Full company name" },
-          imgUrl: { type: "string", description: "Company logo URL" },
-          imgUrlDark: { type: "string", description: "Dark mode company logo URL" },
-          stockName: { type: "string", description: "Stock name" },
-          currentPrice: { type: "number", description: "Current stock price" },
-          scheduledAt: { type: ["string", "null"], description: "Scheduled time" },
-          scheduled: { type: ["string", "null"], description: "Schedule status" },
-          order_id: { type: "string", description: "Order identifier" },
-          requestPrice: { type: "number", description: "Requested price" },
-          requestAmount: { type: "number", description: "Requested amount" },
-          executePrice: { type: "number", description: "Execution price" },
-          executeAmount: { type: "number", description: "Executed amount" },
-          amount: { type: "number", description: "Total amount" },
-          stockPrice: { type: "number", description: "Stock price" },
-          orderPrice: { type: "number", description: "Order price" }
-        }
-      }
-    }
-  ],
-
-  "orders/order-details": [
-    {
-      status: "200",
-      description: "Successful operation",
-      dataKey: "data",
-      example: {
-        type: "object",
-        values: {
-          asset_id: { type: "string", description: "Unique identifier for the asset" },
-          symbol: { type: "string", description: "Stock ticker symbol" },
-          exchange: { type: "string", description: "Stock exchange where the asset is traded" },
-          asset_class: { type: "string", description: "Class of the asset (e.g., us_equity)" },
-          asset_marginable: { type: "boolean", description: "Whether the asset can be margined" },
-          qty: { type: "string", description: "Quantity of shares" },
-          avg_entry_price: { type: "string", description: "Average entry price" },
-          side: { type: "string", description: "Position side (long/short)" },
-          market_value: { type: "string", description: "Current market value" },
-          cost_basis: { type: "string", description: "Total cost basis" },
-          unrealized_pl: { type: "string", description: "Unrealized profit/loss" },
-          unrealized_plpc: { type: "string", description: "Unrealized profit/loss percentage" },
-          unrealized_intraday_pl: { type: "string", description: "Unrealized intraday profit/loss" },
-          unrealized_intraday_plpc: { type: "string", description: "Unrealized intraday profit/loss percentage" },
-          current_price: { type: "string", description: "Current market price" },
-          lastday_price: { type: "string", description: "Previous day's closing price" },
-          change_today: { type: "string", description: "Price change percentage today" },
-          qty_available: { type: "string", description: "Available quantity for trading" },
-          order_type: { type: "string", description: "Type of order (market/limit/etc)" },
-          scheduledAt: { type: ["string", "null"], description: "Scheduled execution time" },
-          scheduled: { type: ["string", "null"], description: "Schedule status" },
-          order_id: { type: "string", description: "Unique order identifier" },
-          alpacaOrderId: { type: "string", description: "Alpaca order identifier" },
-          boughtPrice: { type: "number", description: "Price at which the position was bought" },
-          executePrice: { type: "string", description: "Execution price" },
-          executeAmount: { type: "string", description: "Executed amount" },
-          requestAmount: { type: "number", description: "Requested amount" },
-          requestPrice: { type: "number", description: "Requested price" },
-          shortName: { type: "string", description: "Short name of the company" },
-          name: { type: "string", description: "Full company name" },
-          imgUrl: { type: "string", description: "Company logo URL" },
-          imgUrlDark: { type: "string", description: "Dark mode company logo URL" },
-          stockName: { type: "string", description: "Full stock name" },
-          isBookmark: { type: "boolean", description: "Whether the stock is bookmarked" },
-          fractionable: { type: "boolean", description: "Whether the stock supports fractional shares" }
-        }
-      }
-    }
-  ],
-
-  "orders/delete-pending-order": [
-    {
-      status: "200",
-      description: "Successful operation",
-      dataKey: "data",
-      example: {
-        type: "object",
-        values: {
-          _id: { type: "string", description: "Unique identifier for the order" },
-          alpacaOrderId: { type: "string", description: "Alpaca order identifier" },
-          status: { type: "string", description: "Order status (e.g., canceled)" },
-          client_order_id: { type: "string", description: "Client's order identifier" },
+          client_order_id: {
+            type: "string",
+            description: "Client's order identifier",
+          },
           type: { type: "string", description: "Order type (buy/sell)" },
-          order_type: { type: "string", description: "Type of order (limit/stop/etc)" },
+          order_type: {
+            type: "string",
+            description: "Type of order (limit/stop/etc)",
+          },
           time: { type: ["string", "null"], description: "Order time" },
           day: { type: ["string", "null"], description: "Order day" },
           symbol: { type: "string", description: "Stock symbol" },
           orderPrice: { type: "number", description: "Order price" },
-          yesterdayClosePrice: { type: "number", description: "Yesterday's closing price" },
+          yesterdayClosePrice: {
+            type: "number",
+            description: "Yesterday's closing price",
+          },
           requestPrice: { type: "number", description: "Requested price" },
           market_price: { type: "number", description: "Current market price" },
           average_price: { type: "number", description: "Average price" },
@@ -879,54 +702,117 @@ export const responseExamples: Record<string, ResponseExample[]> = {
           executeAmount: { type: "number", description: "Executed amount" },
           totalStockPrice: { type: "number", description: "Total stock price" },
           stockPrice: { type: "number", description: "Current stock price" },
-          avg_entry_price: { type: "number", description: "Average entry price" },
+          avg_entry_price: {
+            type: "number",
+            description: "Average entry price",
+          },
           commission: { type: "number", description: "Commission amount" },
           notional: { type: "number", description: "Notional value" },
           stopPrice: { type: "number", description: "Stop price" },
-          fractionable: { type: "boolean", description: "Whether the order is fractionable" },
+          fractionable: {
+            type: "boolean",
+            description: "Whether the order is fractionable",
+          },
           stockName: { type: "string", description: "Name of the stock" },
           orderData: {
             type: "object",
             values: {
               id: { type: "string", description: "Order ID" },
-              client_order_id: { type: "string", description: "Client order ID" },
+              client_order_id: {
+                type: "string",
+                description: "Client order ID",
+              },
               created_at: { type: "string", description: "Creation timestamp" },
-              updated_at: { type: "string", description: "Last update timestamp" },
-              submitted_at: { type: "string", description: "Submission timestamp" },
-              filled_at: { type: ["string", "null"], description: "Fill timestamp" },
-              expired_at: { type: ["string", "null"], description: "Expiration timestamp" },
-              canceled_at: { type: ["string", "null"], description: "Cancellation timestamp" },
-              failed_at: { type: ["string", "null"], description: "Failure timestamp" },
-              replaced_at: { type: ["string", "null"], description: "Replacement timestamp" },
-              replaced_by: { type: ["string", "null"], description: "Replaced by order ID" },
-              replaces: { type: ["string", "null"], description: "Replaces order ID" },
+              updated_at: {
+                type: "string",
+                description: "Last update timestamp",
+              },
+              submitted_at: {
+                type: "string",
+                description: "Submission timestamp",
+              },
+              filled_at: {
+                type: ["string", "null"],
+                description: "Fill timestamp",
+              },
+              expired_at: {
+                type: ["string", "null"],
+                description: "Expiration timestamp",
+              },
+              canceled_at: {
+                type: ["string", "null"],
+                description: "Cancellation timestamp",
+              },
+              failed_at: {
+                type: ["string", "null"],
+                description: "Failure timestamp",
+              },
+              replaced_at: {
+                type: ["string", "null"],
+                description: "Replacement timestamp",
+              },
+              replaced_by: {
+                type: ["string", "null"],
+                description: "Replaced by order ID",
+              },
+              replaces: {
+                type: ["string", "null"],
+                description: "Replaces order ID",
+              },
               asset_id: { type: "string", description: "Asset identifier" },
               symbol: { type: "string", description: "Stock symbol" },
               asset_class: { type: "string", description: "Asset class" },
-              notional: { type: ["number", "null"], description: "Notional value" },
+              notional: {
+                type: ["number", "null"],
+                description: "Notional value",
+              },
               qty: { type: "string", description: "Quantity" },
               filled_qty: { type: "string", description: "Filled quantity" },
-              filled_avg_price: { type: ["number", "null"], description: "Average fill price" },
+              filled_avg_price: {
+                type: ["number", "null"],
+                description: "Average fill price",
+              },
               order_class: { type: "string", description: "Order class" },
               order_type: { type: "string", description: "Order type" },
               type: { type: "string", description: "Order type" },
               side: { type: "string", description: "Order side" },
-              position_intent: { type: "string", description: "Position intent" },
+              position_intent: {
+                type: "string",
+                description: "Position intent",
+              },
               time_in_force: { type: "string", description: "Time in force" },
-              limit_price: { type: ["number", "null"], description: "Limit price" },
+              limit_price: {
+                type: ["number", "null"],
+                description: "Limit price",
+              },
               stop_price: { type: "string", description: "Stop price" },
               status: { type: "string", description: "Order status" },
-              extended_hours: { type: "boolean", description: "Extended hours flag" },
+              extended_hours: {
+                type: "boolean",
+                description: "Extended hours flag",
+              },
               legs: { type: ["array", "null"], description: "Order legs" },
-              trail_percent: { type: ["number", "null"], description: "Trail percentage" },
-              trail_price: { type: ["number", "null"], description: "Trail price" },
+              trail_percent: {
+                type: ["number", "null"],
+                description: "Trail percentage",
+              },
+              trail_price: {
+                type: ["number", "null"],
+                description: "Trail price",
+              },
               hwm: { type: ["number", "null"], description: "High water mark" },
               commission: { type: "string", description: "Commission amount" },
-              commission_type: { type: "string", description: "Commission type" },
+              commission_type: {
+                type: "string",
+                description: "Commission type",
+              },
               subtag: { type: ["string", "null"], description: "Subtag" },
               source: { type: ["string", "null"], description: "Source" },
-              expires_at: { type: "string", description: "Expiration timestamp" }
-            }
+              expires_at: {
+                type: "string",
+                description: "Expiration timestamp",
+              },
+            },
           },
           userId: { type: "string", description: "User identifier" },
           userDetails: { type: "string", description: "User details" },
@@ -939,19 +825,449 @@ export const responseExamples: Record<string, ResponseExample[]> = {
           orderNumber: { type: "string", description: "Order number" },
           scheduled: { type: "string", description: "Schedule time" },
           timeType: { type: ["string", "null"], description: "Time type" },
-          flutterwaveResponseData: { type: ["object", "null"], description: "Flutterwave response data" },
+          flutterwaveResponseData: {
+            type: ["object", "null"],
+            description: "Flutterwave response data",
+          },
           scheduledOrders: { type: "array", description: "Scheduled orders" },
-          scheduledOrdersIds: { type: "array", description: "Scheduled order IDs" },
-          open_order_id: { type: ["string", "null"], description: "Open order ID" },
+          scheduledOrdersIds: {
+            type: "array",
+            description: "Scheduled order IDs",
+          },
+          open_order_id: {
+            type: ["string", "null"],
+            description: "Open order ID",
+          },
           open_order_ids: { type: "array", description: "Open order IDs" },
           createdAt: { type: "string", description: "Creation timestamp" },
-          canceleOrderData: { type: "string", description: "Cancellation data" },
-          canceledAt: { type: "string", description: "Cancellation timestamp" }
-        }
-      }
-    }
+          canceleOrderData: {
+            type: ["object", "null"],
+            description: "Cancellation data",
+          },
+          _id: { type: "string", description: "Unique identifier" },
+        },
+      },
+    },
   ],
 
+  "orders/pending-order-list": [
+    {
+      status: "200",
+      description: "Successful operation",
+      dataKey: "data",
+      example: {
+        type: "Array of object",
+        values: {
+          id: { type: "string", description: "Order identifier" },
+          client_order_id: {
+            type: "string",
+            description: "Client's order identifier",
+          },
+          created_at: { type: "string", description: "Creation timestamp" },
+          updated_at: { type: "string", description: "Last update timestamp" },
+          submitted_at: { type: "string", description: "Submission timestamp" },
+          filled_at: {
+            type: ["string", "null"],
+            description: "Fill timestamp",
+          },
+          expired_at: {
+            type: ["string", "null"],
+            description: "Expiration timestamp",
+          },
+          canceled_at: {
+            type: ["string", "null"],
+            description: "Cancellation timestamp",
+          },
+          failed_at: {
+            type: ["string", "null"],
+            description: "Failure timestamp",
+          },
+          replaced_at: {
+            type: ["string", "null"],
+            description: "Replacement timestamp",
+          },
+          replaced_by: {
+            type: ["string", "null"],
+            description: "Replaced by order ID",
+          },
+          replaces: {
+            type: ["string", "null"],
+            description: "Replaces order ID",
+          },
+          asset_id: { type: "string", description: "Asset identifier" },
+          symbol: { type: "string", description: "Stock symbol" },
+          asset_class: { type: "string", description: "Asset class" },
+          notional: { type: ["number", "null"], description: "Notional value" },
+          qty: { type: "string", description: "Quantity" },
+          filled_qty: { type: "string", description: "Filled quantity" },
+          filled_avg_price: {
+            type: ["number", "null"],
+            description: "Average fill price",
+          },
+          order_class: { type: "string", description: "Order class" },
+          order_type: { type: "string", description: "Order type" },
+          type: { type: "string", description: "Order type" },
+          side: { type: "string", description: "Order side" },
+          position_intent: { type: "string", description: "Position intent" },
+          time_in_force: { type: "string", description: "Time in force" },
+          limit_price: { type: ["number", "null"], description: "Limit price" },
+          stop_price: { type: "string", description: "Stop price" },
+          status: { type: "string", description: "Order status" },
+          extended_hours: {
+            type: "boolean",
+            description: "Extended hours flag",
+          },
+          legs: { type: ["array", "null"], description: "Order legs" },
+          trail_percent: {
+            type: ["number", "null"],
+            description: "Trail percentage",
+          },
+          trail_price: { type: ["number", "null"], description: "Trail price" },
+          hwm: { type: ["number", "null"], description: "High water mark" },
+          commission: { type: "number", description: "Commission amount" },
+          commission_type: { type: "string", description: "Commission type" },
+          subtag: { type: ["string", "null"], description: "Subtag" },
+          source: { type: ["string", "null"], description: "Source" },
+          expires_at: { type: "string", description: "Expiration timestamp" },
+          shortName: {
+            type: "string",
+            description: "Short name of the company",
+          },
+          name: { type: "string", description: "Full company name" },
+          imgUrl: { type: "string", description: "Company logo URL" },
+          imgUrlDark: {
+            type: "string",
+            description: "Dark mode company logo URL",
+          },
+          stockName: { type: "string", description: "Stock name" },
+          currentPrice: { type: "number", description: "Current stock price" },
+          scheduledAt: {
+            type: ["string", "null"],
+            description: "Scheduled time",
+          },
+          scheduled: {
+            type: ["string", "null"],
+            description: "Schedule status",
+          },
+          order_id: { type: "string", description: "Order identifier" },
+          requestPrice: { type: "number", description: "Requested price" },
+          requestAmount: { type: "number", description: "Requested amount" },
+          executePrice: { type: "number", description: "Execution price" },
+          executeAmount: { type: "number", description: "Executed amount" },
+          amount: { type: "number", description: "Total amount" },
+          stockPrice: { type: "number", description: "Stock price" },
+          orderPrice: { type: "number", description: "Order price" },
+        },
+      },
+    },
+  ],
+
+  "orders/order-details": [
+    {
+      status: "200",
+      description: "Successful operation",
+      dataKey: "data",
+      example: {
+        type: "object",
+        values: {
+          asset_id: {
+            type: "string",
+            description: "Unique identifier for the asset",
+          },
+          symbol: { type: "string", description: "Stock ticker symbol" },
+          exchange: {
+            type: "string",
+            description: "Stock exchange where the asset is traded",
+          },
+          asset_class: {
+            type: "string",
+            description: "Class of the asset (e.g., us_equity)",
+          },
+          asset_marginable: {
+            type: "boolean",
+            description: "Whether the asset can be margined",
+          },
+          qty: { type: "string", description: "Quantity of shares" },
+          avg_entry_price: {
+            type: "string",
+            description: "Average entry price",
+          },
+          side: { type: "string", description: "Position side (long/short)" },
+          market_value: { type: "string", description: "Current market value" },
+          cost_basis: { type: "string", description: "Total cost basis" },
+          unrealized_pl: {
+            type: "string",
+            description: "Unrealized profit/loss",
+          },
+          unrealized_plpc: {
+            type: "string",
+            description: "Unrealized profit/loss percentage",
+          },
+          unrealized_intraday_pl: {
+            type: "string",
+            description: "Unrealized intraday profit/loss",
+          },
+          unrealized_intraday_plpc: {
+            type: "string",
+            description: "Unrealized intraday profit/loss percentage",
+          },
+          current_price: {
+            type: "string",
+            description: "Current market price",
+          },
+          lastday_price: {
+            type: "string",
+            description: "Previous day's closing price",
+          },
+          change_today: {
+            type: "string",
+            description: "Price change percentage today",
+          },
+          qty_available: {
+            type: "string",
+            description: "Available quantity for trading",
+          },
+          order_type: {
+            type: "string",
+            description: "Type of order (market/limit/etc)",
+          },
+          scheduledAt: {
+            type: ["string", "null"],
+            description: "Scheduled execution time",
+          },
+          scheduled: {
+            type: ["string", "null"],
+            description: "Schedule status",
+          },
+          order_id: { type: "string", description: "Unique order identifier" },
+          alpacaOrderId: {
+            type: "string",
+            description: "Alpaca order identifier",
+          },
+          boughtPrice: {
+            type: "number",
+            description: "Price at which the position was bought",
+          },
+          executePrice: { type: "string", description: "Execution price" },
+          executeAmount: { type: "string", description: "Executed amount" },
+          requestAmount: { type: "number", description: "Requested amount" },
+          requestPrice: { type: "number", description: "Requested price" },
+          shortName: {
+            type: "string",
+            description: "Short name of the company",
+          },
+          name: { type: "string", description: "Full company name" },
+          imgUrl: { type: "string", description: "Company logo URL" },
+          imgUrlDark: {
+            type: "string",
+            description: "Dark mode company logo URL",
+          },
+          stockName: { type: "string", description: "Full stock name" },
+          isBookmark: {
+            type: "boolean",
+            description: "Whether the stock is bookmarked",
+          },
+          fractionable: {
+            type: "boolean",
+            description: "Whether the stock supports fractional shares",
+          },
+        },
+      },
+    },
+  ],
+
+  "orders/delete-pending-order": [
+    {
+      status: "200",
+      description: "Successful operation",
+      dataKey: "data",
+      example: {
+        type: "object",
+        values: {
+          _id: {
+            type: "string",
+            description: "Unique identifier for the order",
+          },
+          alpacaOrderId: {
+            type: "string",
+            description: "Alpaca order identifier",
+          },
+          status: {
+            type: "string",
+            description: "Order status (e.g., canceled)",
+          },
+          client_order_id: {
+            type: "string",
+            description: "Client's order identifier",
+          },
+          type: { type: "string", description: "Order type (buy/sell)" },
+          order_type: {
+            type: "string",
+            description: "Type of order (limit/stop/etc)",
+          },
+          time: { type: ["string", "null"], description: "Order time" },
+          day: { type: ["string", "null"], description: "Order day" },
+          symbol: { type: "string", description: "Stock symbol" },
+          orderPrice: { type: "number", description: "Order price" },
+          yesterdayClosePrice: {
+            type: "number",
+            description: "Yesterday's closing price",
+          },
+          requestPrice: { type: "number", description: "Requested price" },
+          market_price: { type: "number", description: "Current market price" },
+          average_price: { type: "number", description: "Average price" },
+          executePrice: { type: "number", description: "Execution price" },
+          requestAmount: { type: "number", description: "Requested amount" },
+          executeAmount: { type: "number", description: "Executed amount" },
+          totalStockPrice: { type: "number", description: "Total stock price" },
+          stockPrice: { type: "number", description: "Current stock price" },
+          avg_entry_price: {
+            type: "number",
+            description: "Average entry price",
+          },
+          commission: { type: "number", description: "Commission amount" },
+          notional: { type: "number", description: "Notional value" },
+          stopPrice: { type: "number", description: "Stop price" },
+          fractionable: {
+            type: "boolean",
+            description: "Whether the order is fractionable",
+          },
+          stockName: { type: "string", description: "Name of the stock" },
+          orderData: {
+            type: "object",
+            values: {
+              id: { type: "string", description: "Order ID" },
+              client_order_id: {
+                type: "string",
+                description: "Client order ID",
+              },
+              created_at: { type: "string", description: "Creation timestamp" },
+              updated_at: {
+                type: "string",
+                description: "Last update timestamp",
+              },
+              submitted_at: {
+                type: "string",
+                description: "Submission timestamp",
+              },
+              filled_at: {
+                type: ["string", "null"],
+                description: "Fill timestamp",
+              },
+              expired_at: {
+                type: ["string", "null"],
+                description: "Expiration timestamp",
+              },
+              canceled_at: {
+                type: ["string", "null"],
+                description: "Cancellation timestamp",
+              },
+              failed_at: {
+                type: ["string", "null"],
+                description: "Failure timestamp",
+              },
+              replaced_at: {
+                type: ["string", "null"],
+                description: "Replacement timestamp",
+              },
+              replaced_by: {
+                type: ["string", "null"],
+                description: "Replaced by order ID",
+              },
+              replaces: {
+                type: ["string", "null"],
+                description: "Replaces order ID",
+              },
+              asset_id: { type: "string", description: "Asset identifier" },
+              symbol: { type: "string", description: "Stock symbol" },
+              asset_class: { type: "string", description: "Asset class" },
+              notional: {
+                type: ["number", "null"],
+                description: "Notional value",
+              },
+              qty: { type: "string", description: "Quantity" },
+              filled_qty: { type: "string", description: "Filled quantity" },
+              filled_avg_price: {
+                type: ["number", "null"],
+                description: "Average fill price",
+              },
+              order_class: { type: "string", description: "Order class" },
+              order_type: { type: "string", description: "Order type" },
+              type: { type: "string", description: "Order type" },
+              side: { type: "string", description: "Order side" },
+              position_intent: {
+                type: "string",
+                description: "Position intent",
+              },
+              time_in_force: { type: "string", description: "Time in force" },
+              limit_price: {
+                type: ["number", "null"],
+                description: "Limit price",
+              },
+              stop_price: { type: "string", description: "Stop price" },
+              status: { type: "string", description: "Order status" },
+              extended_hours: {
+                type: "boolean",
+                description: "Extended hours flag",
+              },
+              legs: { type: ["array", "null"], description: "Order legs" },
+              trail_percent: {
+                type: ["number", "null"],
+                description: "Trail percentage",
+              },
+              trail_price: {
+                type: ["number", "null"],
+                description: "Trail price",
+              },
+              hwm: { type: ["number", "null"], description: "High water mark" },
+              commission: { type: "string", description: "Commission amount" },
+              commission_type: {
+                type: "string",
+                description: "Commission type",
+              },
+              subtag: { type: ["string", "null"], description: "Subtag" },
+              source: { type: ["string", "null"], description: "Source" },
+              expires_at: {
+                type: "string",
+                description: "Expiration timestamp",
+              },
+            },
+          },
+          userId: { type: "string", description: "User identifier" },
+          userDetails: { type: "string", description: "User details" },
+          isFraction: { type: "boolean", description: "Fractional order flag" },
+          timezone: { type: ["string", "null"], description: "Timezone" },
+          brokerAmount: { type: "number", description: "Broker amount" },
+          qty: { type: "number", description: "Quantity" },
+          limitPrice: { type: "number", description: "Limit price" },
+          religion: { type: "string", description: "Currency" },
+          orderNumber: { type: "string", description: "Order number" },
+          scheduled: { type: "string", description: "Schedule time" },
+          timeType: { type: ["string", "null"], description: "Time type" },
+          flutterwaveResponseData: {
+            type: ["object", "null"],
+            description: "Flutterwave response data",
+          },
+          scheduledOrders: { type: "array", description: "Scheduled orders" },
+          scheduledOrdersIds: {
+            type: "array",
+            description: "Scheduled order IDs",
+          },
+          open_order_id: {
+            type: ["string", "null"],
+            description: "Open order ID",
+          },
+          open_order_ids: { type: "array", description: "Open order IDs" },
+          createdAt: { type: "string", description: "Creation timestamp" },
+          canceleOrderData: {
+            type: "string",
+            description: "Cancellation data",
+          },
+          canceledAt: { type: "string", description: "Cancellation timestamp" },
+        },
+      },
+    },
+  ],
 
   "orders/delete-all-pending-orders": [
     {
@@ -959,113 +1275,241 @@ export const responseExamples: Record<string, ResponseExample[]> = {
       description: "Successful operation",
       dataKey: "data",
       example: {
-
         type: "object",
         values: {
           success: {
             type: "Array of object",
             values: {
               id: { type: "string", description: "Order ID" },
-              client_order_id: { type: "string", description: "Client order ID" },
-              created_at: { type: "string", description: "Order creation timestamp" },
-              updated_at: { type: "string", description: "Order update timestamp" },
-              submitted_at: { type: "string", description: "Order submission timestamp" },
-              filled_at: { type: ["string", "null"], description: "Order fill timestamp" },
-              expired_at: { type: ["string", "null"], description: "Order expiration timestamp" },
-              canceled_at: { type: ["string", "null"], description: "Order cancellation timestamp" },
-              failed_at: { type: ["string", "null"], description: "Order failure timestamp" },
-              replaced_at: { type: ["string", "null"], description: "Order replacement timestamp" },
-              replaced_by: { type: ["string", "null"], description: "ID of order that replaced this one" },
-              replaces: { type: ["string", "null"], description: "ID of order that was replaced" },
+              client_order_id: {
+                type: "string",
+                description: "Client order ID",
+              },
+              created_at: {
+                type: "string",
+                description: "Order creation timestamp",
+              },
+              updated_at: {
+                type: "string",
+                description: "Order update timestamp",
+              },
+              submitted_at: {
+                type: "string",
+                description: "Order submission timestamp",
+              },
+              filled_at: {
+                type: ["string", "null"],
+                description: "Order fill timestamp",
+              },
+              expired_at: {
+                type: ["string", "null"],
+                description: "Order expiration timestamp",
+              },
+              canceled_at: {
+                type: ["string", "null"],
+                description: "Order cancellation timestamp",
+              },
+              failed_at: {
+                type: ["string", "null"],
+                description: "Order failure timestamp",
+              },
+              replaced_at: {
+                type: ["string", "null"],
+                description: "Order replacement timestamp",
+              },
+              replaced_by: {
+                type: ["string", "null"],
+                description: "ID of order that replaced this one",
+              },
+              replaces: {
+                type: ["string", "null"],
+                description: "ID of order that was replaced",
+              },
               asset_id: { type: "string", description: "Asset ID" },
               symbol: { type: "string", description: "Stock symbol" },
               asset_class: { type: "string", description: "Asset class" },
-              notional: { type: ["number", "null"], description: "Notional value" },
+              notional: {
+                type: ["number", "null"],
+                description: "Notional value",
+              },
               qty: { type: "string", description: "Order quantity" },
               filled_qty: { type: "string", description: "Filled quantity" },
-              filled_avg_price: { type: ["number", "null"], description: "Average fill price" },
+              filled_avg_price: {
+                type: ["number", "null"],
+                description: "Average fill price",
+              },
               order_class: { type: "string", description: "Order class" },
               order_type: { type: "string", description: "Order type" },
               type: { type: "string", description: "Order type" },
               side: { type: "string", description: "Order side" },
-              position_intent: { type: "string", description: "Position intent" },
+              position_intent: {
+                type: "string",
+                description: "Position intent",
+              },
               time_in_force: { type: "string", description: "Time in force" },
-              limit_price: { type: ["number", "null"], description: "Limit price" },
-              stop_price: { type: ["number", "null"], description: "Stop price" },
+              limit_price: {
+                type: ["number", "null"],
+                description: "Limit price",
+              },
+              stop_price: {
+                type: ["number", "null"],
+                description: "Stop price",
+              },
               status: { type: "string", description: "Order status" },
-              extended_hours: { type: "boolean", description: "Extended hours flag" },
+              extended_hours: {
+                type: "boolean",
+                description: "Extended hours flag",
+              },
               legs: { type: ["array", "null"], description: "Order legs" },
-              trail_percent: { type: ["number", "null"], description: "Trail percent" },
-              trail_price: { type: ["number", "null"], description: "Trail price" },
+              trail_percent: {
+                type: ["number", "null"],
+                description: "Trail percent",
+              },
+              trail_price: {
+                type: ["number", "null"],
+                description: "Trail price",
+              },
               hwm: { type: ["number", "null"], description: "High water mark" },
               commission: { type: "string", description: "Commission amount" },
-              commission_type: { type: "string", description: "Commission type" },
+              commission_type: {
+                type: "string",
+                description: "Commission type",
+              },
               subtag: { type: ["string", "null"], description: "Subtag" },
               source: { type: ["string", "null"], description: "Order source" },
-              expires_at: { type: "string", description: "Expiration timestamp" },
+              expires_at: {
+                type: "string",
+                description: "Expiration timestamp",
+              },
               shortName: { type: "string", description: "Short company name" },
               name: { type: "string", description: "Full company name" },
               imgUrl: { type: "string", description: "Company image URL" },
-              imgUrlDark: { type: "string", description: "Dark mode company image URL" },
-              stockName: { type: "string", description: "Stock name" }
-            }
+              imgUrlDark: {
+                type: "string",
+                description: "Dark mode company image URL",
+              },
+              stockName: { type: "string", description: "Stock name" },
+            },
           },
           failed: {
             type: "Array of object",
             values: {
               id: { type: "string", description: "Order ID" },
-              client_order_id: { type: "string", description: "Client order ID" },
-              created_at: { type: "string", description: "Order creation timestamp" },
-              updated_at: { type: "string", description: "Order update timestamp" },
-              submitted_at: { type: "string", description: "Order submission timestamp" },
-              filled_at: { type: ["string", "null"], description: "Order fill timestamp" },
-              expired_at: { type: ["string", "null"], description: "Order expiration timestamp" },
-              canceled_at: { type: ["string", "null"], description: "Order cancellation timestamp" },
-              failed_at: { type: ["string", "null"], description: "Order failure timestamp" },
-              replaced_at: { type: ["string", "null"], description: "Order replacement timestamp" },
-              replaced_by: { type: ["string", "null"], description: "ID of order that replaced this one" },
-              replaces: { type: ["string", "null"], description: "ID of order that was replaced" },
+              client_order_id: {
+                type: "string",
+                description: "Client order ID",
+              },
+              created_at: {
+                type: "string",
+                description: "Order creation timestamp",
+              },
+              updated_at: {
+                type: "string",
+                description: "Order update timestamp",
+              },
+              submitted_at: {
+                type: "string",
+                description: "Order submission timestamp",
+              },
+              filled_at: {
+                type: ["string", "null"],
+                description: "Order fill timestamp",
+              },
+              expired_at: {
+                type: ["string", "null"],
+                description: "Order expiration timestamp",
+              },
+              canceled_at: {
+                type: ["string", "null"],
+                description: "Order cancellation timestamp",
+              },
+              failed_at: {
+                type: ["string", "null"],
+                description: "Order failure timestamp",
+              },
+              replaced_at: {
+                type: ["string", "null"],
+                description: "Order replacement timestamp",
+              },
+              replaced_by: {
+                type: ["string", "null"],
+                description: "ID of order that replaced this one",
+              },
+              replaces: {
+                type: ["string", "null"],
+                description: "ID of order that was replaced",
+              },
               asset_id: { type: "string", description: "Asset ID" },
               symbol: { type: "string", description: "Stock symbol" },
               asset_class: { type: "string", description: "Asset class" },
-              notional: { type: ["number", "null"], description: "Notional value" },
+              notional: {
+                type: ["number", "null"],
+                description: "Notional value",
+              },
               qty: { type: "string", description: "Order quantity" },
               filled_qty: { type: "string", description: "Filled quantity" },
-              filled_avg_price: { type: ["number", "null"], description: "Average fill price" },
+              filled_avg_price: {
+                type: ["number", "null"],
+                description: "Average fill price",
+              },
               order_class: { type: "string", description: "Order class" },
               order_type: { type: "string", description: "Order type" },
               type: { type: "string", description: "Order type" },
               side: { type: "string", description: "Order side" },
-              position_intent: { type: "string", description: "Position intent" },
+              position_intent: {
+                type: "string",
+                description: "Position intent",
+              },
               time_in_force: { type: "string", description: "Time in force" },
-              limit_price: { type: ["number", "null"], description: "Limit price" },
-              stop_price: { type: ["number", "null"], description: "Stop price" },
+              limit_price: {
+                type: ["number", "null"],
+                description: "Limit price",
+              },
+              stop_price: {
+                type: ["number", "null"],
+                description: "Stop price",
+              },
               status: { type: "string", description: "Order status" },
-              extended_hours: { type: "boolean", description: "Extended hours flag" },
+              extended_hours: {
+                type: "boolean",
+                description: "Extended hours flag",
+              },
               legs: { type: ["array", "null"], description: "Order legs" },
-              trail_percent: { type: ["number", "null"], description: "Trail percent" },
-              trail_price: { type: ["number", "null"], description: "Trail price" },
+              trail_percent: {
+                type: ["number", "null"],
+                description: "Trail percent",
+              },
+              trail_price: {
+                type: ["number", "null"],
+                description: "Trail price",
+              },
               hwm: { type: ["number", "null"], description: "High water mark" },
               commission: { type: "string", description: "Commission amount" },
-              commission_type: { type: "string", description: "Commission type" },
+              commission_type: {
+                type: "string",
+                description: "Commission type",
+              },
               subtag: { type: ["string", "null"], description: "Subtag" },
               source: { type: ["string", "null"], description: "Order source" },
-              expires_at: { type: "string", description: "Expiration timestamp" },
+              expires_at: {
+                type: "string",
+                description: "Expiration timestamp",
+              },
               shortName: { type: "string", description: "Short company name" },
               name: { type: "string", description: "Full company name" },
               imgUrl: { type: "string", description: "Company image URL" },
-              imgUrlDark: { type: "string", description: "Dark mode company image URL" },
-              stockName: { type: "string", description: "Stock name" }
-            }
-          }
-        }
-      }}
+              imgUrlDark: {
+                type: "string",
+                description: "Dark mode company image URL",
+              },
+              stockName: { type: "string", description: "Stock name" },
+            },
+          },
+        },
+      },
+    },
   ],
 
-  
-
-
-  
   "orders/open-position": [
     {
       status: "200",
@@ -1074,46 +1518,111 @@ export const responseExamples: Record<string, ResponseExample[]> = {
       example: {
         type: "Array of object",
         values: {
-          asset_id: { type: "string", description: "Unique identifier for the asset" },
+          asset_id: {
+            type: "string",
+            description: "Unique identifier for the asset",
+          },
           symbol: { type: "string", description: "Stock ticker symbol" },
-          exchange: { type: "string", description: "Stock exchange where the asset is traded" },
-          asset_class: { type: "string", description: "Class of the asset (e.g., us_equity)" },
-          asset_marginable: { type: "boolean", description: "Whether the asset can be margined" },
+          exchange: {
+            type: "string",
+            description: "Stock exchange where the asset is traded",
+          },
+          asset_class: {
+            type: "string",
+            description: "Class of the asset (e.g., us_equity)",
+          },
+          asset_marginable: {
+            type: "boolean",
+            description: "Whether the asset can be margined",
+          },
           qty: { type: "string", description: "Quantity of shares" },
-          avg_entry_price: { type: "string", description: "Average entry price" },
+          avg_entry_price: {
+            type: "string",
+            description: "Average entry price",
+          },
           side: { type: "string", description: "Position side (long/short)" },
           market_value: { type: "string", description: "Current market value" },
           cost_basis: { type: "string", description: "Total cost basis" },
-          unrealized_pl: { type: "string", description: "Unrealized profit/loss" },
-          unrealized_plpc: { type: "string", description: "Unrealized profit/loss percentage" },
-          unrealized_intraday_pl: { type: "string", description: "Unrealized intraday profit/loss" },
-          unrealized_intraday_plpc: { type: "string", description: "Unrealized intraday profit/loss percentage" },
-          current_price: { type: "string", description: "Current market price" },
-          lastday_price: { type: "string", description: "Previous day's closing price" },
-          change_today: { type: "string", description: "Price change percentage today" },
-          qty_available: { type: "string", description: "Available quantity for trading" },
-          order_type: { type: "string", description: "Type of order (market/limit/etc)" },
-          scheduledAt: { type: ["string", "null"], description: "Scheduled execution time" },
-          scheduled: { type: ["string", "null"], description: "Schedule status" },
+          unrealized_pl: {
+            type: "string",
+            description: "Unrealized profit/loss",
+          },
+          unrealized_plpc: {
+            type: "string",
+            description: "Unrealized profit/loss percentage",
+          },
+          unrealized_intraday_pl: {
+            type: "string",
+            description: "Unrealized intraday profit/loss",
+          },
+          unrealized_intraday_plpc: {
+            type: "string",
+            description: "Unrealized intraday profit/loss percentage",
+          },
+          current_price: {
+            type: "string",
+            description: "Current market price",
+          },
+          lastday_price: {
+            type: "string",
+            description: "Previous day's closing price",
+          },
+          change_today: {
+            type: "string",
+            description: "Price change percentage today",
+          },
+          qty_available: {
+            type: "string",
+            description: "Available quantity for trading",
+          },
+          order_type: {
+            type: "string",
+            description: "Type of order (market/limit/etc)",
+          },
+          scheduledAt: {
+            type: ["string", "null"],
+            description: "Scheduled execution time",
+          },
+          scheduled: {
+            type: ["string", "null"],
+            description: "Schedule status",
+          },
           order_id: { type: "string", description: "Unique order identifier" },
-          alpacaOrderId: { type: "string", description: "Alpaca order identifier" },
-          boughtPrice: { type: "number", description: "Price at which the position was bought" },
+          alpacaOrderId: {
+            type: "string",
+            description: "Alpaca order identifier",
+          },
+          boughtPrice: {
+            type: "number",
+            description: "Price at which the position was bought",
+          },
           executePrice: { type: "string", description: "Execution price" },
           executeAmount: { type: "string", description: "Executed amount" },
           requestAmount: { type: "number", description: "Requested amount" },
           requestPrice: { type: "number", description: "Requested price" },
-          shortName: { type: "string", description: "Short name of the company" },
+          shortName: {
+            type: "string",
+            description: "Short name of the company",
+          },
           name: { type: "string", description: "Full company name" },
           imgUrl: { type: "string", description: "Company logo URL" },
-          imgUrlDark: { type: "string", description: "Dark mode company logo URL" },
+          imgUrlDark: {
+            type: "string",
+            description: "Dark mode company logo URL",
+          },
           stockName: { type: "string", description: "Full stock name" },
-          isBookmark: { type: "boolean", description: "Whether the stock is bookmarked" },
-          fractionable: { type: "boolean", description: "Whether the stock supports fractional shares" }
-        }
-      }
-    }
-  ]
-  ,
+          isBookmark: {
+            type: "boolean",
+            description: "Whether the stock is bookmarked",
+          },
+          fractionable: {
+            type: "boolean",
+            description: "Whether the stock supports fractional shares",
+          },
+        },
+      },
+    },
+  ],
   "orders/open-position-symbol": [
     {
       status: "200",
@@ -1122,46 +1631,111 @@ export const responseExamples: Record<string, ResponseExample[]> = {
       example: {
         type: "Array of object",
         values: {
-          asset_id: { type: "string", description: "Unique identifier for the asset" },
+          asset_id: {
+            type: "string",
+            description: "Unique identifier for the asset",
+          },
           symbol: { type: "string", description: "Stock ticker symbol" },
-          exchange: { type: "string", description: "Stock exchange where the asset is traded" },
-          asset_class: { type: "string", description: "Class of the asset (e.g., us_equity)" },
-          asset_marginable: { type: "boolean", description: "Whether the asset can be margined" },
+          exchange: {
+            type: "string",
+            description: "Stock exchange where the asset is traded",
+          },
+          asset_class: {
+            type: "string",
+            description: "Class of the asset (e.g., us_equity)",
+          },
+          asset_marginable: {
+            type: "boolean",
+            description: "Whether the asset can be margined",
+          },
           qty: { type: "string", description: "Quantity of shares" },
-          avg_entry_price: { type: "string", description: "Average entry price" },
+          avg_entry_price: {
+            type: "string",
+            description: "Average entry price",
+          },
           side: { type: "string", description: "Position side (long/short)" },
           market_value: { type: "string", description: "Current market value" },
           cost_basis: { type: "string", description: "Total cost basis" },
-          unrealized_pl: { type: "string", description: "Unrealized profit/loss" },
-          unrealized_plpc: { type: "string", description: "Unrealized profit/loss percentage" },
-          unrealized_intraday_pl: { type: "string", description: "Unrealized intraday profit/loss" },
-          unrealized_intraday_plpc: { type: "string", description: "Unrealized intraday profit/loss percentage" },
-          current_price: { type: "string", description: "Current market price" },
-          lastday_price: { type: "string", description: "Previous day's closing price" },
-          change_today: { type: "string", description: "Price change percentage today" },
-          qty_available: { type: "string", description: "Available quantity for trading" },
-          order_type: { type: "string", description: "Type of order (market/limit/etc)" },
-          scheduledAt: { type: ["string", "null"], description: "Scheduled execution time" },
-          scheduled: { type: ["string", "null"], description: "Schedule status" },
+          unrealized_pl: {
+            type: "string",
+            description: "Unrealized profit/loss",
+          },
+          unrealized_plpc: {
+            type: "string",
+            description: "Unrealized profit/loss percentage",
+          },
+          unrealized_intraday_pl: {
+            type: "string",
+            description: "Unrealized intraday profit/loss",
+          },
+          unrealized_intraday_plpc: {
+            type: "string",
+            description: "Unrealized intraday profit/loss percentage",
+          },
+          current_price: {
+            type: "string",
+            description: "Current market price",
+          },
+          lastday_price: {
+            type: "string",
+            description: "Previous day's closing price",
+          },
+          change_today: {
+            type: "string",
+            description: "Price change percentage today",
+          },
+          qty_available: {
+            type: "string",
+            description: "Available quantity for trading",
+          },
+          order_type: {
+            type: "string",
+            description: "Type of order (market/limit/etc)",
+          },
+          scheduledAt: {
+            type: ["string", "null"],
+            description: "Scheduled execution time",
+          },
+          scheduled: {
+            type: ["string", "null"],
+            description: "Schedule status",
+          },
           order_id: { type: "string", description: "Unique order identifier" },
-          alpacaOrderId: { type: "string", description: "Alpaca order identifier" },
-          boughtPrice: { type: "number", description: "Price at which the position was bought" },
+          alpacaOrderId: {
+            type: "string",
+            description: "Alpaca order identifier",
+          },
+          boughtPrice: {
+            type: "number",
+            description: "Price at which the position was bought",
+          },
           executePrice: { type: "string", description: "Execution price" },
           executeAmount: { type: "string", description: "Executed amount" },
           requestAmount: { type: "number", description: "Requested amount" },
           requestPrice: { type: "number", description: "Requested price" },
-          shortName: { type: "string", description: "Short name of the company" },
+          shortName: {
+            type: "string",
+            description: "Short name of the company",
+          },
           name: { type: "string", description: "Full company name" },
           imgUrl: { type: "string", description: "Company logo URL" },
-          imgUrlDark: { type: "string", description: "Dark mode company logo URL" },
+          imgUrlDark: {
+            type: "string",
+            description: "Dark mode company logo URL",
+          },
           stockName: { type: "string", description: "Full stock name" },
-          isBookmark: { type: "boolean", description: "Whether the stock is bookmarked" },
-          fractionable: { type: "boolean", description: "Whether the stock supports fractional shares" }
-        }
-      }
-    }
-  ]
-  ,
+          isBookmark: {
+            type: "boolean",
+            description: "Whether the stock is bookmarked",
+          },
+          fractionable: {
+            type: "boolean",
+            description: "Whether the stock supports fractional shares",
+          },
+        },
+      },
+    },
+  ],
   "orders/close-position-symbol": [
     {
       status: "200",
@@ -1170,27 +1744,60 @@ export const responseExamples: Record<string, ResponseExample[]> = {
       example: {
         type: "object",
         values: {
-          id: { type: "string", description: "Unique identifier for the order" },
-          client_order_id: { type: "string", description: "Client's order identifier" },
+          id: {
+            type: "string",
+            description: "Unique identifier for the order",
+          },
+          client_order_id: {
+            type: "string",
+            description: "Client's order identifier",
+          },
           created_at: { type: "string", description: "Creation timestamp" },
           updated_at: { type: "string", description: "Last update timestamp" },
           submitted_at: { type: "string", description: "Submission timestamp" },
-          filled_at: { type: ["string", "null"], description: "Fill timestamp" },
-          expired_at: { type: ["string", "null"], description: "Expiration timestamp" },
-          canceled_at: { type: ["string", "null"], description: "Cancellation timestamp" },
-          failed_at: { type: ["string", "null"], description: "Failure timestamp" },
-          replaced_at: { type: ["string", "null"], description: "Replacement timestamp" },
-          replaced_by: { type: ["string", "null"], description: "Replaced by order ID" },
-          replaces: { type: ["string", "null"], description: "Replaces order ID" },
+          filled_at: {
+            type: ["string", "null"],
+            description: "Fill timestamp",
+          },
+          expired_at: {
+            type: ["string", "null"],
+            description: "Expiration timestamp",
+          },
+          canceled_at: {
+            type: ["string", "null"],
+            description: "Cancellation timestamp",
+          },
+          failed_at: {
+            type: ["string", "null"],
+            description: "Failure timestamp",
+          },
+          replaced_at: {
+            type: ["string", "null"],
+            description: "Replacement timestamp",
+          },
+          replaced_by: {
+            type: ["string", "null"],
+            description: "Replaced by order ID",
+          },
+          replaces: {
+            type: ["string", "null"],
+            description: "Replaces order ID",
+          },
           asset_id: { type: "string", description: "Asset identifier" },
           symbol: { type: "string", description: "Stock symbol" },
           asset_class: { type: "string", description: "Asset class" },
           notional: { type: ["number", "null"], description: "Notional value" },
           qty: { type: "string", description: "Quantity of shares" },
           filled_qty: { type: "string", description: "Filled quantity" },
-          filled_avg_price: { type: ["number", "null"], description: "Average fill price" },
+          filled_avg_price: {
+            type: ["number", "null"],
+            description: "Average fill price",
+          },
           order_class: { type: "string", description: "Order class" },
-          order_type: { type: "string", description: "Type of order (market/limit/etc)" },
+          order_type: {
+            type: "string",
+            description: "Type of order (market/limit/etc)",
+          },
           type: { type: "string", description: "Order type" },
           side: { type: "string", description: "Order side (buy/sell)" },
           position_intent: { type: "string", description: "Position intent" },
@@ -1198,17 +1805,23 @@ export const responseExamples: Record<string, ResponseExample[]> = {
           limit_price: { type: ["number", "null"], description: "Limit price" },
           stop_price: { type: ["number", "null"], description: "Stop price" },
           status: { type: "string", description: "Order status" },
-          extended_hours: { type: "boolean", description: "Extended hours flag" },
+          extended_hours: {
+            type: "boolean",
+            description: "Extended hours flag",
+          },
           legs: { type: ["array", "null"], description: "Order legs" },
-          trail_percent: { type: ["number", "null"], description: "Trail percentage" },
+          trail_percent: {
+            type: ["number", "null"],
+            description: "Trail percentage",
+          },
           trail_price: { type: ["number", "null"], description: "Trail price" },
           hwm: { type: ["number", "null"], description: "High water mark" },
           subtag: { type: ["string", "null"], description: "Subtag" },
           source: { type: ["string", "null"], description: "Source" },
-          expires_at: { type: "string", description: "Expiration timestamp" }
-        }
-      }
-    }
+          expires_at: { type: "string", description: "Expiration timestamp" },
+        },
+      },
+    },
   ],
 
   "orders/order-history": [
@@ -1219,27 +1832,60 @@ export const responseExamples: Record<string, ResponseExample[]> = {
       example: {
         type: "Array of object",
         values: {
-          id: { type: "string", description: "Unique identifier for the order" },
-          client_order_id: { type: "string", description: "Client's order identifier" },
+          id: {
+            type: "string",
+            description: "Unique identifier for the order",
+          },
+          client_order_id: {
+            type: "string",
+            description: "Client's order identifier",
+          },
           created_at: { type: "string", description: "Creation timestamp" },
           updated_at: { type: "string", description: "Last update timestamp" },
           submitted_at: { type: "string", description: "Submission timestamp" },
-          filled_at: { type: ["string", "null"], description: "Fill timestamp" },
-          expired_at: { type: ["string", "null"], description: "Expiration timestamp" },
-          canceled_at: { type: ["string", "null"], description: "Cancellation timestamp" },
-          failed_at: { type: ["string", "null"], description: "Failure timestamp" },
-          replaced_at: { type: ["string", "null"], description: "Replacement timestamp" },
-          replaced_by: { type: ["string", "null"], description: "Replaced by order ID" },
-          replaces: { type: ["string", "null"], description: "Replaces order ID" },
+          filled_at: {
+            type: ["string", "null"],
+            description: "Fill timestamp",
+          },
+          expired_at: {
+            type: ["string", "null"],
+            description: "Expiration timestamp",
+          },
+          canceled_at: {
+            type: ["string", "null"],
+            description: "Cancellation timestamp",
+          },
+          failed_at: {
+            type: ["string", "null"],
+            description: "Failure timestamp",
+          },
+          replaced_at: {
+            type: ["string", "null"],
+            description: "Replacement timestamp",
+          },
+          replaced_by: {
+            type: ["string", "null"],
+            description: "Replaced by order ID",
+          },
+          replaces: {
+            type: ["string", "null"],
+            description: "Replaces order ID",
+          },
           asset_id: { type: "string", description: "Asset identifier" },
           symbol: { type: "string", description: "Stock symbol" },
           asset_class: { type: "string", description: "Asset class" },
           notional: { type: ["number", "null"], description: "Notional value" },
           qty: { type: "string", description: "Quantity of shares" },
           filled_qty: { type: "string", description: "Filled quantity" },
-          filled_avg_price: { type: "string", description: "Average fill price" },
+          filled_avg_price: {
+            type: "string",
+            description: "Average fill price",
+          },
           order_class: { type: "string", description: "Order class" },
-          order_type: { type: "string", description: "Type of order (market/limit/etc)" },
+          order_type: {
+            type: "string",
+            description: "Type of order (market/limit/etc)",
+          },
           type: { type: "string", description: "Order type" },
           side: { type: "string", description: "Order side (buy/sell)" },
           position_intent: { type: "string", description: "Position intent" },
@@ -1247,21 +1893,39 @@ export const responseExamples: Record<string, ResponseExample[]> = {
           limit_price: { type: ["number", "null"], description: "Limit price" },
           stop_price: { type: ["number", "null"], description: "Stop price" },
           status: { type: "string", description: "Order status" },
-          extended_hours: { type: "boolean", description: "Extended hours flag" },
+          extended_hours: {
+            type: "boolean",
+            description: "Extended hours flag",
+          },
           legs: { type: ["array", "null"], description: "Order legs" },
-          trail_percent: { type: ["number", "null"], description: "Trail percentage" },
+          trail_percent: {
+            type: ["number", "null"],
+            description: "Trail percentage",
+          },
           trail_price: { type: ["number", "null"], description: "Trail price" },
           hwm: { type: ["number", "null"], description: "High water mark" },
           subtag: { type: ["string", "null"], description: "Subtag" },
           source: { type: ["string", "null"], description: "Source" },
           expires_at: { type: "string", description: "Expiration timestamp" },
-          shortName: { type: "string", description: "Short name of the company" },
+          shortName: {
+            type: "string",
+            description: "Short name of the company",
+          },
           name: { type: "string", description: "Full company name" },
           imgUrl: { type: "string", description: "Company logo URL" },
-          imgUrlDark: { type: "string", description: "Dark mode company logo URL" },
+          imgUrlDark: {
+            type: "string",
+            description: "Dark mode company logo URL",
+          },
           stockName: { type: "string", description: "Full stock name" },
-          scheduledAt: { type: ["string", "null"], description: "Scheduled execution time" },
-          scheduled: { type: ["string", "null"], description: "Schedule status" },
+          scheduledAt: {
+            type: ["string", "null"],
+            description: "Scheduled execution time",
+          },
+          scheduled: {
+            type: ["string", "null"],
+            description: "Schedule status",
+          },
           order_id: { type: "string", description: "Unique order identifier" },
           requestPrice: { type: "number", description: "Requested price" },
           requestAmount: { type: "number", description: "Requested amount" },
@@ -1270,10 +1934,10 @@ export const responseExamples: Record<string, ResponseExample[]> = {
           amount: { type: "number", description: "Total amount" },
           stockPrice: { type: "number", description: "Current stock price" },
           commission: { type: "number", description: "Commission amount" },
-          orderPrice: { type: "number", description: "Order price" }
-        }
-      }
-    }
+          orderPrice: { type: "number", description: "Order price" },
+        },
+      },
+    },
   ],
 
   "orders/account-activities": [
@@ -1287,31 +1951,52 @@ export const responseExamples: Record<string, ResponseExample[]> = {
           tradeActivity: {
             type: "Array of object",
             values: {
-              id: { type: "string", description: "Unique identifier for the trade activity" },
+              id: {
+                type: "string",
+                description: "Unique identifier for the trade activity",
+              },
               account_id: { type: "string", description: "Account identifier" },
-              activity_type: { type: "string", description: "Type of activity (e.g., FILL)" },
-              transaction_time: { type: "string", description: "Transaction timestamp" },
-              type: { type: "string", description: "Transaction type (e.g., partial_fill)" },
+              activity_type: {
+                type: "string",
+                description: "Type of activity (e.g., FILL)",
+              },
+              transaction_time: {
+                type: "string",
+                description: "Transaction timestamp",
+              },
+              type: {
+                type: "string",
+                description: "Transaction type (e.g., partial_fill)",
+              },
               price: { type: "string", description: "Transaction price" },
               qty: { type: "string", description: "Transaction quantity" },
-              side: { type: "string", description: "Transaction side (buy/sell)" },
+              side: {
+                type: "string",
+                description: "Transaction side (buy/sell)",
+              },
               symbol: { type: "string", description: "Stock symbol" },
               leaves_qty: { type: "string", description: "Remaining quantity" },
               order_id: { type: "string", description: "Order identifier" },
               cum_qty: { type: "string", description: "Cumulative quantity" },
               order_status: { type: "string", description: "Order status" },
-              shortName: { type: "string", description: "Short name of the company" },
+              shortName: {
+                type: "string",
+                description: "Short name of the company",
+              },
               name: { type: "string", description: "Full company name" },
               imgUrl: { type: "string", description: "Company logo URL" },
-              imgUrlDark: { type: "string", description: "Dark mode company logo URL" },
-              stockName: { type: "string", description: "Full stock name" }
-            }
-          }
-        }
-      }
-    }
+              imgUrlDark: {
+                type: "string",
+                description: "Dark mode company logo URL",
+              },
+              stockName: { type: "string", description: "Full stock name" },
+            },
+          },
+        },
+      },
+    },
   ],
-  'orders/account-activities-type': [
+  "orders/account-activities-type": [
     {
       status: "200",
       description: "Successful operation",
@@ -1322,47 +2007,79 @@ export const responseExamples: Record<string, ResponseExample[]> = {
           tradeActivity: {
             type: "Array of object",
             values: {
-              id: { type: "string", description: "Unique identifier for the trade activity" },
+              id: {
+                type: "string",
+                description: "Unique identifier for the trade activity",
+              },
               account_id: { type: "string", description: "Account identifier" },
-              activity_type: { type: "string", description: "Type of activity (e.g., FILL)" },
-              transaction_time: { type: "string", description: "Transaction timestamp" },
-              type: { type: "string", description: "Transaction type (e.g., partial_fill)" },
+              activity_type: {
+                type: "string",
+                description: "Type of activity (e.g., FILL)",
+              },
+              transaction_time: {
+                type: "string",
+                description: "Transaction timestamp",
+              },
+              type: {
+                type: "string",
+                description: "Transaction type (e.g., partial_fill)",
+              },
               price: { type: "string", description: "Transaction price" },
               qty: { type: "string", description: "Transaction quantity" },
-              side: { type: "string", description: "Transaction side (buy/sell)" },
+              side: {
+                type: "string",
+                description: "Transaction side (buy/sell)",
+              },
               symbol: { type: "string", description: "Stock symbol" },
               leaves_qty: { type: "string", description: "Remaining quantity" },
               order_id: { type: "string", description: "Order identifier" },
               cum_qty: { type: "string", description: "Cumulative quantity" },
               order_status: { type: "string", description: "Order status" },
-              shortName: { type: "string", description: "Short name of the company" },
+              shortName: {
+                type: "string",
+                description: "Short name of the company",
+              },
               name: { type: "string", description: "Full company name" },
               imgUrl: { type: "string", description: "Company logo URL" },
-              imgUrlDark: { type: "string", description: "Dark mode company logo URL" },
-              stockName: { type: "string", description: "Full stock name" }
-            }
+              imgUrlDark: {
+                type: "string",
+                description: "Dark mode company logo URL",
+              },
+              stockName: { type: "string", description: "Full stock name" },
+            },
           },
           nonTradeActivity: {
             type: "Array of object",
             values: {
-              id: { type: "string", description: "Unique identifier for the activity" },
+              id: {
+                type: "string",
+                description: "Unique identifier for the activity",
+              },
               account_id: { type: "string", description: "Account identifier" },
-              activity_type: { type: "string", description: "Type of activity (e.g., FEE)" },
-              activity_sub_type: { type: "string", description: "Subtype of activity (e.g., CAT)" },
+              activity_type: {
+                type: "string",
+                description: "Type of activity (e.g., FEE)",
+              },
+              activity_sub_type: {
+                type: "string",
+                description: "Subtype of activity (e.g., CAT)",
+              },
               date: { type: "string", description: "Activity date" },
-              net_amount: { type: "string", description: "Net amount of the activity" },
-              description: { type: "string", description: "Description of the activity" },
-              status: { type: "string", description: "Activity status" }
-
-            }
-          }
-        }
-      }
-    }
-
-
-  ]
-  ,
+              net_amount: {
+                type: "string",
+                description: "Net amount of the activity",
+              },
+              description: {
+                type: "string",
+                description: "Description of the activity",
+              },
+              status: { type: "string", description: "Activity status" },
+            },
+          },
+        },
+      },
+    },
+  ],
   "orders/close-all-position": [
     {
       status: "200",
@@ -1374,46 +2091,109 @@ export const responseExamples: Record<string, ResponseExample[]> = {
           success: {
             type: "Array of object",
             values: {
-              id: { type: "string", description: "Unique identifier for the order" },
-              client_order_id: { type: "string", description: "Client's order identifier" },
+              id: {
+                type: "string",
+                description: "Unique identifier for the order",
+              },
+              client_order_id: {
+                type: "string",
+                description: "Client's order identifier",
+              },
               created_at: { type: "string", description: "Creation timestamp" },
-              updated_at: { type: "string", description: "Last update timestamp" },
-              submitted_at: { type: "string", description: "Submission timestamp" },
-              filled_at: { type: ["string", "null"], description: "Fill timestamp" },
-              expired_at: { type: ["string", "null"], description: "Expiration timestamp" },
-              canceled_at: { type: ["string", "null"], description: "Cancellation timestamp" },
-              failed_at: { type: ["string", "null"], description: "Failure timestamp" },
-              replaced_at: { type: ["string", "null"], description: "Replacement timestamp" },
-              replaced_by: { type: ["string", "null"], description: "Replaced by order ID" },
-              replaces: { type: ["string", "null"], description: "Replaces order ID" },
+              updated_at: {
+                type: "string",
+                description: "Last update timestamp",
+              },
+              submitted_at: {
+                type: "string",
+                description: "Submission timestamp",
+              },
+              filled_at: {
+                type: ["string", "null"],
+                description: "Fill timestamp",
+              },
+              expired_at: {
+                type: ["string", "null"],
+                description: "Expiration timestamp",
+              },
+              canceled_at: {
+                type: ["string", "null"],
+                description: "Cancellation timestamp",
+              },
+              failed_at: {
+                type: ["string", "null"],
+                description: "Failure timestamp",
+              },
+              replaced_at: {
+                type: ["string", "null"],
+                description: "Replacement timestamp",
+              },
+              replaced_by: {
+                type: ["string", "null"],
+                description: "Replaced by order ID",
+              },
+              replaces: {
+                type: ["string", "null"],
+                description: "Replaces order ID",
+              },
               asset_id: { type: "string", description: "Asset identifier" },
               symbol: { type: "string", description: "Stock symbol" },
               asset_class: { type: "string", description: "Asset class" },
-              notional: { type: ["number", "null"], description: "Notional value" },
+              notional: {
+                type: ["number", "null"],
+                description: "Notional value",
+              },
               qty: { type: "string", description: "Quantity of shares" },
               filled_qty: { type: "string", description: "Filled quantity" },
-              filled_avg_price: { type: ["number", "null"], description: "Average fill price" },
+              filled_avg_price: {
+                type: ["number", "null"],
+                description: "Average fill price",
+              },
               order_class: { type: "string", description: "Order class" },
-              order_type: { type: "string", description: "Type of order (market/limit/etc)" },
+              order_type: {
+                type: "string",
+                description: "Type of order (market/limit/etc)",
+              },
               type: { type: "string", description: "Order type" },
               side: { type: "string", description: "Order side (buy/sell)" },
-              position_intent: { type: "string", description: "Position intent" },
+              position_intent: {
+                type: "string",
+                description: "Position intent",
+              },
               time_in_force: { type: "string", description: "Time in force" },
-              limit_price: { type: ["number", "null"], description: "Limit price" },
-              stop_price: { type: ["number", "null"], description: "Stop price" },
+              limit_price: {
+                type: ["number", "null"],
+                description: "Limit price",
+              },
+              stop_price: {
+                type: ["number", "null"],
+                description: "Stop price",
+              },
               status: { type: "string", description: "Order status" },
-              extended_hours: { type: "boolean", description: "Extended hours flag" },
+              extended_hours: {
+                type: "boolean",
+                description: "Extended hours flag",
+              },
               legs: { type: ["array", "null"], description: "Order legs" },
-              trail_percent: { type: ["number", "null"], description: "Trail percentage" },
-              trail_price: { type: ["number", "null"], description: "Trail price" },
+              trail_percent: {
+                type: ["number", "null"],
+                description: "Trail percentage",
+              },
+              trail_price: {
+                type: ["number", "null"],
+                description: "Trail price",
+              },
               hwm: { type: ["number", "null"], description: "High water mark" },
               subtag: { type: ["string", "null"], description: "Subtag" },
               source: { type: ["string", "null"], description: "Source" },
-              expires_at: { type: "string", description: "Expiration timestamp" }
-            }
-          }
-        }
-      }
-    }
-  ]
+              expires_at: {
+                type: "string",
+                description: "Expiration timestamp",
+              },
+            },
+          },
+        },
+      },
+    },
+  ],
 };

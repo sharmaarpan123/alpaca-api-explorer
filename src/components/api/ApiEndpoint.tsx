@@ -225,6 +225,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
                 ![
                   "api/v1/user/clock",
                   "/api/v1/user/get-account-number",
+                  "/api/v1/user/ping"
                 ]?.includes(endpoint) // do not show the acc number input on this endpoint's
               }
             />

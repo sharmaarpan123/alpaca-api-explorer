@@ -5,12 +5,12 @@ import {
   ApiGroup,
   ResponseExample,
   payloadTypes,
-  responseExampleTypes
-} from './dataTypes';
+  responseExampleTypes,
+} from "./dataTypes";
 
 // Import response examples and request body examples
-import { responseExamples } from './responseExamples';
-import { requestBodyExamples } from './requestBodyExamples';
+import { responseExamples } from "./responseExamples";
+import { requestBodyExamples } from "./requestBodyExamples";
 
 // Define the structure for path and query parameter fields
 interface ParamField {
@@ -24,7 +24,6 @@ export interface ParamsObject {
 }
 
 // Define the structure for response examples
-
 
 export type PayloadType =
   | "number"
@@ -52,13 +51,22 @@ export interface RequestBodyField {
 // API endpoints data based on the Postman collection
 export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
   // User endpoints
+
+  "users/ping": {
+    title: "Clock",
+    method: "GET",
+    path: "/api/v1/user/ping",
+    description: "Get server time information",
+    requiresAuth: true,
+    responseExamples: responseExamples["users/ping"],
+  },
   "users/clock": {
     title: "Clock",
     method: "POST",
     path: "api/v1/user/clock",
     description: "Get server time information",
     requiresAuth: true,
-    responseExamples: responseExamples['users/clock'],
+    responseExamples: responseExamples["users/clock"],
   },
 
   "users/get-account-number": {
@@ -68,7 +76,7 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     description: "Get user account number",
     requiresAuth: true,
     requestBody: {},
-    responseExamples: responseExamples['users/get-account-number'],
+    responseExamples: responseExamples["users/get-account-number"],
   },
 
   "users/get-accounts": {
@@ -78,7 +86,7 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     description: "Get user account details",
     requiresAuth: true,
     requestBody: {},
-    responseExamples: responseExamples['users/get-accounts'],
+    responseExamples: responseExamples["users/get-accounts"],
   },
 
   // Stocks endpoints
@@ -88,8 +96,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/stock/assets",
     description: "Get list of available assets",
     requiresAuth: true,
-    requestBody: requestBodyExamples['stocks/assets'],
-    responseExamples: responseExamples['stocks/assets'],
+    requestBody: requestBodyExamples["stocks/assets"],
+    responseExamples: responseExamples["stocks/assets"],
   },
 
   "stocks/assets-details": {
@@ -98,8 +106,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/stock/assetsDetails",
     description: "Get detailed information about a specific asset",
     requiresAuth: true,
-    requestBody: requestBodyExamples['stocks/assets-details'],
-    responseExamples: responseExamples['stocks/assets-details'],
+    requestBody: requestBodyExamples["stocks/assets-details"],
+    responseExamples: responseExamples["stocks/assets-details"],
   },
 
   "stocks/quotes-latest": {
@@ -108,8 +116,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/stock/quotes/latest",
     description: "Get latest quotes for assets",
     requiresAuth: true,
-    requestBody: requestBodyExamples['stocks/quotes-latest'],
-    responseExamples: responseExamples['stocks/quotes-latest'],
+    requestBody: requestBodyExamples["stocks/quotes-latest"],
+    responseExamples: responseExamples["stocks/quotes-latest"],
   },
 
   "stocks/quotes-history": {
@@ -118,8 +126,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/stock/quotes",
     description: "Get historical quotes for an asset",
     requiresAuth: true,
-    requestBody: requestBodyExamples['stocks/quotes-history'],
-    responseExamples: responseExamples['stocks/quotes-history'],
+    requestBody: requestBodyExamples["stocks/quotes-history"],
+    responseExamples: responseExamples["stocks/quotes-history"],
   },
 
   "stocks/bars-info": {
@@ -128,8 +136,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/stock/bars",
     description: "Get bar data for an asset",
     requiresAuth: true,
-    requestBody: requestBodyExamples['stocks/bars-info'],
-    responseExamples: responseExamples['stocks/bars-info'],
+    requestBody: requestBodyExamples["stocks/bars-info"],
+    responseExamples: responseExamples["stocks/bars-info"],
   },
 
   "stocks/bars-latest": {
@@ -138,8 +146,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/stock/bars/latest",
     description: "Get latest bar data for an asset",
     requiresAuth: true,
-    requestBody: requestBodyExamples['stocks/bars-latest'],
-    responseExamples: responseExamples['stocks/bars-latest'],
+    requestBody: requestBodyExamples["stocks/bars-latest"],
+    responseExamples: responseExamples["stocks/bars-latest"],
   },
 
   // Orders endpoints
@@ -149,8 +157,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/orders",
     description: "Place a buy order",
     requiresAuth: true,
-    requestBody: requestBodyExamples['orders/order-buy'],
-    responseExamples: responseExamples['orders/order-buy'],
+    requestBody: requestBodyExamples["orders/order-buy"],
+    responseExamples: responseExamples["orders/order-buy"],
   },
 
   "orders/pending-order-list": {
@@ -159,8 +167,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/lists",
     description: "Get list of pending orders",
     requiresAuth: true,
-    requestBody: requestBodyExamples['orders/pending-order-list'],
-    responseExamples: responseExamples['orders/pending-order-list'],
+    requestBody: requestBodyExamples["orders/pending-order-list"],
+    responseExamples: responseExamples["orders/pending-order-list"],
   },
 
   "orders/delete-all-pending-orders": {
@@ -169,8 +177,7 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/deleteAllOrders",
     description: "Delete all pending orders",
     requiresAuth: true,
-    responseExamples: responseExamples['orders/delete-all-pending-orders'],
-
+    responseExamples: responseExamples["orders/delete-all-pending-orders"],
   },
 
   "orders/order-details": {
@@ -179,8 +186,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/orderDetails",
     description: "Get details of a specific order",
     requiresAuth: true,
-    requestBody: requestBodyExamples['orders/order-details'],
-    responseExamples: responseExamples['orders/order-details'],
+    requestBody: requestBodyExamples["orders/order-details"],
+    responseExamples: responseExamples["orders/order-details"],
   },
 
   "orders/delete-pending-order": {
@@ -189,10 +196,9 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/deleteOrder",
     description: "Delete a specific pending order",
     requiresAuth: true,
-    requestBody: requestBodyExamples['orders/delete-pending-order'],
-    responseExamples: responseExamples['orders/delete-pending-order'],
+    requestBody: requestBodyExamples["orders/delete-pending-order"],
+    responseExamples: responseExamples["orders/delete-pending-order"],
   },
-
 
   "orders/open-position": {
     title: "Open Position",
@@ -201,7 +207,7 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     description: "Get list of open positions",
     requiresAuth: true,
     requestBody: {},
-    responseExamples: responseExamples['orders/open-position'],
+    responseExamples: responseExamples["orders/open-position"],
   },
 
   "orders/open-position-symbol": {
@@ -210,8 +216,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/positionsSymbolOrAsset",
     description: "Get open position for a specific symbol",
     requiresAuth: true,
-    requestBody: requestBodyExamples['orders/open-position-symbol'],
-    responseExamples: responseExamples['orders/open-position-symbol'],
+    requestBody: requestBodyExamples["orders/open-position-symbol"],
+    responseExamples: responseExamples["orders/open-position-symbol"],
   },
 
   "orders/close-all-position": {
@@ -220,8 +226,7 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/closeAllPosition",
     description: "Close all open positions",
     requiresAuth: true,
-    responseExamples: responseExamples['orders/close-all-position'],
-
+    responseExamples: responseExamples["orders/close-all-position"],
   },
 
   "orders/close-position-symbol": {
@@ -230,8 +235,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/closePositionSymbolOrAssets",
     description: "Close position for a specific symbol",
     requiresAuth: true,
-    requestBody: requestBodyExamples['orders/close-position-symbol'],
-    responseExamples: responseExamples['orders/close-position-symbol'],
+    requestBody: requestBodyExamples["orders/close-position-symbol"],
+    responseExamples: responseExamples["orders/close-position-symbol"],
   },
 
   "orders/order-history": {
@@ -240,8 +245,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/portfolio/history",
     description: "Get order history",
     requiresAuth: true,
-    requestBody: requestBodyExamples['orders/order-history'],
-    responseExamples: responseExamples['orders/order-history'],
+    requestBody: requestBodyExamples["orders/order-history"],
+    responseExamples: responseExamples["orders/order-history"],
   },
 
   "orders/account-activities": {
@@ -250,8 +255,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/account/activities",
     description: "Get account activities",
     requiresAuth: true,
-    requestBody: requestBodyExamples['orders/account-activities'],
-    responseExamples: responseExamples['orders/account-activities'],
+    requestBody: requestBodyExamples["orders/account-activities"],
+    responseExamples: responseExamples["orders/account-activities"],
   },
 
   "orders/account-activities-type": {
@@ -260,8 +265,8 @@ export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
     path: "/api/v1/order/account/activitiesType",
     description: "Get account activities by type",
     requiresAuth: true,
-    requestBody: requestBodyExamples['orders/account-activities-type'],
-    responseExamples: responseExamples['orders/account-activities-type']
+    requestBody: requestBodyExamples["orders/account-activities-type"],
+    responseExamples: responseExamples["orders/account-activities-type"],
   },
 };
 
@@ -271,6 +276,14 @@ export const API_STRUCTURE: ApiGroup[] = [
     id: "users",
     name: "Users",
     endpoints: [
+      
+      {
+        id: "ping",
+        name: "Ping",
+        path: "/api/v1/user/ping",
+        method: "GET",
+        description: "Get server time information",
+      },
       {
         id: "clock",
         name: "Clock",
