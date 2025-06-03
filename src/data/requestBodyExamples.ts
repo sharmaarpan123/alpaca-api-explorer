@@ -4,6 +4,19 @@ export const requestBodyExamples: Record<
   string,
   Record<string, RequestBodyField>
 > = {
+  "user/login": {
+    email: {
+      type: payloadTypes.string,
+      description: "Enter User Email",
+      required: true,
+    },
+    password: {
+      type: payloadTypes.string,
+      description: "Enter User Password",
+      required: true,
+    },
+  },
+
   "stocks/assets": {
     limit: {
       type: payloadTypes.number,
@@ -226,7 +239,7 @@ export const requestBodyExamples: Record<
       type: payloadTypes.select,
       description: "How to close the position",
       required: true,
-      default :"SHARE",
+      default: "SHARE",
       options: ["SHARE", "PERCENTAGE"],
     },
     closeValue: {
@@ -251,7 +264,7 @@ export const requestBodyExamples: Record<
       type: payloadTypes.select,
       description: "Type of history to return",
       default: "ORDER",
-      hidden : true
+      hidden: true,
     },
   },
 
@@ -285,8 +298,6 @@ export const requestBodyExamples: Record<
       description: "Number of records to return",
     },
   },
-
- 
 
   "orders/open-position-symbol": {
     value: {
@@ -323,18 +334,47 @@ export const requestBodyExamples: Record<
     type: {
       type: payloadTypes.select,
       options: [
-        "FILL", "TRANS", "MISC", "ACATC", "ACATS", "CFEE", "CSD", "CSW", "DIV",
-        "DIVCGL", "DIVCGS", "DIVFEE", "DIVFT", "DIVNRA", "DIVROC", "DIVTW",
-        "DIVTXEX", "FEE", "INT", "INTNRA", "INTTW", "JNL", "JNLC", "JNLS",
-        "MA", "NC", "OPASN", "OPCA", "OPCSH", "OPEXC", "OPEXP", "OPTRD",
-        "PTC", "PTR", "REORG", "SPIN", "SPLIT"
-      ]
-      ,
+        "FILL",
+        "TRANS",
+        "MISC",
+        "ACATC",
+        "ACATS",
+        "CFEE",
+        "CSD",
+        "CSW",
+        "DIV",
+        "DIVCGL",
+        "DIVCGS",
+        "DIVFEE",
+        "DIVFT",
+        "DIVNRA",
+        "DIVROC",
+        "DIVTW",
+        "DIVTXEX",
+        "FEE",
+        "INT",
+        "INTNRA",
+        "INTTW",
+        "JNL",
+        "JNLC",
+        "JNLS",
+        "MA",
+        "NC",
+        "OPASN",
+        "OPCA",
+        "OPCSH",
+        "OPEXC",
+        "OPEXP",
+        "OPTRD",
+        "PTC",
+        "PTR",
+        "REORG",
+        "SPIN",
+        "SPLIT",
+      ],
       description: "Page number",
       default: "FEE",
       required: true,
     },
-  }
-
-
+  },
 };

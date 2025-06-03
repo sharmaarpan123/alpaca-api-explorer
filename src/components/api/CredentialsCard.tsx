@@ -7,12 +7,24 @@ interface CredentialsCardProps {
   apiSecretKey: string;
   setApiSecretKey: (value: string) => void;
   showAccountNumberInput: boolean;
+  setToken: React.Dispatch<React.SetStateAction<string>>;
+  setRefreshToken: React.Dispatch<React.SetStateAction<string>>;
+  token: string;
+  refreshToken: string;
+  showTokenInput: boolean;
+  showRefreshTokenInput: boolean;
 }
 
 const CredentialsCard: React.FC<CredentialsCardProps> = ({
   apiSecretKey,
   setApiSecretKey,
   showAccountNumberInput,
+  showTokenInput,
+  setToken,
+  token,
+  showRefreshTokenInput,
+  refreshToken,
+  setRefreshToken,
 }) => {
   const { privateKey } = useAuth();
   return (
@@ -44,6 +56,32 @@ const CredentialsCard: React.FC<CredentialsCardProps> = ({
                 className="bg-gray-800 h-8 text-xs border-gray-700 text-gray-200 focus:ring-blue-500"
                 value={apiSecretKey}
                 onChange={(e) => setApiSecretKey(e.target.value)}
+              />
+            </div>
+          )}
+          {showTokenInput && (
+            <div>
+              <label className="text-xs font-medium block mb-1 text-gray-300">
+                Token
+              </label>
+              <Input
+                placeholder="Access Token"
+                className="bg-gray-800 h-8 text-xs border-gray-700 text-gray-200 focus:ring-blue-500"
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
+              />
+            </div>
+          )}
+          {showRefreshTokenInput && (
+            <div>
+              <label className="text-xs font-medium block mb-1 text-gray-300">
+                Refresh Token
+              </label>
+              <Input
+                placeholder="Access Token"
+                className="bg-gray-800 h-8 text-xs border-gray-700 text-gray-200 focus:ring-blue-500"
+                value={refreshToken}
+                onChange={(e) => setRefreshToken(e.target.value)}
               />
             </div>
           )}

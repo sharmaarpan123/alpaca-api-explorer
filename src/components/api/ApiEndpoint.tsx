@@ -44,7 +44,8 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
   pathParams,
   responseExamples,
 }) => {
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState("");
+  const [refreshToken, setRefreshToken] = useState("");
   const [apiSecretKey, setApiSecretKey] = useState<string>("");
   const [selectedLanguage, setSelectedLanguage] =
     useState<ProgrammingLanguage>("shell");
@@ -149,6 +150,7 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
     Accept: "application/json",
     Authorization: `Bearer ${token}`,
     accesstoken: token,
+    refreshToken,
     accountNumber: apiSecretKey,
     privateApiKey: privateKey,
   };
@@ -171,7 +173,8 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
       queryParams,
       token,
       privateKey,
-      apiSecretKey
+      apiSecretKey,
+      refreshToken
     );
   };
 
@@ -219,15 +222,30 @@ const ApiEndpoint: React.FC<ApiEndpointProps> = ({
         <div className="space-y-2">
           <div className="grid grid-cols-1 gap-4">
             <CredentialsCard
+              refreshToken={refreshToken}
+              setRefreshToken={setRefreshToken}
+              showRefreshTokenInput={[
+                "/api/v1/user/get-access-token",
+              ]?.includes(endpoint)}
               apiSecretKey={apiSecretKey}
               setApiSecretKey={setApiSecretKey}
               showAccountNumberInput={
                 ![
-                  "api/v1/user/clock",
+                  "/api/v1/user/clock",
                   "/api/v1/user/get-account-number",
-                  "/api/v1/user/ping"
+                  "/api/v1/user/ping",
+                  "/api/v1/user/login",
+                  "/api/v1/user/get-access-token",
                 ]?.includes(endpoint) // do not show the acc number input on this endpoint's
               }
+              showTokenInput={
+                ![
+                  "/api/v1/user/login",
+                  "/api/v1/user/get-access-token",
+                ].includes(endpoint)
+              }
+              token={token}
+              setToken={setToken}
             />
 
             <ApiEndpointCodeSnippet

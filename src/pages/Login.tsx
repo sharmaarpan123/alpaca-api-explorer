@@ -28,7 +28,7 @@ const Login: React.FC = () => {
   const { authDispatch } = useAuth();
   const navigate = useNavigate();
   const { mutate: login, isPending } = useApiMutation(
-    "/api/v1/user/login",
+    "/api/v1/user/loginDocument",
     {
       onSuccess: (data: any) => {
         const success = checkResponse({

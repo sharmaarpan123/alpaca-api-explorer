@@ -117,7 +117,8 @@ export const makeApiCall = async (
   apiEndpoint: string,
   token?: string,
   apiKeyId?: string,
-  apiSecretKey?: string
+  apiSecretKey?: string,
+  refreshToken?: string
 ) => {
   try {
     const apiUrl = import.meta.env.VITE_BASE_URL || "https://api.deviden.com";
@@ -128,6 +129,7 @@ export const makeApiCall = async (
       ...(token ? { accesstoken: `${token}` } : {}),
       ...(apiKeyId ? { privateApiKey: `${apiKeyId}` } : {}),
       ...(apiSecretKey ? { accountNumber: apiSecretKey } : {}),
+      ...(refreshToken ? { refreshToken } : {}),
     };
 
     // Create a custom instance for this specific call to avoid interceptors
@@ -142,64 +144,64 @@ export const makeApiCall = async (
         return response;
       },
       async (error) => {
-        const originalRequest = error.config;
+        // const originalRequest = error.config;
 
         // If error is 401 and we haven't tried to refresh token yet
-        console.log(error.response.data, "Data1212");
-        if (
-          (error.response?.status === 401 ||
-            ["Token has been expired", "Not Authorized!"]?.includes(
-              error?.response?.data?.data
-            )) &&
-          !originalRequest._retry
-        ) {
+        // console.log(error.response.data, "Data1212");
+        // if (
+        //   (error.response?.status === 401 ||
+        //     ["Token has been expired", "Not Authorized!"]?.includes(
+        //       error?.response?.data?.data
+        //     )) &&
+        //   !originalRequest._retry
+        // ) {
 
-          console.log(error ,"errors")
-          const confirm = window.confirm("Action required: Refresh your token to continue using the web.");
-          if (!confirm) {
-            logOutAndRedirect();
-            return;
-          }
-          originalRequest._retry = true;
+        //   console.log(error ,"errors")
+        //   const confirm = window.confirm("Action required: Refresh your token to continue using the web.");
+        //   if (!confirm) {
+        //     logOutAndRedirect();
+        //     return;
+        //   }
+        //   originalRequest._retry = true;
 
-          try {
-            const refreshToken = localStorage.getItem("refreshToken");
+        //   try {
+        //     const refreshToken = localStorage.getItem("refreshToken");
 
-            // Call refresh token endpoint
+        //     // Call refresh token endpoint
 
-            const response = await apiInstance.post(
-              "/api/v1/user/get-access-token",
-              {},
-              {
-                headers: {
-                  refreshToken,
-                },
-              }
-            );
+        //     const response = await apiInstance.post(
+        //       "/api/v1/user/get-access-token",
+        //       {},
+        //       {
+        //         headers: {
+        //           refreshToken,
+        //         },
+        //       }
+        //     );
 
-            if (response?.data?.status_code === 200) {
-              const { accessToken } = response?.data?.data;
+        //     if (response?.data?.status_code === 200) {
+        //       const { accessToken } = response?.data?.data;
 
-              // Update token in localStorage
-              localStorage.setItem("token", accessToken);
+        //       // Update token in localStorage
+        //       localStorage.setItem("token", accessToken);
 
-              // Update Authorization header
-              originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-              originalRequest.headers.accesstoken = `${accessToken}`;
+        //       // Update Authorization header
+        //       originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        //       originalRequest.headers.accesstoken = `${accessToken}`;
 
-              // Retry the original request
-              return apiInstance(originalRequest);
-            } else {
-              alert("Refresh token failed , please login again");
-              logOutAndRedirect();
-            }
-          } catch (refreshError) {
-            // If refresh token fails, clear auth data and redirect to login
-            logOutAndRedirect();
+        //       // Retry the original request
+        //       return apiInstance(originalRequest);
+        //     } else {
+        //       alert("Refresh token failed , please login again");
+        //       logOutAndRedirect();
+        //     }
+        //   } catch (refreshError) {
+        //     // If refresh token fails, clear auth data and redirect to login
+        //     logOutAndRedirect();
 
-            return Promise.reject(refreshError);
-          }
-        }
+        //     return Promise.reject(refreshError);
+        //   }
+        // }
 
         // For other errors, return the error response for handling in components
         return Promise.resolve(error.response);
@@ -207,9 +209,6 @@ export const makeApiCall = async (
     );
 
     let apiResponse;
-
-
-   
 
     // Make the API call based on the method
     switch (method) {

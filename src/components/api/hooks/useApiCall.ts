@@ -22,7 +22,8 @@ export const useApiCall = ({ method, endpoint, requiresAuth = true }: UseApiCall
     queryParams?: ParamsObject,
     token?: string,
     apiKeyId?: string,
-    apiSecretKey?: string
+    apiSecretKey?: string,
+    refreshToken?: string
   ) => {
     if (requiresAuth && !token && !apiKeyId) {
       toast.error("Authentication Required", {
@@ -64,7 +65,8 @@ export const useApiCall = ({ method, endpoint, requiresAuth = true }: UseApiCall
         apiEndpoint,
         token,
         apiKeyId,
-        apiSecretKey
+        apiSecretKey,
+        refreshToken
       );
       
       setResponse(data);

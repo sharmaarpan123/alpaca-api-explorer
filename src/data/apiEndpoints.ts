@@ -52,6 +52,25 @@ export interface RequestBodyField {
 export const API_ENDPOINTS: Record<string, ApiEndpointData> = {
   // User endpoints
 
+  "users/login": {
+    title: "Login",
+    method: "POST",
+    path: "/api/v1/user/login",
+    description: "Login To access the API's",
+    requiresAuth: true,
+    requestBody: requestBodyExamples["user/login"],
+    responseExamples: responseExamples["users/login"],
+  },
+
+  "users/get-access-token": {
+    title: "Refresh Token",
+    method: "POST",
+    path: "/api/v1/user/get-access-token",
+    description: "To get the refreshed token",
+    requiresAuth: true,
+    responseExamples: responseExamples["users/get-access-token"],
+  },
+
   "users/ping": {
     title: "Clock",
     method: "GET",
@@ -276,7 +295,20 @@ export const API_STRUCTURE: ApiGroup[] = [
     id: "users",
     name: "Users",
     endpoints: [
-      
+      {
+        id: "login",
+        name: "Login",
+        path: "/api/v1/user/login",
+        method: "POST",
+        description: "Login To access the API's",
+      },
+      {
+        id: "get-access-token",
+        name: "Refresh Token",
+        path: "/api/v1/user/get-access-token",
+        method: "POST",
+        description: "Get the refreshed access token",
+      },
       {
         id: "ping",
         name: "Ping",
@@ -284,6 +316,7 @@ export const API_STRUCTURE: ApiGroup[] = [
         method: "GET",
         description: "Get server time information",
       },
+
       {
         id: "clock",
         name: "Clock",

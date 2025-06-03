@@ -84,6 +84,37 @@ export const responseExamples: Record<string, ResponseExample[]> = {
     },
   ],
 
+  "users/get-access-token": [
+    {
+      status: "200",
+      description: "Successful operation",
+      dataKey: "data",
+      example: {
+        type: "object",
+        values: {
+          accessToken: { type: "string" },
+          accountId: { type: "string" },
+        },
+      },
+    },
+  ],
+
+  "users/login": [
+    {
+      status: "200",
+      description: "Successful operation",
+      dataKey: "data",
+      example: {
+        type: "object",
+        values: {
+          accessToken: { type: "string" },
+          refreshToken: { type: "string" },
+          accountId: { type: "string" },
+        },
+      },
+    },
+  ],
+
   "users/get-account-number": [
     {
       status: "200",
